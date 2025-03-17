@@ -1,0 +1,64 @@
+package com.SAMURAI.HU_FDS.service;
+
+import com.SAMURAI.HU_FDS.dto.LoginDto;
+import com.SAMURAI.HU_FDS.model.User;
+import com.SAMURAI.HU_FDS.repo.UserRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private JwtService jwtService;
+
+
+    @Transactional
+    public LoginDto login(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Password is incorrect");
+        } else {
+            String token= jwtService.generateToken(user.getUsername(),user.getRank());
+            return new LoginDto(token, user.getUsername(),user.getEmail(),user.getRank(),user.getPicture());
+        }
+
+
+
+
+    }
+
+
+    public void signup(String username, String email, String password, byte[] picture, String rank) {
+        if (userRepository.findByUsername(username).isPresent()){
+            throw new RuntimeException("Username already taken");
+        }
+        if (userRepository.findByEmail(email).isPresent()){
+            throw new RuntimeException("Email already registered");
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(encoder.encode(password));
+        user.setPicture(picture);
+        user.setRank(rank);
+
+        userRepository.save(user);
+
+    }
+}
