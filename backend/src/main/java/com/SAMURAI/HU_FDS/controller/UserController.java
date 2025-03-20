@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 
@@ -76,6 +77,47 @@ public class UserController {
             return ResponseEntity.ok("Hello Courier, Token is working! Username: " + userDetails.getUsername());
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
+        }
+    }
+
+     @PutMapping("/update-email")
+    public ResponseEntity<String> updateEmail(@RequestParam String username, @RequestParam String newEmail) {
+        try {
+            userService.updateUserEmail(username, newEmail);
+            return ResponseEntity.ok("Email updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email update failed: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestParam String username, @RequestParam String newPassword) {
+        try {
+            userService.updateUserPassword(username, newPassword);
+            return ResponseEntity.ok("Password updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Password update failed: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-picture")
+    public ResponseEntity<String> updatePicture(@RequestParam String username, @RequestParam MultipartFile newPicture) {
+        try {
+            byte[] pictureBytes = newPicture.getBytes();
+            userService.updateUserPicture(username, pictureBytes);
+            return ResponseEntity.ok("Picture updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Picture update failed: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-rank")
+    public ResponseEntity<String> updateRank(@RequestParam String username, @RequestParam String newRank) {
+        try {
+            userService.updateUserRank(username, newRank);
+            return ResponseEntity.ok("Rank updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rank update failed: " + e.getMessage());
         }
     }
 }

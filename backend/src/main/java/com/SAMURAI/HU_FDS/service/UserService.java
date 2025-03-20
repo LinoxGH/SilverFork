@@ -5,10 +5,8 @@ import com.SAMURAI.HU_FDS.model.User;
 import com.SAMURAI.HU_FDS.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -24,7 +22,6 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
-
     @Transactional
     public LoginDto login(String username, String password) {
         User user = userRepository.findByUsername(username)
@@ -36,12 +33,7 @@ public class UserService {
             String token= jwtService.generateToken(user.getUsername(),user.getRank());
             return new LoginDto(token, user.getUsername(),user.getEmail(),user.getRank(),user.getPicture());
         }
-
-
-
-
     }
-
 
     public void signup(String username, String email, String password, byte[] picture, String rank) {
         if (userRepository.findByUsername(username).isPresent()){
@@ -59,6 +51,33 @@ public class UserService {
         user.setRank(rank);
 
         userRepository.save(user);
+    }
 
+    public void updateUserEmail(String username, String newEmail) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
+    public void updateUserPassword(String username, String newPassword) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    public void updateUserPicture(String username, byte[] newPicture) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPicture(newPicture);
+        userRepository.save(user);
+    }
+
+    public void updateUserRank(String username, String newRank) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRank(newRank);
+        userRepository.save(user);
     }
 }
