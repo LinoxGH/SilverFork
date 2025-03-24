@@ -28,8 +28,10 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-
-
+    private boolean isAuthorized(String token, String username) {
+        String extractedUsername = jwtService.extractUserName(token);
+        return extractedUsername.equals(username);
+    }
 
     //signup endpointi
     @PostMapping("/signup")
@@ -80,8 +82,15 @@ public class UserController {
         }
     }
 
-     @PutMapping("/update-email")
-    public ResponseEntity<String> updateEmail(@RequestParam String username, @RequestParam String newEmail) {
+    @PutMapping("/update-email")
+    public ResponseEntity<String> updateEmail(@RequestHeader("Authorization") String authHeader, 
+                                              @RequestParam String username, 
+                                              @RequestParam String newEmail) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
         try {
             userService.updateUserEmail(username, newEmail);
             return ResponseEntity.ok("Email updated successfully");
@@ -91,7 +100,14 @@ public class UserController {
     }
 
     @PutMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestParam String username, @RequestParam String newPassword) {
+    public ResponseEntity<String> updatePassword(@RequestHeader("Authorization") String authHeader, 
+                                                 @RequestParam String username, 
+                                                 @RequestParam String newPassword) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
         try {
             userService.updateUserPassword(username, newPassword);
             return ResponseEntity.ok("Password updated successfully");
@@ -101,7 +117,14 @@ public class UserController {
     }
 
     @PutMapping("/update-picture")
-    public ResponseEntity<String> updatePicture(@RequestParam String username, @RequestParam MultipartFile newPicture) {
+    public ResponseEntity<String> updatePicture(@RequestHeader("Authorization") String authHeader, 
+                                                @RequestParam String username, 
+                                                @RequestParam MultipartFile newPicture) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
         try {
             byte[] pictureBytes = newPicture.getBytes();
             userService.updateUserPicture(username, pictureBytes);
@@ -112,7 +135,14 @@ public class UserController {
     }
 
     @PutMapping("/update-rank")
-    public ResponseEntity<String> updateRank(@RequestParam String username, @RequestParam String newRank) {
+    public ResponseEntity<String> updateRank(@RequestHeader("Authorization") String authHeader, 
+                                             @RequestParam String username, 
+                                             @RequestParam String newRank) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
         try {
             userService.updateUserRank(username, newRank);
             return ResponseEntity.ok("Rank updated successfully");
