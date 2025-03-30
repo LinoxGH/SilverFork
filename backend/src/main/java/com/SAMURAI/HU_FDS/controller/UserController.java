@@ -78,5 +78,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
     }
+
+    @GetMapping("/restaurant/hello")
+    public ResponseEntity<String> helloRestaurant(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            return ResponseEntity.ok("Hello restaurantowner, Token is working! Username: " + userDetails.getUsername());
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
+        }
+    }
 }
 
