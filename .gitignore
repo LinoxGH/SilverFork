@@ -31,3 +31,31 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Spring Boot (for password security) ###
+backend/src/main/resources/application.properties
+
+# Logs
+frontend/logs
+*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# Node.JS Files #
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
