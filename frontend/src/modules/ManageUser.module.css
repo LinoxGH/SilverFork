@@ -1,0 +1,128 @@
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    height: 6.25vh;
+    background-color: #2c2c2c;
+}
+
+/* Başlık */
+.title {
+    color: white;
+    font-size: 48px;
+    margin-top: 50px; 
+    margin-bottom: 30px;
+    margin-left: 70px;
+}
+
+.imageContainer {
+  width: 300px;
+  height: 300px;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  margin-left: 1200px;
+  margin-bottom: -300px;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+.fileInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.placeholderText {
+  color: white;
+  font-size: 14px;
+}
+
+.line {
+    width: 30%;
+    height: 1px;
+    background-color: white;
+    border: none;
+    margin-left: 70px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 29%;
+    margin-top: 20px;
+    margin-left: 70px;
+}
+
+.input {
+    padding: 12px;
+    background-color: #575757;
+    color: white;
+    border: none;
+    font-size: 20px;
+    width: 100%;
+}
+.saveButton {
+    padding: 12px;
+    background-color: #575757;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 40px;
+    margin-left: 360px;
+    width: 15%;
+}
+.bottomLine {
+    width: 30%;
+    height: 1px;
+    background-color: white;
+    border: none;
+    margin-top: 40px;
+    margin-bottom: 0px;
+    margin-left: 70px;
+}
+/* Buton */
+.button {
+    padding: 12px;
+    background-color: #575757;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 1210px;
+    width: 15%;
+}
+
+/* Buton grubu */
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: -60px;
+}
