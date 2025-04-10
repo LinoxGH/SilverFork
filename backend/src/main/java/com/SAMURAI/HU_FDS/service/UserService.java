@@ -39,10 +39,6 @@ public class UserService {
             String token= jwtService.generateToken(user.getUsername(),user.getRank());
             return new LoginDto(token, user.getUsername(),user.getEmail(),user.getRank(),user.getPicture());
         }
-
-
-
-
     }
 
 
@@ -91,5 +87,32 @@ public class UserService {
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }
+	
+	public void updateUserEmail(String username, String newEmail) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
 
+    public void updateUserPassword(String username, String newPassword) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    public void updateUserPicture(String username, byte[] newPicture) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPicture(newPicture);
+        userRepository.save(user);
+    }
+
+    public void updateUserRank(String username, String newRank) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRank(newRank);
+        userRepository.save(user);
+    }
 }

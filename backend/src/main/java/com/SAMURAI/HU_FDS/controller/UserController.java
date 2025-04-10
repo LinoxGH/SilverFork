@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 
@@ -27,7 +28,10 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-
+	private boolean isAuthorized(String token, String username) {
+        String extractedUsername = jwtService.extractUserName(token);
+        return extractedUsername.equals(username);
+    }
 
 
     //signup endpointi
@@ -90,5 +94,75 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
     }
-}
+	
 
+    @PutMapping("/update-email")
+    public ResponseEntity<String> updateEmail(@RequestHeader("Authorization") String authHeader, 
+                                              @RequestParam String username, 
+                                              @RequestParam String newEmail) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
+        try {
+            userService.updateUserEmail(username, newEmail);
+            return ResponseEntity.ok("Email updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email update failed: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestHeader("Authorization") String authHeader, 
+                                                 @RequestParam String username, 
+                                                 @RequestParam String newPassword) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
+        try {
+            userService.updateUserPassword(username, newPassword);
+            return ResponseEntity.ok("Password updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Password update failed: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-picture")
+    public ResponseEntity<String> updatePicture(@RequestHeader("Authorization") String authHeader, 
+                                                @RequestParam String username, 
+                                                @RequestParam MultipartFile newPicture) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
+        try {
+            byte[] pictureBytes = newPicture.getBytes();
+            userService.updateUserPicture(username, pictureBytes);
+            return ResponseEntity.ok("Picture updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Picture update failed: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-rank")
+    public ResponseEntity<String> updateRank(@RequestHeader("Authorization") String authHeader, 
+                                             @RequestParam String username, 
+                                             @RequestParam String newRank) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+        
+        try {
+            userService.updateUserRank(username, newRank);
+            return ResponseEntity.ok("Rank updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rank update failed: " + e.getMessage());
+        }
+    }
+	
+}
