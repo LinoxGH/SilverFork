@@ -30,6 +30,14 @@ public class MenuService {
         return menuItemRepository.findByRestaurant(restaurant);
     }
 
+    public List<MenuItem> getRestaurantMenuById(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        return menuItemRepository.findByRestaurant(restaurant);
+    }
+
+
     //Menüye ekleme
     public MenuItem addMenuItem(String username, MenuItem menuItem) {
         Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)

@@ -24,7 +24,6 @@ public class MenuController {
     @Autowired
     private JwtService jwtService;
 
-    //Menüyü görüntüleme
     @GetMapping
     public ResponseEntity<List<MenuItem>> getMenu(@RequestHeader("Authorization") String authHeader) {
 
