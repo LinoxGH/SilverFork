@@ -28,10 +28,11 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-    private boolean isAuthorized(String token, String username) {
+	private boolean isAuthorized(String token, String username) {
         String extractedUsername = jwtService.extractUserName(token);
         return extractedUsername.equals(username);
     }
+
 
     //signup endpointi
     @PostMapping("/signup")
@@ -81,6 +82,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
     }
+
+    @GetMapping("/restaurant/hello")
+    public ResponseEntity<String> helloRestaurant(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            return ResponseEntity.ok("Hello restaurantowner, Token is working! Username: " + userDetails.getUsername());
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
+        }
+    }
+	
 
     @PutMapping("/update-email")
     public ResponseEntity<String> updateEmail(@RequestHeader("Authorization") String authHeader, 
@@ -150,5 +164,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rank update failed: " + e.getMessage());
         }
     }
+	
 }
-
