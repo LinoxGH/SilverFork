@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
-
-
 
 @Entity
 @Data
@@ -27,8 +24,7 @@ public class User {
     private String password;
 
 
-
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Lob

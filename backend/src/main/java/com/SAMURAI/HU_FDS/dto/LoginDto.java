@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.Base64;
 
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,12 +17,12 @@ public class LoginDto {
     private String rank;
     private String picture;
 
-    public LoginDto(String token, String username,String email, String rank, byte[] picture) {
-            this.token = token;
-            this.username = username;
-            this.email = email;
-            this.rank = rank;
-            this.picture = picture != null ? Base64.getEncoder().encodeToString(picture) : null;
+    public LoginDto(String token, String username, String email, String rank, byte[] picture) {
+        this.token = token;
+        this.username = username;
+        this.email = email;
+        this.rank = rank;
+        this.picture = picture != null ? Base64.getEncoder().encodeToString(picture) : null;
     }
 }
 

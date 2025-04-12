@@ -42,7 +42,7 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
         for (CartItem cartItem : cart.getItems()) {
-            if ((cartItem.getMenuItem().getId()) == menuItemId){
+            if ((cartItem.getMenuItem().getId()) == menuItemId) {
                 cartItem.setQuantity(cartItem.getQuantity() + quantity);
                 return cartRepository.save(cart);
             }
