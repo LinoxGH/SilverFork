@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./RestaurantDashboard.css";
 
@@ -10,15 +11,6 @@ const RestaurantDashboard = () => {
     minCartPrice: 20
   });
 
-  const initialProducts = [
-    { id: 1, name: "Burger", cuisine: "American", price: 10, popularity: 80, date: "2023-04-01", rating: 4.2, reviewCount: 12 },
-    { id: 2, name: "Pizza", cuisine: "Italian", price: 15, popularity: 95, date: "2023-04-05", rating: 4.8, reviewCount: 30 },
-    { id: 3, name: "Doner", cuisine: "Turkish", price: 25, popularity: 70, date: "2023-03-26", rating: 4.6, reviewCount: 20 },
-    { id: 4, name: "Taco", cuisine: "Mexican", price: 25, popularity: 70, date: "2023-03-27", rating: 4.6, reviewCount: 20 },
-    { id: 5, name: "Vegan Donerasdasd", cuisine: "Vegan", price: 25, popularity: 70, date: "2023-03-29", rating: 4.6, reviewCount: 20 }
-  ];
-
-  const [products, setProducts] = useState(initialProducts);
   const [sortOption, setSortOption] = useState("none");
   const [minPriceInput, setMinPriceInput] = useState(restaurantInfo.minCartPrice);
   const [minFilter, setMinFilter] = useState("");
@@ -26,20 +18,30 @@ const RestaurantDashboard = () => {
   const [selectedCuisine, setSelectedCuisine] = useState("");
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [productCuisine, setProductCuisine] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    axios.get("http://localhost:8080/restaurant/menu", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => setProducts(res.data))
+    .catch(err => console.error("Failed to fetch products:", err));
+  }, []);
 
   useEffect(() => {
     if (editingProduct) {
       setProductName(editingProduct.name);
       setProductPrice(editingProduct.price);
-      setProductCuisine(editingProduct.cuisine);
+      setProductDescription(editingProduct.description || "");
     } else {
       setProductName("");
       setProductPrice("");
-      setProductCuisine("");
+      setProductDescription("");
     }
   }, [editingProduct]);
 
@@ -48,37 +50,57 @@ const RestaurantDashboard = () => {
     setShowAddProductModal(true);
   };
 
-  const handleSubmitProduct = () => {
-    if (editingProduct) {
-      const updated = products.map(p =>
-        p.id === editingProduct.id
-          ? { ...editingProduct, name: productName, price: Number(productPrice), cuisine: productCuisine }
-          : p
-      );
-      setProducts(updated);
-    } else {
-      const newProduct = {
-        id: Date.now(),
-        name: productName,
-        price: Number(productPrice),
-        cuisine: productCuisine,
-        popularity: 0,
-        date: new Date().toISOString(),
-        rating: 0,
-        reviewCount: 0
-      };
-      setProducts([...products, newProduct]);
+  const handleSubmitProduct = async () => {
+    const token = localStorage.getItem("token");
+
+    const productData = {
+      name: productName,
+      price: Number(productPrice),
+      description: productDescription
+    };
+
+    try {
+      if (editingProduct) {
+        await axios.put(`http://localhost:8080/restaurant/menu/update/${editingProduct.id}`, productData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } else {
+        await axios.post("http://localhost:8080/restaurant/menu/add", productData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+
+      const res = await axios.get("http://localhost:8080/restaurant/menu", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProducts(res.data);
+
+      setShowAddProductModal(false);
+      setEditingProduct(null);
+    } catch (err) {
+      console.error("Product submission failed:", err);
+      alert("Something went wrong while saving the product.");
     }
-    setShowAddProductModal(false);
-    setEditingProduct(null);
   };
 
-  const handleDeleteProduct = () => {
-    if (editingProduct) {
-      const updated = products.filter(p => p.id !== editingProduct.id);
-      setProducts(updated);
+  const handleDeleteProduct = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      await axios.delete(`http://localhost:8080/restaurant/menu/delete/${editingProduct.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const res = await axios.get("http://localhost:8080/restaurant/menu", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProducts(res.data);
+
       setEditingProduct(null);
       setShowAddProductModal(false);
+    } catch (err) {
+      console.error("Failed to delete product:", err);
+      alert("Could not delete product.");
     }
   };
 
@@ -101,26 +123,25 @@ const RestaurantDashboard = () => {
   const filterProducts = (cuisine = selectedCuisine) => {
     const min = minFilter === "" ? 0 : Number(minFilter);
     const max = maxFilter === "" ? Infinity : Number(maxFilter);
-    const filtered = initialProducts.filter(p =>
+    const filtered = products.filter(p =>
       p.price >= min &&
-      p.price <= max &&
-      (cuisine === "" || p.cuisine === cuisine)
+      p.price <= max
     );
     setProducts(filtered);
   };
 
   return (
     <div className="dashboard-container">
-            <div className="restaurant-header">
+      <div className="restaurant-header">
         <div className="restaurant-main">
-            <div className="restaurant-logo">Restaurant Logo</div>
-            <div className="restaurant-info">
-                <p>{restaurantInfo.name}</p>
-                <p>{restaurantInfo.location}</p>
-                <p>Product Count: {restaurantInfo.productCount}</p>
-                <p>Average Rating: {restaurantInfo.averageRating}⭐️</p>
-            </div>
-         </div>
+          <div className="restaurant-logo">Restaurant Logo</div>
+          <div className="restaurant-info">
+            <p>{restaurantInfo.name}</p>
+            <p>{restaurantInfo.location}</p>
+            <p>Product Count: {products.length}</p>
+            <p>Average Rating: {restaurantInfo.averageRating}⭐️</p>
+          </div>
+        </div>
         <div className="dashboard-buttons">
           <button>Past Orders</button>
           <button onClick={() => {
@@ -175,7 +196,7 @@ const RestaurantDashboard = () => {
                 <div className="product-info">
                   <p className="product-name">{product.name}</p>
                   <p className="product-place">{restaurantInfo.name}</p>
-                  <p className="product-rating">{product.rating}⭐️ ({product.reviewCount})</p>
+                  <p className="product-rating">{product.description}</p>
                   <p className="product-price">
                     {product.price}$ 
                     <button className="edit-btn" onClick={() => handleEditProduct(product)}>Edit</button>
@@ -216,7 +237,7 @@ const RestaurantDashboard = () => {
             <h2>{editingProduct ? "Edit Product" : "Add New Product"}</h2>
             <input type="text" placeholder="Food Name" value={productName} onChange={(e) => setProductName(e.target.value)} />
             <input type="number" placeholder="Food Price" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
-            <input type="text" placeholder="Cuisine" value={productCuisine} onChange={(e) => setProductCuisine(e.target.value)} />
+            <textarea placeholder="Description" value={productDescription} onChange={(e) => setProductDescription(e.target.value)} />
             <button onClick={handleSubmitProduct}>{editingProduct ? "Save Changes" : "Add"}</button>
             {editingProduct && <button className="delete-btn" onClick={handleDeleteProduct}>Delete</button>}
           </div>
