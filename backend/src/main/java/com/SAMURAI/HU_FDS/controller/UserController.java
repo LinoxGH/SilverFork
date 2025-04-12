@@ -59,42 +59,6 @@ public class UserController {
     }
 
 
-    //Token çalışıyor mu örnek
-    @GetMapping("/customer/hello")
-    public ResponseEntity<String> hello(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (jwtService.validateToken(token , userDetails)){
-            return ResponseEntity.ok("Hello Customer, Token is working!"+ userDetails.getUsername());
-        }else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
-        }
-    }
-
-    @GetMapping("/courier/hello")
-    public ResponseEntity<String> helloCourier(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok("Hello Courier, Token is working! Username: " + userDetails.getUsername());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
-        }
-    }
-
-    @GetMapping("/restaurant/hello")
-    public ResponseEntity<String> helloRestaurant(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok("Hello restaurantowner, Token is working! Username: " + userDetails.getUsername());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
-        }
-    }
-	
 
     @PutMapping("/update-email")
     public ResponseEntity<String> updateEmail(@RequestHeader("Authorization") String authHeader, 

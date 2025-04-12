@@ -1,6 +1,7 @@
 package com.SAMURAI.HU_FDS.controller;
 
 import com.SAMURAI.HU_FDS.model.MenuItem;
+import com.SAMURAI.HU_FDS.model.Restaurant;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import com.SAMURAI.HU_FDS.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class MenuController {
 
     @Autowired
     private JwtService jwtService;
+
 
     @GetMapping
     public ResponseEntity<List<MenuItem>> getMenu(@RequestHeader("Authorization") String authHeader) {
@@ -96,5 +98,11 @@ public class MenuController {
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid or expired token");
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long id) {
+        Restaurant restaurant = menuService.getRestaurantById(id);
+        return ResponseEntity.ok(restaurant);
     }
 }
