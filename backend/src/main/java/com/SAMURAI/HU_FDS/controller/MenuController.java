@@ -100,6 +100,22 @@ public class MenuController {
         }
     }
 
+
+    @GetMapping("/info")
+    public ResponseEntity<Restaurant> getOwnRestaurantInfo(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            String username = userDetails.getUsername();
+            Restaurant restaurant = menuService.getRestaurantByUsername(username);
+            return ResponseEntity.ok(restaurant);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long id) {
         Restaurant restaurant = menuService.getRestaurantById(id);

@@ -86,5 +86,9 @@ public class MenuService {
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
     }
 
+    public Restaurant getRestaurantByUsername(String username) {
+        return restaurantRepository.findByOwnerUsername(username)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+    }
 
 }
