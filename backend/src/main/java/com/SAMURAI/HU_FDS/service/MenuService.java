@@ -80,4 +80,11 @@ public class MenuService {
 
         menuItemRepository.delete(existingItem);
     }
+
+    public Restaurant getRestaurantById(Long id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+    }
+
+
 }

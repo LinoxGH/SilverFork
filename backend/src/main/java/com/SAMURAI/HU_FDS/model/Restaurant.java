@@ -23,6 +23,8 @@ public class Restaurant {
 
     private String ownerUsername;
 
+    private byte[] picture;
+
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

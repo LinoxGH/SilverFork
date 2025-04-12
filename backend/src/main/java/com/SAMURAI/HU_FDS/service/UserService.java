@@ -79,6 +79,7 @@ public class UserService {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(restaurantName);
         restaurant.setOwnerUsername(username);
+        restaurant.setPicture(user.getPicture());
 
 
         restaurantRepository.save(restaurant);
