@@ -28,7 +28,6 @@ body {
     background-color: #505050;
     padding: 15px;
     margin-bottom: 15px;
-    border-radius: 8px;
   }
   
   .cart-item {
@@ -41,7 +40,6 @@ body {
     width: 100px;
     height: 100px;
     background-color: #888;
-    border-radius: 8px;
     flex-shrink: 0;
   }
   
