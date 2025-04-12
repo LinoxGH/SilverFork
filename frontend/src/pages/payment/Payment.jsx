@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import TextBox from './TextBox.jsx';
+import TextBox from '.TextBox.jsx';
 import Checkbox from './Checkbox.jsx';
-import './PaymentPage.css';
+import './Payment.module.css';
 import Button from './Button.jsx';
 
 function PaymentPage() {
