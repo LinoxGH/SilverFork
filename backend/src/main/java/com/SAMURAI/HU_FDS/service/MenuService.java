@@ -3,15 +3,12 @@ package com.SAMURAI.HU_FDS.service;
 
 import com.SAMURAI.HU_FDS.model.MenuItem;
 import com.SAMURAI.HU_FDS.model.Restaurant;
-import com.SAMURAI.HU_FDS.model.User;
 import com.SAMURAI.HU_FDS.repo.MenuItemRepository;
 import com.SAMURAI.HU_FDS.repo.RestaurantRepository;
-import com.SAMURAI.HU_FDS.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MenuService {

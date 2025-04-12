@@ -64,12 +64,8 @@ public class MenuController {
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
                                                    @RequestBody MenuItem updatedItem) {
-
         String token = authHeader.replace("Bearer ", "");
-
-
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 
         if (jwtService.validateToken(token, userDetails)) {
 
@@ -85,10 +81,8 @@ public class MenuController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMenuItem(@RequestHeader("Authorization") String authHeader,
                                                  @PathVariable Long id) {
-
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 
         if (jwtService.validateToken(token, userDetails)) {
 

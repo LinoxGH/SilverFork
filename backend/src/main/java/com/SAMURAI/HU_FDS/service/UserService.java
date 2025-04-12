@@ -36,17 +36,17 @@ public class UserService {
         if (!encoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Password is incorrect");
         } else {
-            String token= jwtService.generateToken(user.getUsername(),user.getRank());
-            return new LoginDto(token, user.getUsername(),user.getEmail(),user.getRank(),user.getPicture());
+            String token = jwtService.generateToken(user.getUsername(), user.getRank());
+            return new LoginDto(token, user.getUsername(), user.getEmail(), user.getRank(), user.getPicture());
         }
     }
 
 
     public void signup(String username, String email, String password, byte[] picture, String rank) {
-        if (userRepository.findByUsername(username).isPresent()){
+        if (userRepository.findByUsername(username).isPresent()) {
             throw new RuntimeException("Username already taken");
         }
-        if (userRepository.findByEmail(email).isPresent()){
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already registered");
         }
 
@@ -85,11 +85,11 @@ public class UserService {
         restaurantRepository.save(restaurant);
     }
 
-    public Optional<User> findByUsername(String username){
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-	
-	public void updateUserEmail(String username, String newEmail) {
+
+    public void updateUserEmail(String username, String newEmail) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setEmail(newEmail);

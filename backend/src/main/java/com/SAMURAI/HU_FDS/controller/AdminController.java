@@ -1,7 +1,6 @@
 package com.SAMURAI.HU_FDS.controller;
 
 
-import com.SAMURAI.HU_FDS.model.MenuItem;
 import com.SAMURAI.HU_FDS.service.CartService;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import com.SAMURAI.HU_FDS.service.MenuService;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -40,6 +37,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
     }
+
     @GetMapping("/view/{restaurantId}")
     public ResponseEntity<?> getMenuByRestaurantId(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long restaurantId) {

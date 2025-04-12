@@ -1,15 +1,14 @@
 package com.SAMURAI.HU_FDS.controller;
 
 
-import com.SAMURAI.HU_FDS.model.Cart;
 import com.SAMURAI.HU_FDS.service.CartService;
 import com.SAMURAI.HU_FDS.service.JwtService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @RestController
