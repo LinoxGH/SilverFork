@@ -1,6 +1,7 @@
 package com.SAMURAI.HU_FDS.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,8 @@ public class CartItem {
     private int quantity;
 
     @ManyToOne
+    @JoinColumn(name = "cart_id")
+    @JsonIgnore
     private Cart cart;
 
 }

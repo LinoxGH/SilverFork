@@ -115,4 +115,10 @@ public class MenuController {
         Restaurant restaurant = menuService.getRestaurantById(id);
         return ResponseEntity.ok(restaurant);
     }
+
+
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<MenuItem>> getRestaurantItems(@PathVariable Long id) {
+        return ResponseEntity.ok(menuService.getRestaurantMenuById(id));
+    }
 }
