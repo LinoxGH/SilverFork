@@ -4,11 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 
 import App from './App.jsx';
-import PaymentPage from './modules/PaymentPage.jsx';
-import CartPage from './modules/CartPage.jsx';
-import RestaurantDashboard from './modules/RestaurantDashboard.jsx';
-import Signup from './modules/Signup.jsx';
-import Login from './modules/Login.jsx'; // if needed
+import Payment from './pages/payment/Payment.jsx';
+import Cart from './pages/cart/Cart.jsx';
+import RestaurantDashboard from './pages/restaurantDashboard/RestaurantDashboard.jsx';
+import Signup from './pages/signup/Signup.jsx';
+import Login from './pages/login/Login.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,9 +17,9 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/restaurant" element={<RestaurantDashboard />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

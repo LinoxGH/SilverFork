@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./CartPage.css";
+import "./Cart.module.css";
 
 const CartItem = ({ product, onQuantityChange }) => {
   return (

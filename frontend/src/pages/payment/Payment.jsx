@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import TextBox from './TextBox.jsx';
-import Checkbox from './Checkbox.jsx';
-import './PaymentPage.css';
-import Button from './Button.jsx';
+import './Payment.module.css';
+import TextBox from "../../modules/general/TextBox.jsx";
+import Checkbox from "../../modules/general/Checkbox.jsx";
+import Button from "../../modules/general/Button.jsx";
 
 function PaymentPage() {
     const [name, setName] = useState('');

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import "./RestaurantDashboard.css";
+import "./RestaurantDashboard.module.css";
 
 const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
