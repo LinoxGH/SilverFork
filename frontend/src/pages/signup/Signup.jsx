@@ -36,15 +36,6 @@ function SignupForm() {
       return;
     }
 
-    const signupData = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      rank: "CUSTOMER"
-    };
-
-    console.log(JSON.stringify(signupData));
-
     axios({
       method: 'POST',
       url: 'http://localhost:8080/signup',
@@ -55,7 +46,9 @@ function SignupForm() {
         password: formData.password,
         rank: "CUSTOMER"
       }
-    }).then((res) => console.log(res))
+    }).then((res) => {
+      navigate("/login");
+    })
       .catch((err) => console.error(err));
   };
 
