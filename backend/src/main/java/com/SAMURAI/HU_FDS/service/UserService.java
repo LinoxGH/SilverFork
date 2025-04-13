@@ -116,4 +116,18 @@ public class UserService {
         user.setRank(newRank);
         userRepository.save(user);
     }
+
+    public void updateUser(String username, String email, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEmail(email);
+        user.setPassword(encoder.encode(password));
+        userRepository.save(user);
+    }
+
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
+    }
 }

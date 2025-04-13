@@ -1,6 +1,8 @@
 import { useState } from "react";
 import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from "./ManageUser.module.css";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 
 function ManageUser() {
@@ -10,9 +12,44 @@ function ManageUser() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
 
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
   const handleSave = () => {
-    console.log("Saved:", { email, newPassword, confirmPassword, oldPassword });
+    if (newPassword !== confirmPassword) {
+      alert("Passwords must be same!");
+      return;
+    }
+
+    if (email.split("@").length < 2) {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    localStorage.setItem("email", email);
+
+    axios({
+      method: 'PUT',
+      url: 'http://localhost:8080/update-user',
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        username: username,
+        email: email,
+        password: newPassword === null ? oldPassword : newPassword
+      }
+    }).then((res) => navigate("/manage-user"))
+      .catch((err) => alert(err));
   };
+
+  const handleDelete = () => {
+    axios({
+      method: 'DELETE',
+      url: 'http://localhost:8080/delete-account',
+      headers: { Authorization: `Bearer ${token}`}
+    }).then((res) => navigate("/"))
+      .catch((err) => alert(err));
+  };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -60,7 +97,7 @@ function ManageUser() {
       <div className={styles.buttonGroup}>
         <button className={styles.button}>View Addresses</button>
         <button className={styles.button}>View Order History</button>
-        <button className={styles.button}>Delete Account</button>
+        <button className={styles.button} onClick={handleDelete}>Delete Account</button>
       </div>
       <div className={styles.imageContainer}>
         {image ? (
