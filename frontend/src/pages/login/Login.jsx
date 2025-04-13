@@ -39,7 +39,7 @@ function LoginForm() {
       localStorage.setItem("username", data.username);
 
       alert("Login successful!");
-      navigate("/manageuser"); 
+      navigate("/manage-user");
       return;
     } catch (error) {
       console.error("Login error:", error);
