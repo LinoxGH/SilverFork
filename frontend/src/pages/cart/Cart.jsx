@@ -31,7 +31,11 @@ const CartPage = () => {
     axios.get("http://localhost:8080/customer/cart", {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => setProducts(res.data.items))
+    .then((res) => {
+      console.log(res);
+
+      setProducts(res.data.items)
+    })
     .catch((err) => console.error("Failed to load cart:", err));
   }, [token]);
 
@@ -56,7 +60,10 @@ const CartPage = () => {
     }
   };
 
-  const totalAmount = products.reduce((sum, p) => sum + p.menuItem.price * p.quantity, 0);
+  var totalAmount = 0;
+  for (let i = 0; i < products.length; i++) {
+    totalAmount += products[i].menuItem.price * products[i].quantity;
+  }
 
   return (
     <div className="cart-container">
