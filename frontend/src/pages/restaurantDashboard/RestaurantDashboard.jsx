@@ -56,7 +56,8 @@ const RestaurantDashboard = () => {
     const productData = {
       name: productName,
       price: Number(productPrice),
-      description: productDescription
+      description: productDescription,
+      picture: null
     };
 
     try {
