@@ -88,4 +88,11 @@ public class MenuService {
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
     }
 
+    public List<MenuItem> getRestaurantMenuByName(String restaurantName) {
+        Restaurant restaurant = restaurantRepository.findByName(restaurantName)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        return menuItemRepository.findByRestaurant(restaurant);
+    }
+
 }
