@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from './Signup.module.css';
+import axios from "axios";
 
 function SignupTitle() {
   return (
@@ -38,29 +39,24 @@ function SignupForm() {
     const signupData = {
       username: formData.username,
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+      rank: "CUSTOMER"
     };
 
-    try {
-      const response = await fetch("http://localhost:8080/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(signupData)
-      });
+    console.log(JSON.stringify(signupData));
 
-      if (!response.ok) {
-        const data = await response.json();
-        setErrorMessage(data.message || "Signup failed");
-        return;
+    axios({
+      method: 'POST',
+      url: 'http://localhost:8080/signup',
+      headers: {},
+      data: {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        rank: "CUSTOMER"
       }
-
-      const data = await response.json();
-      alert("Signup successful!");
-      navigate("/login"); 
-    } catch (error) {
-      setErrorMessage("Something went wrong. Please try again.");
-      console.error("Error during signup:", error);
-    }
+    }).then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
   return (
