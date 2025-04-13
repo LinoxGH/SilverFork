@@ -9,6 +9,7 @@ import Cart from './pages/cart/Cart.jsx';
 import RestaurantDashboard from './pages/restaurantDashboard/RestaurantDashboard.jsx';
 import Signup from './pages/signup/Signup.jsx';
 import Login from './pages/login/Login.jsx';
+import ManageUser from './pages/user/ManageUser.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/manage-user" element={<ManageUser />} />
         <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
       </Routes>
     </BrowserRouter>
