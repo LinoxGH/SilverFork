@@ -1,18 +1,15 @@
 import { useState } from "react";
+import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from "./ManageUser.module.css";
 
-function NavBar() {
-  return <div className={styles.navbar}></div>;
-}
 
 function ManageUser() {
   const [image, setImage] = useState(null);
-  const [username] = useState(localStorage.getItem("username") || "");
-  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
-  
+
   const handleSave = () => {
     console.log("Saved:", { email, newPassword, confirmPassword, oldPassword });
   };
@@ -24,16 +21,8 @@ function ManageUser() {
   };
   return (
     <div className={styles.container}>
-      <NavBar/>
-      <h2 className={styles.title}>{username}</h2>
-      <div className={styles.imageContainer}>
-        {image ? (
-          <img src={image} alt="Profile" className={styles.profileImage} />
-        ) : (
-          <span className={styles.placeholderText}>Upload Image</span>
-        )}
-        <input type="file" accept="image/*" onChange={handleImageChange} className={styles.fileInput} />
-      </div>
+      <NavBar />
+      <h2 className={styles.title}>User12345</h2>
       <hr className={styles.line} />
       <div className={styles.formContainer}>
         <input
@@ -72,6 +61,14 @@ function ManageUser() {
         <button className={styles.button}>View Addresses</button>
         <button className={styles.button}>View Order History</button>
         <button className={styles.button}>Delete Account</button>
+      </div>
+      <div className={styles.imageContainer}>
+        {image ? (
+          <img src={image} alt="Profile" className={styles.profileImage} />
+        ) : (
+          <span className={styles.placeholderText}>Upload Image</span>
+        )}
+        <input type="file" accept="image/*" onChange={handleImageChange} className={styles.fileInput} />
       </div>
     </div>
   );
