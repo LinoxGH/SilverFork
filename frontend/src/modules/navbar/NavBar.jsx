@@ -33,6 +33,8 @@ function NavBar() {
             <Link to="/login">Login</Link>
             <Link to="/signup">Signup</Link>
             <Link to="/manage-user">Manage User</Link>
+            <Link to="/cart">Cart</Link>
+            <Link to="/restaurant-dashboard">Restaurant Dashboard</Link>
           </>
         )}
       </div>
