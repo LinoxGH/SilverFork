@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import "./Cart.module.css";
 
 const CartItem = ({ product, onQuantityChange }) => {
@@ -65,6 +66,8 @@ const CartPage = () => {
     totalAmount += products[i].menuItem.price * products[i].quantity;
   }
 
+  const navigate = useNavigate();
+
   return (
     <div className="cart-container">
       <h1 className="cart-title">Cart</h1>
@@ -79,8 +82,8 @@ const CartPage = () => {
       <hr className="divider" />
       <div className="cart-actions">
         <button className="cart-button">Total Amount: {totalAmount}$</button>
-        <button className="cart-button">Keep Shopping</button>
-        <button className="cart-button">Place Order</button>
+        <button className="cart-button" onClick={() => navigate("/")}>Keep Shopping</button>
+        <button className="cart-button" onClick={() => navigate("/payment")}>Place Order</button>
       </div>
     </div>
   );
