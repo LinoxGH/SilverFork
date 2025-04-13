@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 
 import App from './App.jsx';
-import Payment from './pages/payment/PaymentPage.jsx';
+import Payment from './pages/payment/Payment.jsx';
 import Cart from './pages/cart/Cart.jsx';
 import RestaurantDashboard from './pages/restaurantDashboard/RestaurantDashboard.jsx';
 import Signup from './pages/signup/Signup.jsx';

@@ -1,11 +1,7 @@
 import { useState } from 'react';
-import styles from './Signup.module.css';
-import Navbar from './Navbar';
 import { useNavigate } from "react-router-dom";
-
-function NavBar() {
-  return <div className={styles.navbar}></div>;
-}
+import NavBar from "../../modules/navbar/NavBar.jsx";
+import styles from './Signup.module.css';
 
 function SignupTitle() {
   return (

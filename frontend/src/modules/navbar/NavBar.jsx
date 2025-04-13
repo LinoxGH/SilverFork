@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import styles from './NavBar.module.css';
 
-function Navbar() {
+function NavBar() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -40,4 +40,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;
