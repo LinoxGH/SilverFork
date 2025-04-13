@@ -7,11 +7,12 @@ function NavBar() {
 
 function ManageUser() {
   const [image, setImage] = useState(null);
-  const [email, setEmail] = useState("");
+  const [username] = useState(localStorage.getItem("username") || "");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
-
+  
   const handleSave = () => {
     console.log("Saved:", { email, newPassword, confirmPassword, oldPassword });
   };
@@ -24,7 +25,7 @@ function ManageUser() {
   return (
     <div className={styles.container}>
       <NavBar/>
-      <h2 className={styles.title}>User12345</h2>
+      <h2 className={styles.title}>{username}</h2>
       <div className={styles.imageContainer}>
         {image ? (
           <img src={image} alt="Profile" className={styles.profileImage} />
