@@ -8,7 +8,7 @@ function App() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    axios.get("http://localhost:8080/restaurant/menu/1/items", {
+    axios.get("http://localhost:8080/restaurant/menu/items/restaurant1", {
     })
       .then((res) => {
         setProducts(res.data);

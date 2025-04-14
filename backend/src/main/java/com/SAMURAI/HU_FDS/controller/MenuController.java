@@ -109,19 +109,7 @@ public class MenuController {
         }
     }
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long id) {
-        Restaurant restaurant = menuService.getRestaurantById(id);
-        return ResponseEntity.ok(restaurant);
-    }
-
-    @GetMapping("/{id}/items")
-    public ResponseEntity<List<MenuItem>> getRestaurantItems(@PathVariable Long id) {
-        return ResponseEntity.ok(menuService.getRestaurantMenuById(id));
-    }
-
-    @GetMapping("/customer/{restaurantName}")
+    @GetMapping("/restaurant/menu/items/{restaurantName}")
     public ResponseEntity<List<MenuItem>> getMenuByRestaurantName(@PathVariable String restaurantName) {
         return ResponseEntity.ok(menuService.getRestaurantMenuByName(restaurantName));
     }
