@@ -1,13 +1,14 @@
 import { useState } from "react";
 import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from "./ManageUser.module.css";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
 function ManageUser() {
   const [image, setImage] = useState(null);
-  const [email, setEmail] = useState("");
+  const [username] = useState(localStorage.getItem("username") || "");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -26,19 +27,60 @@ function ManageUser() {
       return;
     }
 
-    localStorage.setItem("email", email);
+    if (oldPassword === null || oldPassword.length === 0) {
+      alert("Please enter your old password.");
+      return;
+    }
 
     axios({
-      method: 'PUT',
-      url: 'http://localhost:8080/update-user',
-      headers: { Authorization: `Bearer ${token}` },
-      params: {
+      method: 'POST',
+      url: 'http://localhost:8080/login',
+      data: {
         username: username,
-        email: email,
-        password: newPassword === null ? oldPassword : newPassword
+        password: oldPassword
       }
-    }).then((res) => navigate("/manage-user"))
-      .catch((err) => alert(err));
+    }).then((res) => {
+      // Old Password is correct, can submit changes to backend.
+      if (newPassword.length === 0) {
+        // Only Change Email
+        axios({
+          method: 'PUT',
+          url: 'http://localhost:8080/update-email',
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            username: username,
+            newEmail: email
+          }
+        }).then((res) => {
+          // User updated successfully, update local storage.
+          localStorage.setItem("email", email);
+          navigate("/manage-user");
+        }).catch((err) => alert(err));
+      } else {
+        // Change Email and Password
+        axios({
+          method: 'PUT',
+          url: 'http://localhost:8080/update-user',
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            username: username,
+            email: email,
+            password: newPassword === null ? oldPassword : newPassword
+          }
+        }).then((res) => {
+          // User updated successfully, update local storage.
+          localStorage.setItem("email", email);
+          navigate("/manage-user");
+        }).catch((err) => alert(err));
+      }
+    })
+      // Incorrect password.
+      .catch((err) => {
+      console.log(err);
+      alert("Please enter your old password correctly.")
+    })
+
+
   };
 
   const handleDelete = () => {
@@ -59,7 +101,7 @@ function ManageUser() {
   return (
     <div className={styles.container}>
       <NavBar />
-      <h2 className={styles.title}>User12345</h2>
+      <h2 className={styles.title}>{username}</h2>
       <hr className={styles.line} />
       <div className={styles.formContainer}>
         <input
