@@ -26,7 +26,7 @@ public class MenuController {
     private JwtService jwtService;
 
 
-    @GetMapping
+    @GetMapping("/restaurant/menu")
     public ResponseEntity<List<MenuItem>> getMenu(@RequestHeader("Authorization") String authHeader) {
 
         String token = authHeader.replace("Bearer ", "");
