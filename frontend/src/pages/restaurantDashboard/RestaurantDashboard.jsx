@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import "./RestaurantDashboard.module.css";
+import "./RestaurantDashboard.css";
+import NavBar from "../../modules/navbar/NavBar.jsx";
 
 const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
@@ -133,6 +134,7 @@ const RestaurantDashboard = () => {
 
   return (
     <div className="dashboard-container">
+      <NavBar/>
       <div className="restaurant-header">
         <div className="restaurant-main">
           <div className="restaurant-logo">Restaurant Logo</div>
@@ -144,13 +146,17 @@ const RestaurantDashboard = () => {
           </div>
         </div>
         <div className="dashboard-buttons">
-          <button>Past Orders</button>
-          <button onClick={() => {
-            setEditingProduct(null);
-            setShowAddProductModal(true);
-          }}>Add Product ➕</button>
-          <button>Current Orders</button>
-          <button>Employed Couriers</button>
+          <div className="first-buttons">
+            <button>Past Orders</button>
+            <button onClick={() => {
+              setEditingProduct(null);
+              setShowAddProductModal(true);
+            }}>Add Product ➕</button>
+          </div>
+          <div className="second-buttons">
+            <button>Current Orders</button>
+            <button>Employed Couriers</button>
+          </div>
         </div>
       </div>
 

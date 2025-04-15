@@ -1,6 +1,6 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import styles from './NavBar.module.css';
+import styles from "./NavBar.module.css"
 
 function NavBar() {
   const [username, setUsername] = useState("");
@@ -18,8 +18,10 @@ function NavBar() {
     setUsername("");
   };
   return (
-    <nav className={styles.navbar}>
-      <h2>SilverFork</h2>
+    <div className={styles.navbar}>
+      <div className={styles.silverforkheader}>
+        <p className={styles.silverforktext}>SilverFork</p>
+      </div>
       <div className={styles.links}>
         {username ? (
           <>
@@ -30,15 +32,26 @@ function NavBar() {
           </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
-            <Link to="/manage-user">Manage User</Link>
-            <Link to="/cart">Cart</Link>
-            <Link to="/restaurant-dashboard">Restaurant Dashboard</Link>
+            <div>
+              <Link to="/login">Login</Link>
+            </div>
+            <div>            
+              <Link to="/signup">Signup</Link>
+            </div>
+            <div>            
+              <Link to="/manage-user">Manage User</Link>
+            </div>
+            <div>            
+              <Link to="/cart">Cart</Link>
+            </div>
+            <div>            
+              <Link to="/restaurant-dashboard">Restaurant Dashboard</Link>
+            </div>
+
           </>
         )}
       </div>
-    </nav>
+    </div>
   );
 }
 

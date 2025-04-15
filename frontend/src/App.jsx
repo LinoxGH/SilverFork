@@ -33,7 +33,10 @@ function App() {
   return (
     <>
       <NavBar />
-      <h1>Welcome to the Simple Page</h1>
+      <div className='welcome-text'>
+        <h1>Welcome to the Simple Page</h1>
+      </div>
+      
       <div>
         {products.map((product) => (
           <button key={product.id} onClick={() => addToCart(product.id)}>{product.name}</button>
