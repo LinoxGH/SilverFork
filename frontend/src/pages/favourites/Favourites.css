@@ -6,9 +6,10 @@
   }
   
   .favourites-title {
-    text-align: center;
+    text-align:left;
     font-size: 24px;
     margin-bottom: 2rem;
+    margin-left: 275px;
   }
   
   .favourites-layout {

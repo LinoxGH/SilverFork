@@ -64,7 +64,7 @@ const Favourites = () => {
   return (
     <><NavBar/>
     <div className="favourites-page">
-      <h2 className="favourites-title">My favourites</h2>
+      <p className="favourites-title">My favourites</p>
       <div> 
         <ProductFilters
           sortProducts={sortProducts}
