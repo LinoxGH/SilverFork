@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./RestaurantDashboard.css";
 import NavBar from "../../modules/navbar/NavBar.jsx";
+import ProductCard from "../../modules/general/ProductCard.jsx";
+import ProductFilters from "../../modules/general/ProductFilter.jsx";
 
 const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
@@ -163,53 +165,26 @@ const RestaurantDashboard = () => {
       <hr className="divider" />
 
       <div className="dashboard-body">
-        <div className="filters">
-          <div className="filter-section">
-            <p className="sort-label">Sort By</p>
-            <p onClick={() => sortProducts("lowest")} className="sort-option">Lowest Price</p>
-            <p onClick={() => sortProducts("highest")} className="sort-option">Highest Price</p>
-            <p onClick={() => sortProducts("popular")} className="sort-option">Most Popular</p>
-            <p onClick={() => sortProducts("new")} className="sort-option">Newly Added</p>
-            <p onClick={() => sortProducts("rated")} className="sort-option">Highest Rated</p>
-          </div>
-          <div className="filter-section">
-            <p className="sort-label">Cuisine</p>
-            {['Italian', 'American', 'Turkish', 'Mexican', 'Vegan'].map(cuisine => (
-              <p className="sort-option"
-                key={cuisine}
-                onClick={() => {
-                  setSelectedCuisine(cuisine);
-                  filterProducts(cuisine);
-                }}
-              >{cuisine}</p>
-            ))}
-          </div>
-          <div className="filter-section">
-            <p className="sort-label">Price</p>
-            <div className="price-range">
-              <input type="number" placeholder="Min" value={minFilter} onChange={(e) => setMinFilter(e.target.value)} />
-              <input type="number" placeholder="Max" value={maxFilter} onChange={(e) => setMaxFilter(e.target.value)} />
-              <button onClick={() => filterProducts()}>🔍</button>
-            </div>
-          </div>
-        </div>
-
+        <ProductFilters
+          sortProducts={sortProducts}
+          setSelectedCuisine={setSelectedCuisine}
+          filterProducts={filterProducts}
+          minFilter={minFilter}
+          maxFilter={maxFilter}
+          setMinFilter={setMinFilter}
+          setMaxFilter={setMaxFilter}
+        />
         <div>
           <h3 className="product-label">Products</h3>
           <div className="products">
             {products.map((product) => (
-              <div className="product-card" key={product.id}>
-                <div className="product-img">Food Img</div>
-                <div className="product-info">
-                  <p className="product-name">{product.name}</p>
-                  <p className="product-place">{restaurantInfo.name}</p>
-                  <p className="product-rating">{product.description}</p>
-                  <p className="product-price">
-                    {product.price}$ 
-                    <button className="edit-btn" onClick={() => handleEditProduct(product)}>Edit</button>
-                  </p>
-                </div>
-              </div>
+              <ProductCard
+              key={product.id}
+              product={product}
+              restaurantName={restaurantInfo.name}
+              onButtonClick={handleEditProduct}
+              buttonLabel="Edit"
+            />
             ))}
           </div>
         </div>

@@ -10,6 +10,7 @@ import RestaurantDashboard from './pages/restaurantDashboard/RestaurantDashboard
 import Signup from './pages/signup/Signup.jsx';
 import Login from './pages/login/Login.jsx';
 import ManageUser from './pages/user/ManageUser.jsx';
+import Favourites from './pages/favourites/Favourites.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/payment" element={<Payment />} />
         <Route path="/manage-user" element={<ManageUser />} />
         <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
+        <Route path="/favourites" element={<Favourites />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

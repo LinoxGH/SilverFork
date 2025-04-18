@@ -47,6 +47,9 @@ function NavBar() {
             <div>            
               <Link to="/restaurant-dashboard">Restaurant Dashboard</Link>
             </div>
+            <div>            
+              <Link to="/favourites">Favourites</Link>
+            </div>
 
           </>
         )}

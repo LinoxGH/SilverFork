@@ -69,16 +69,10 @@
     text-align: left;
   }
   
-  
-  
-
   .dashboard-buttons button:hover {
     background-color: #686868;
     transition: background-color 0.2s ease;
   }
-  .sort-option:hover {
-    color: #ffd700;
-  }  
   
   .divider {
     border: 0.5px solid #ccc;
@@ -91,42 +85,6 @@
     align-items: flex-start;
   }
 
-  .sort-label {
-    font-size: 24px;
-    color: #FFFFFF;
-  }
-
-  .sort-option {
-    font-size: 16px;
-    color: #FFFFFF;
-    cursor: pointer;
-    padding: 0px 15px;
-  }
-  
-  .filters {
-    background-color: #505050;
-    padding: 15px;
-    border-radius: 8px;
-    width: 180px;
-    text-align: left;
-    margin-left: 3rem;
-  }
-  
-  .filter-section {
-    margin-bottom: 20px;
-  }
-  
-  .price-range {
-    display: flex;
-    gap: 5px;
-  }
-  
-  .price-range input {
-    width: 40px;
-    padding: 4px;
-  }
-
-
   .product-label {
     padding: 15px;
     text-align: left;
@@ -138,53 +96,6 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-  }
-  
-  .product-card {
-    background-color: #505050;
-    padding-top: 20px;
-    border-radius: 8px;
-    width: 142px;
-    color: white;
-    white-space: normal;
-    overflow-wrap: break-word;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease
-  }
-
-  .product-card:hover {
-    transform: translateY(-4px);
-  }
-
-  .product-img {
-    background-color: #ccc;
-    height: 125px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  
-  .product-info p {
-    margin: 4px 0;
-    text-align: left;
-    padding-left: 10px;
-  }
-
-  .product-name{
-    font-size: 24px;
-  }
-
-  .product-place {
-    font-size: 14px;
-  }
-
-  .product-rating {
-    font-size: 11px;
-  }
-
-  .product-price {
-    font-size: 20px;
   }
   
   .statistics {
