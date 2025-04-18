@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/favorites")
+@CrossOrigin
 public class FavoriteController {
 
     @Autowired
