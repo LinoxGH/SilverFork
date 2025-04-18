@@ -14,7 +14,18 @@ const Favourites = () => {
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Test Burger",
+      restaurantName: "Sample Grill",
+      description: "Juicy beef with cheese",
+      price: 9.99,
+      popularity: 87,
+      rating: 4.5,
+      date: "2024-04-18"
+    }
+  ]);
 
   useEffect(() => {
       const token = localStorage.getItem("token");
