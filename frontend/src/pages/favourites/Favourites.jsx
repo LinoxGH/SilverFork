@@ -14,7 +14,8 @@ const Favourites = () => {
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState([]);
+
 
   useEffect(() => {
       const token = localStorage.getItem("token");
