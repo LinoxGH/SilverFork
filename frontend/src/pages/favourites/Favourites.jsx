@@ -5,27 +5,27 @@ import NavBar from "../../modules/navbar/NavBar.jsx";
 import ProductCard from "../../modules/general/ProductCard.jsx";
 import ProductFilters from "../../modules/general/ProductFilter.jsx";
 
-
 const Favourites = () => {
-
   const token = localStorage.getItem("token");
 
   const [sortOption, setSortOption] = useState("none");
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
+
+  const [rawProducts, setRawProducts] = useState([]);
   const [products, setProducts] = useState([]);
 
-
   useEffect(() => {
-      const token = localStorage.getItem("token");
-  
-      axios.get("http://localhost:8080/favourites", {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(res => setProducts(res.data))
-      .catch(err => console.error("Failed to fetch favourites:", err));
-    }, []);
+    axios.get("http://localhost:8080/favourites", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      setRawProducts(res.data);
+      setProducts(res.data);
+    })
+    .catch(err => console.error("Failed to fetch favourites:", err));
+  }, []);
 
   const addToCart = async (productId) => {
     axios({
@@ -37,13 +37,13 @@ const Favourites = () => {
         quantity: 1
       }
     })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+    .then((res) => console.log(res))
+    .catch((err) => console.error(err));
   };
-  
+
   const sortProducts = (option) => {
     setSortOption(option);
-    let sorted = [...products];
+    let sorted = [...rawProducts]; // sort original list
     if (option === "lowest") sorted.sort((a, b) => a.price - b.price);
     if (option === "highest") sorted.sort((a, b) => b.price - a.price);
     if (option === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
@@ -55,7 +55,7 @@ const Favourites = () => {
   const filterProducts = (cuisine = selectedCuisine) => {
     const min = minFilter === "" ? 0 : Number(minFilter);
     const max = maxFilter === "" ? Infinity : Number(maxFilter);
-    const filtered = products.filter(p =>
+    const filtered = rawProducts.filter(p =>
       p.price >= min &&
       p.price <= max
     );
@@ -63,36 +63,37 @@ const Favourites = () => {
   };
 
   return (
-    <><NavBar/>
-    <div className="favourites-page">
-      <p className="favourites-title">My favourites</p>
-      <div> 
-        <ProductFilters
-          sortProducts={sortProducts}
-          setSelectedCuisine={setSelectedCuisine}
-          filterProducts={filterProducts}
-          minFilter={minFilter}
-          maxFilter={maxFilter}
-          setMinFilter={setMinFilter}
-          setMaxFilter={setMaxFilter}
-        />
-        <div className="favourites-content">
-          <div className="products-grid">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                restaurantName={product.restaurantName}
-                onButtonClick={addToCart}
-                buttonLabel="＋"
-              />
-            ))}
+    <>
+      <NavBar/>
+      <div className="favourites-page">
+        <p className="favourites-title">My favourites</p>
+        <div> 
+          <ProductFilters
+            sortProducts={sortProducts}
+            setSelectedCuisine={setSelectedCuisine}
+            filterProducts={filterProducts}
+            minFilter={minFilter}
+            maxFilter={maxFilter}
+            setMinFilter={setMinFilter}
+            setMaxFilter={setMaxFilter}
+          />
+          <div className="favourites-content">
+            <div className="products-grid">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  restaurantName={product.restaurantName}
+                  onButtonClick={addToCart}
+                  buttonLabel="＋"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
-    );
-  };
-  
-  export default Favourites;
+  );
+};
+
+export default Favourites;

@@ -25,6 +25,7 @@ const RestaurantDashboard = () => {
   const [productPrice, setProductPrice] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [products, setProducts] = useState([]);
+  const [rawProducts, setRawProducts] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +33,10 @@ const RestaurantDashboard = () => {
     axios.get("http://localhost:8080/restaurant/menu", {
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then(res => setProducts(res.data))
+    .then(res => {
+      setRawProducts(res.data);
+      setProducts(res.data);
+    })    
     .catch(err => console.error("Failed to fetch products:", err));
   }, []);
 
@@ -78,6 +82,7 @@ const RestaurantDashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(res.data);
+      setRawProducts(res.data);
 
       setShowAddProductModal(false);
       setEditingProduct(null);
@@ -99,6 +104,7 @@ const RestaurantDashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(res.data);
+      setRawProducts(res.data);
 
       setEditingProduct(null);
       setShowAddProductModal(false);
@@ -110,7 +116,7 @@ const RestaurantDashboard = () => {
 
   const sortProducts = (option) => {
     setSortOption(option);
-    let sorted = [...products];
+    let sorted = [...rawProducts];
     if (option === "lowest") sorted.sort((a, b) => a.price - b.price);
     if (option === "highest") sorted.sort((a, b) => b.price - a.price);
     if (option === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
@@ -127,7 +133,7 @@ const RestaurantDashboard = () => {
   const filterProducts = (cuisine = selectedCuisine) => {
     const min = minFilter === "" ? 0 : Number(minFilter);
     const max = maxFilter === "" ? Infinity : Number(maxFilter);
-    const filtered = products.filter(p =>
+    const filtered = rawProducts.filter(p =>
       p.price >= min &&
       p.price <= max
     );
