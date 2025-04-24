@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import "./Cart.module.css";
+import  "./Cart.css";
+import NavBar from "../../modules/navbar/NavBar.jsx";
+
+
+
 
 const CartItem = ({ product, onQuantityChange }) => {
   return (
     <div className="cart-item-box">
+      
       <div className="cart-item">
         <div className="cart-image"></div>
         <div className="cart-item-details">
@@ -19,13 +24,13 @@ const CartItem = ({ product, onQuantityChange }) => {
         </div>
         <div className="product-price">{product.menuItem.price}$</div>
       </div>
+
     </div>
   );
 };
 
 const CartPage = () => {
   const [products, setProducts] = useState([]);
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -70,20 +75,25 @@ const CartPage = () => {
 
   return (
     <div className="cart-container">
-      <h1 className="cart-title">Cart</h1>
-      <hr className="divider" />
-      {products.map((product) => (
-        <CartItem
-          key={product.id}
-          product={product}
-          onQuantityChange={handleQuantityChange}
-        />
-      ))}
-      <hr className="divider" />
-      <div className="cart-actions">
-        <button className="cart-button">Total Amount: {totalAmount}$</button>
-        <button className="cart-button" onClick={() => navigate("/")}>Keep Shopping</button>
-        <button className="cart-button" onClick={() => navigate("/payment")}>Place Order</button>
+      <NavBar />
+      <div className={'itemContainer'}>
+        <div className="cart-title">
+          <h1 >Cart</h1>
+        </div>
+        <hr className="divider" />
+        {products.map((product) => (
+          <CartItem
+            key={product.id}
+            product={product}
+            onQuantityChange={handleQuantityChange}
+          />
+        ))}
+        <hr className="divider" />
+        <div className="cart-actions">
+          <button className="cart-button">Total Amount: {totalAmount}$</button>
+          <button className="cart-button" onClick={() => navigate("/")}>Keep Shopping</button>
+          <button className="cart-button" onClick={() => navigate("/payment")}>Place Order</button>
+        </div>
       </div>
     </div>
   );
