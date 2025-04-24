@@ -4,9 +4,26 @@ import "./ProductCard.css";
 const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, showHeart = true }) => {
   const [liked, setLiked] = useState(false);
 
-  const toggleHeart = () => {
+  const token = localStorage.getItem("token");
+
+  const toggleHeart = async () => {
     setLiked(!liked);
-    //UPDATE BACKEND
+    try {
+      if (!liked) {
+        await axios.post(
+          `http://localhost:8080/favorites/add/${product.id}`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      } else {
+        await axios.delete(
+          `http://localhost:8080/favorites/remove/${product.id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      }
+    } catch (error) {
+      console.error("Failed to update favorite:", error);
+    }
   };
 
   return (

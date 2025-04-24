@@ -184,6 +184,7 @@ const RestaurantDashboard = () => {
               restaurantName={restaurantInfo.name}
               onButtonClick={handleEditProduct}
               buttonLabel="Edit"
+              showHeart={false}
             />
             ))}
           </div>

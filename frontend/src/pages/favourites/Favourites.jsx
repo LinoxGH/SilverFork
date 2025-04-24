@@ -30,11 +30,11 @@ const Favourites = () => {
   useEffect(() => {
       const token = localStorage.getItem("token");
   
-      axios.get("http://localhost:8080/favourites", { //FIX ACCORDING TO BACKEND
+      axios.get("http://localhost:8080/favourites", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => setProducts(res.data))
-      .catch(err => console.error("Failed to fetch products:", err));
+      .catch(err => console.error("Failed to fetch favourites:", err));
     }, []);
 
   const addToCart = async (productId) => {
