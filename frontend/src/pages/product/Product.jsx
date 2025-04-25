@@ -5,17 +5,17 @@ import NavBar from "../../modules/navbar/NavBar.jsx";
 
 function ProductSection() {
   return (
-    <div className={styles["product-section"]}>
-      <div className={styles["product-image"]}>Food Image</div>
-      <div className={styles["product-details"]}>
-        <div className={styles["product-name"]}>Food Name</div>
-        <div className={styles["restaurant-name"]}>Restaurant Name - Location</div>
-        <div className={styles["rating"]}>Rating</div>
-        <div className={styles["description"]}>Description</div>
-        <div className={styles["price"]}>Price</div>
-        <div className={styles["action-buttons"]}>
-          <button className={styles["login-button"]}>Add to Cart</button>
-          <button className={styles["login-button"]}>Add Review</button>
+    <div className={styles.productSection}>
+      <div className={styles.productImage}>Food Image</div>
+      <div className={styles.productDetails}>
+        <div className={styles.productName}>Food Name</div>
+        <div className={styles.productRestaurantName}>Restaurant Name - Location</div>
+        <div className={styles.productrating}>Rating</div>
+        <div className={styles.productDescription}>Description</div>
+        <div className={styles.productPrice}>Price</div>
+        <div className={styles.productActionButtons}>
+          <button className={styles.productButton}>Add to Cart</button>
+          <button className={styles.productButton}>Add Review</button>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@ function ProductSection() {
 
 function ReviewCard({ user, comment, reply }) {
   return (
-    <div className={styles["review-card"]}>
+    <div className={styles.productReviewOrder}>
       <strong>{user}</strong>
       <hr />
       <p>{comment}</p>
@@ -49,17 +49,19 @@ function ReviewSection() {
   ];
 
   return (
-    <div className={styles["review-section"]}>
-      <div className={styles["reviews-title"]}>Reviews</div>
-      <div className={styles["review-cards"]}>
-        {reviews.map((review, idx) => (
-          <ReviewCard
-            key={idx}
-            user={review.user}
-            comment={review.comment}
-            reply={review.reply}
-          />
-        ))}
+    <div className={styles.productReviewSection}>
+      <div className={styles.productReviewTitle}>Reviews</div>
+      <div className={styles.productReviewOrder}>
+          {reviews.map((review, idx) => (
+            <div className={styles.productReviewCard}>
+              <ReviewCard
+                key={idx}
+                user={review.user}
+                comment={review.comment}
+                reply={review.reply}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -67,10 +69,13 @@ function ReviewSection() {
 
 function ProductDetail() {
   return (
-    <><NavBar />
-    <div><ProductSection /></div>
-    <hr className="divider" />
-    <div><ReviewSection /></div></>
+    <div className={styles.productContainer}><>
+      <NavBar />
+      <div><ProductSection /></div>
+      <hr className={styles.productDivider} />
+      <div><ReviewSection /></div></>
+    </div>
+    
       
   );
 }

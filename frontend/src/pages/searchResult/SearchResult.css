@@ -24,7 +24,7 @@
   
   .dashboard-body {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     margin-top: 5rem;
   }
@@ -70,7 +70,9 @@
     padding: 4px;
   }
 
-
+  .product-location{
+    margin-left: 2rem;
+  }
   .product-label {
     padding: 15px;
     text-align: left;
