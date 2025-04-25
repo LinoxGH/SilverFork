@@ -4,19 +4,22 @@ body {
     margin: 0;
     background-color: #1a1a1a;
   }
-  
-  .cart-container {
-    background-color: #1a1a1a;
-    color: white;
-    padding: 30px;
-    font-family: sans-serif;
-    min-height: 100vh;
+  .itemContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
   
+
   .cart-title {
-    font-size: 96px;
-    margin-bottom: 20px;
-    text-align: left;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: rem;
+    margin-bottom: 1rem;
   }
   
   .divider {
