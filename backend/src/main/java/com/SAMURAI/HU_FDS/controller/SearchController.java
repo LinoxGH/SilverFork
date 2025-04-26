@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Controller
+@RestController
 @CrossOrigin
 @RequestMapping("/search")
 public class SearchController {
