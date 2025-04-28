@@ -1,0 +1,38 @@
+.filters {
+    background-color: #505050;
+    padding: 15px;
+    border-radius: 8px;
+    width: 180px;
+    text-align: left;
+    margin-left: 3rem;
+  }
+  
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  .sort-label {
+    font-size: 24px;
+    color: #FFFFFF;
+  }
+
+  .sort-option {
+    font-size: 16px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 0px 15px;
+  }
+
+  .sort-option:hover {
+    color: #ffd700;
+  }  
+  
+  .price-range {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .price-range input {
+    width: 40px;
+    padding: 4px;
+  }
