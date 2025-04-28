@@ -25,6 +25,15 @@ public class Restaurant {
 
     private byte[] picture;
 
+    @Column(nullable = true)
+    private String category;
+
+    @Column(nullable = true)
+    private String cuisine;
+
+    @Column(nullable = true)
+    private Double rating;
+
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
