@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import "./ProductCard.css";
 
@@ -11,13 +12,13 @@ const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, show
     try {
       if (!liked) {
         await axios.post(
-          `http://localhost:8080/favorites/add/${product.id}`,
+          `http://localhost:8080/favourites/add/${product.id}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         await axios.delete(
-          `http://localhost:8080/favorites/remove/${product.id}`,
+          `http://localhost:8080/favourites/remove/${product.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       }

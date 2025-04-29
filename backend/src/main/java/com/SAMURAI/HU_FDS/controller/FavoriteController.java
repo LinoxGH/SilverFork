@@ -1,6 +1,7 @@
 package com.SAMURAI.HU_FDS.controller;
 
 import com.SAMURAI.HU_FDS.model.Favorite;
+import com.SAMURAI.HU_FDS.model.MenuItem;
 import com.SAMURAI.HU_FDS.service.FavoriteService;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/favorites")
+@RequestMapping("/favourites")
 @CrossOrigin
 public class FavoriteController {
 
@@ -61,7 +62,11 @@ public class FavoriteController {
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
             List<Favorite> favorites = favoriteService.getUserFavorites(username);
-            return ResponseEntity.ok(favorites);
+            List<MenuItem> menuItems = favorites.stream()
+                    .map(Favorite::getMenuItem)
+                    .toList();
+
+            return ResponseEntity.ok(menuItems);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
