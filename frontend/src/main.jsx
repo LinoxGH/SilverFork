@@ -9,6 +9,10 @@ import Cart from './pages/cart/Cart.jsx';
 import RestaurantDashboard from './pages/restaurantDashboard/RestaurantDashboard.jsx';
 import Signup from './pages/signup/Signup.jsx';
 import Login from './pages/login/Login.jsx';
+import ManageUser from './pages/user/ManageUser.jsx';
+import Favourites from './pages/favourites/Favourites.jsx';
+import ProductDetail from './pages/product/Product.jsx';
+import ShowSearchResult from './pages/searchResult/SearchResult.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,7 +23,11 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/manage-user" element={<ManageUser />} />
         <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
+        <Route path="/favourites" element={<Favourites />} />
+        <Route path="/product" element={<ProductDetail />} />
+        <Route path="/search-result" element={<ShowSearchResult />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

@@ -1,21 +1,54 @@
 .navbar {
-  width: 1860px;
-  height: 64px;
+  width: 100vw;
+  padding: 0.5rem;
   display: flex;
-  position: fixed;
-  bottom: 860px;
-  right: 0px;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
   background-color:  #575757;
-  font-size: 16px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.silverforkheader{
+  width: 50%;
+
+}
+.silverforktext{
+  width: fit-content;
+  padding: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.links{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 2rem;
+  width: 50%;
+  gap: 25px;
+
+}
+
+.logoutButton{
+  padding: 1rem;
+  border-radius: 1rem;
+  border: none;
 }
 
 .links a {
-  color: white;
-  margin-left: 1rem;
-  text-decoration: none;
-  transition: color 0.25s;
+  width: fit-content;
+  font-size: 1.2rem;
+  color: white;  
+}
+
+.links div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .links a:hover {

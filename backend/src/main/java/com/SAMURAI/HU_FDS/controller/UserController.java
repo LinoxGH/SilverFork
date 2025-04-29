@@ -8,6 +8,8 @@ import com.SAMURAI.HU_FDS.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -124,4 +126,34 @@ public class UserController {
         }
     }
 
+    @PutMapping("/update-user")
+    public ResponseEntity<String> updateUser(@RequestHeader("Authorization") String authHeader,
+                                             @RequestParam String username,
+                                             @RequestParam String email,
+                                             @RequestParam String password) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!isAuthorized(token, username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+
+        try {
+            userService.updateUser(username, email, password);
+            return ResponseEntity.ok("User updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User update failed: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete-account")
+    public ResponseEntity<String> deleteAccount(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            userService.deleteUser(userDetails.getUsername());
+            return ResponseEntity.ok("Account deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
+        }
+    }
 }

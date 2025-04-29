@@ -21,7 +21,7 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/api/login", {
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -37,9 +37,10 @@ function LoginForm() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("email", data.email); //Might be wrong
 
       alert("Login successful!");
-      navigate("/manageuser"); 
+      navigate("/manage-user");
       return;
     } catch (error) {
       console.error("Login error:", error);

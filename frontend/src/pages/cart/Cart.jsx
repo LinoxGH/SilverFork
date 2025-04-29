@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Cart.module.css";
+import {useNavigate} from "react-router-dom";
+import  "./Cart.css";
+import NavBar from "../../modules/navbar/NavBar.jsx";
+
+
+
 
 const CartItem = ({ product, onQuantityChange }) => {
   return (
     <div className="cart-item-box">
+      
       <div className="cart-item">
         <div className="cart-image"></div>
         <div className="cart-item-details">
@@ -18,20 +24,24 @@ const CartItem = ({ product, onQuantityChange }) => {
         </div>
         <div className="product-price">{product.menuItem.price}$</div>
       </div>
+
     </div>
   );
 };
 
 const CartPage = () => {
   const [products, setProducts] = useState([]);
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     axios.get("http://localhost:8080/customer/cart", {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => setProducts(res.data.items))
+    .then((res) => {
+      console.log(res);
+
+      setProducts(res.data.items)
+    })
     .catch((err) => console.error("Failed to load cart:", err));
   }, [token]);
 
@@ -56,24 +66,34 @@ const CartPage = () => {
     }
   };
 
-  const totalAmount = products.reduce((sum, p) => sum + p.menuItem.price * p.quantity, 0);
+  var totalAmount = 0;
+  for (let i = 0; i < products.length; i++) {
+    totalAmount += products[i].menuItem.price * products[i].quantity;
+  }
+
+  const navigate = useNavigate();
 
   return (
     <div className="cart-container">
-      <h1 className="cart-title">Cart</h1>
-      <hr className="divider" />
-      {products.map((product) => (
-        <CartItem
-          key={product.id}
-          product={product}
-          onQuantityChange={handleQuantityChange}
-        />
-      ))}
-      <hr className="divider" />
-      <div className="cart-actions">
-        <button className="cart-button">Total Amount: {totalAmount}$</button>
-        <button className="cart-button">Keep Shopping</button>
-        <button className="cart-button">Place Order</button>
+      <NavBar />
+      <div className={'itemContainer'}>
+        <div className="cart-title">
+          <h1 >Cart</h1>
+        </div>
+        <hr className="divider" />
+        {products.map((product) => (
+          <CartItem
+            key={product.id}
+            product={product}
+            onQuantityChange={handleQuantityChange}
+          />
+        ))}
+        <hr className="divider" />
+        <div className="cart-actions">
+          <button className="cart-button">Total Amount: {totalAmount}$</button>
+          <button className="cart-button" onClick={() => navigate("/")}>Keep Shopping</button>
+          <button className="cart-button" onClick={() => navigate("/payment")}>Place Order</button>
+        </div>
       </div>
     </div>
   );

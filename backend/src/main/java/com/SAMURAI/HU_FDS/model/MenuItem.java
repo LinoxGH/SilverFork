@@ -24,6 +24,15 @@ public class MenuItem {
 
     private byte[] picture;
 
+    @Column(nullable = true)
+    private String category;
+
+    @Column(nullable = true)
+    private String cuisine;
+
+    @Column(nullable = true)
+    private Integer popularity;
+
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

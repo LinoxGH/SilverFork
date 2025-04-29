@@ -16,7 +16,7 @@ import java.util.List;
 
 //Restorant için manage menu
 @RestController
-@RequestMapping("/restaurant/menu")
+@RequestMapping()
 @CrossOrigin
 public class MenuController {
     @Autowired
@@ -26,7 +26,7 @@ public class MenuController {
     private JwtService jwtService;
 
 
-    @GetMapping
+    @GetMapping("/restaurant/menu")
     public ResponseEntity<List<MenuItem>> getMenu(@RequestHeader("Authorization") String authHeader) {
 
         String token = authHeader.replace("Bearer ", "");
@@ -43,7 +43,7 @@ public class MenuController {
 
 
     //Add Product
-    @PostMapping("/add")
+    @PostMapping("/restaurant/menu/add")
     public ResponseEntity<MenuItem> addMenuItem(@RequestHeader("Authorization") String authHeader,
                                                 @RequestBody MenuItem menuItem) {
         String token = authHeader.replace("Bearer ", "");
@@ -60,7 +60,7 @@ public class MenuController {
 
 
     //Product update
-    @PutMapping("/update/{id}")
+    @PutMapping("/restaurant/menu/update/{id}")
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
                                                    @RequestBody MenuItem updatedItem) {
@@ -78,7 +78,7 @@ public class MenuController {
 
 
     //Product delete
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/restaurant/menu/delete/{id}")
     public ResponseEntity<String> deleteMenuItem(@RequestHeader("Authorization") String authHeader,
                                                  @PathVariable Long id) {
         String token = authHeader.replace("Bearer ", "");
@@ -95,7 +95,7 @@ public class MenuController {
     }
 
 
-    @GetMapping("/info")
+    @GetMapping("restaurant/menu/info")
     public ResponseEntity<Restaurant> getOwnRestaurantInfo(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -109,10 +109,8 @@ public class MenuController {
         }
     }
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long id) {
-        Restaurant restaurant = menuService.getRestaurantById(id);
-        return ResponseEntity.ok(restaurant);
+    @GetMapping("/restaurant/menu/items/{restaurantName}")
+    public ResponseEntity<List<MenuItem>> getMenuByRestaurantName(@PathVariable String restaurantName) {
+        return ResponseEntity.ok(menuService.getRestaurantMenuByName(restaurantName));
     }
 }
