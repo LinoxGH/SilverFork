@@ -1,0 +1,116 @@
+.admin-dashboard {
+    background-color: #1f1f1f;
+    color: white;
+    min-height: 100vh;
+  }
+  
+  .dashboard-body {
+    display: flex;
+    padding-left: 90px;
+    padding-right: 90px;
+    gap: 75px;
+  }
+  
+  .left-panel {
+    flex: 3;
+  }
+  
+  .account-search {
+    width: 600px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border: none;
+    background-color: #505050;
+    color: white;
+    font-size: 24px;
+  }
+  
+  .account-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 25px;
+  }
+  
+  .account-card {
+    background-color: #505050;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    overflow: hidden;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 250px;
+    width: 150px;
+  }
+  
+  .account-card:hover {
+    background-color: #3a3a3a;
+  }
+  
+  .account-image {
+    background-color: #727272;
+    height: 125px;
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+  }
+  
+  .account-info {
+    width: 100%;
+  }
+  
+  .account-info p {
+    margin: 2px 0;
+    margin-left: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .account-info p:first-child {
+    font-size: 24px; 
+  }
+  
+  .account-info p:not(:first-child) {
+    font-size: 14px;
+  }
+  
+  
+  .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 24px;
+  }
+  
+  .stats p {
+    margin: 5px 0;
+  }
+  
+  .view-reports {
+    background-color: #505050;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: 10px 0;
+    font-size: 24px;
+    width: 250px;
+  }
+  
+  .chart-placeholder {
+    height: 100px;
+    background-color: #222;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  
