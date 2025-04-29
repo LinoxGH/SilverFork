@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from './Address.module.css';
 import AddressCard from "../../modules/user/AddressCard.jsx";
+import NavBar from "../../modules/navbar/NavBar.jsx";
 
 const Addresses = () => {
   const [addresses, setAddresses] = useState([]);
@@ -24,14 +25,17 @@ const Addresses = () => {
   };
 
   return (
-    <div className={"address-page-parent"}>
-      <h2>ADDRESSES</h2>
-      <div className={"address-page"}>
-        {addresses.map((address) => (
-          <AddressCard key={address.id} address={address} onEdit={onEdit}/>
-        ))}
+    <>
+      <NavBar/>
+      <div className={"address-page-parent"}>
+        <h2>ADDRESSES</h2>
+        <div className={"address-page"}>
+          {addresses.map((address) => (
+            <AddressCard key={address.id} address={address} onEdit={onEdit}/>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
