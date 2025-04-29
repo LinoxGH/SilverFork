@@ -10,6 +10,7 @@ import RestaurantDashboard from './pages/restaurantDashboard/RestaurantDashboard
 import Signup from './pages/signup/Signup.jsx';
 import Login from './pages/login/Login.jsx';
 import ManageUser from './pages/user/ManageUser.jsx';
+import Adresses from './pages/address/Address.jsx';
 import Favourites from './pages/favourites/Favourites.jsx';
 import ProductDetail from './pages/product/Product.jsx';
 import ShowSearchResult from './pages/searchResult/SearchResult.jsx';
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/manage-user" element={<ManageUser />} />
+        <Route path="/address" element={<Adresses />} />
         <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/product" element={<ProductDetail />} />

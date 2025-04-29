@@ -1,0 +1,16 @@
+.address-card {
+  height: 10%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.address-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.address-details {
+  display: flex;
+  flex-direction: row;
+}
