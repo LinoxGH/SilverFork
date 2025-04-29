@@ -3,6 +3,7 @@ package com.SAMURAI.HU_FDS.controller;
 
 import com.SAMURAI.HU_FDS.dto.LoginDto;
 import com.SAMURAI.HU_FDS.model.User;
+import com.SAMURAI.HU_FDS.repo.UserRepository;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import com.SAMURAI.HU_FDS.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Base64;
+import java.util.Optional;
 
 
 @RestController
@@ -25,6 +29,9 @@ public class UserController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private boolean isAuthorized(String token, String username) {
         String extractedUsername = jwtService.extractUserName(token);
@@ -53,6 +60,33 @@ public class UserController {
             return ResponseEntity.ok(loginDto);
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-picture")
+    public ResponseEntity<?> getPicture(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            String username = userDetails.getUsername();
+
+            Optional<User> user = userRepository.findByUsername(username);
+
+            if (user.isPresent()) {
+                byte[] pictureBytes = user.get().getPicture();
+
+                if (pictureBytes != null) {
+                    String base64Image = Base64.getEncoder().encodeToString(pictureBytes);
+                    return ResponseEntity.ok(base64Image);
+                } else {
+                    return ResponseEntity.ok(null);
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
     }
 
@@ -92,32 +126,33 @@ public class UserController {
     }
 
     @PutMapping("/update-picture")
-    public ResponseEntity<String> updatePicture(@RequestHeader("Authorization") String authHeader,
-                                                @RequestParam String username,
-                                                @RequestParam MultipartFile newPicture) {
+    public ResponseEntity<?> updatePicture(@RequestPart MultipartFile newPicture,
+                                           @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
-        if (!isAuthorized(token, username)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
-        }
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        try {
-            byte[] pictureBytes = newPicture.getBytes();
-            userService.updateUserPicture(username, pictureBytes);
-            return ResponseEntity.ok("Picture updated successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Picture update failed: " + e.getMessage());
+        if (jwtService.validateToken(token, userDetails)) {
+            String username = userDetails.getUsername();
+            try {
+                byte[] pictureBytes = newPicture.getBytes();
+                userService.updateUserPicture(username, pictureBytes);
+                return ResponseEntity.ok("Picture updated successfully");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Picture update failed: " + e.getMessage());
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
     }
 
     @PutMapping("/update-rank")
-    public ResponseEntity<String> updateRank(@RequestHeader("Authorization") String authHeader,
-                                             @RequestParam String username,
-                                             @RequestParam String newRank) {
+    public ResponseEntity<String> updateRank (@RequestHeader("Authorization") String authHeader,
+                                              @RequestParam String username,
+                                              @RequestParam String newRank){
         String token = authHeader.replace("Bearer ", "");
         if (!isAuthorized(token, username)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
         }
-
         try {
             userService.updateUserRank(username, newRank);
             return ResponseEntity.ok("Rank updated successfully");

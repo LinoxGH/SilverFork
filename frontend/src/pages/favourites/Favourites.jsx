@@ -28,17 +28,24 @@ const Favourites = () => {
   }, []);
 
   const addToCart = async (productId) => {
-    axios({
-      method: "POST",
-      url: "http://localhost:8080/customer/cart/add",
-      headers: { Authorization: `Bearer ${token}` },
-      params: {
-        menuItemId: productId,
-        quantity: 1
-      }
-    })
-    .then((res) => console.log(res))
-    .catch((err) => console.error(err));
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/customer/cart/add",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          params: {
+            menuItemId: productId,
+            quantity: 1 
+          }
+        }
+      );
+      console.log("Ürün sepete eklendi:", response.data);
+    } catch (error) {
+      console.error("Sepete ekleme hatası:", error);
+    }
   };
 
   const sortProducts = (option) => {
@@ -67,7 +74,7 @@ const Favourites = () => {
       <NavBar/>
       <div className="favourites-page">
         <p className="favourites-title">My favourites</p>
-        <div> 
+        <div className="favourites-layout">
           <ProductFilters
             sortProducts={sortProducts}
             setSelectedCuisine={setSelectedCuisine}
@@ -83,7 +90,7 @@ const Favourites = () => {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  restaurantName={product.restaurantName}
+                  restaurantName={product.restaurant?.name}
                   onButtonClick={addToCart}
                   buttonLabel="＋"
                 />
