@@ -1,0 +1,79 @@
+.admin-manage-user {
+    background-color: #1f1f1f;
+    color: white;
+    min-height: 100vh;
+  }
+  
+  .user-container {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+  }
+  
+  .user-info-section {
+    flex: 1;
+  }
+  
+  .user-info-section h1 {
+    font-size: 96px;
+    margin-bottom: 10px;
+  }
+  
+  .user-info-section hr {
+    margin: 10px 0 20px 0;
+    border: none;
+    border-top: 1px solid #777;
+  }
+  
+  .email-display {
+    width: 600px;
+    padding: 10px;
+    margin-bottom: 30px;
+    background-color: #505050;
+    border: none;
+    color: white;
+    font-size: 24px;
+  }
+  
+  .button-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 30px;
+    margin-bottom: 30px;
+    column-gap: 50px;
+    max-width: 600px;
+  }
+  
+  .button-grid button {
+    padding: 10px;
+    background-color: #505050;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 24px;
+  }
+  
+  .button-grid button:hover {
+    background-color: #3a3a3a;
+  }
+  
+  .user-info-section p {
+    font-size: 32px;
+    margin: 6px 0;
+  }
+  
+  .user-image-placeholder {
+    margin-top: 155px;
+    width: 300px;
+    height: 300px;
+    background-color: #ddd;
+  }
+
+  .user-divider {
+    width: 600px;
+    border: none;
+    border-top: 1px solid #777;
+    margin: 10px 0 20px 0;
+  }
