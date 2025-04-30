@@ -1,11 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
 
-const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, showHeart = true }) => {
+const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, showHeart = true, onRefresh }) => {
   const [liked, setLiked] = useState(false);
+  const navigate = useNavigate(); // add this
 
   const token = localStorage.getItem("token");
+
+  const goToProductPage = () => {
+    navigate(`/product?id=${product.id}`);
+  };
 
   const toggleHeart = async () => {
     setLiked(!liked);
@@ -16,12 +22,14 @@ const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, show
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
-      } else {
+      }
+      else {
         await axios.delete(
           `http://localhost:8080/favourites/remove/${product.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       }
+      if (onRefresh) onRefresh();
     } catch (error) {
       console.error("Failed to update favorite:", error);
     }
@@ -34,7 +42,9 @@ const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, show
           {liked ? "❤️" : "🤍"}
         </button>
       )}
-      <div className="product-img">Food Img</div>
+      <div className="product-img" onClick={goToProductPage} style={{ cursor: "pointer" }}>
+        Food Img
+      </div>
       <div className="product-info">
         <p className="product-name">{product.name}</p>
         <p className="product-place">{restaurantName}</p>

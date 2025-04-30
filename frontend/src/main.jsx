@@ -16,6 +16,7 @@ import ProductDetail from './pages/product/Product.jsx';
 import ShowSearchResult from './pages/searchResult/SearchResult.jsx';
 import AdminDashboard from './pages/adminDashboard/adminDashboard.jsx';
 import AdminManageUser from "./pages/adminManageUser/adminManageUser.jsx";
+import ProtectedRoute from "./modules/general/ProtectedRoute.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -32,8 +33,21 @@ createRoot(document.getElementById('root')).render(
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/product" element={<ProductDetail />} />
         <Route path="/search-result" element={<ShowSearchResult />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/admin-dashboard/:username" element={<AdminManageUser />} />
+        <Route path="/restaurant-dashboard" element={
+          <ProtectedRoute allowedRoles={['restaurant']}>
+            <RestaurantDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-dashboard" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-dashboard/:username" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminManageUser />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   </StrictMode>
