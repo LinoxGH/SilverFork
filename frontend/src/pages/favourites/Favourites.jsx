@@ -91,7 +91,7 @@ const Favourites = () => {
                   key={product.id}
                   product={product}
                   restaurantName={product.restaurant?.name}
-                  onButtonClick={addToCart}
+                  onButtonClick={() => addToCart(product.id)}
                   buttonLabel="＋"
                 />
               ))}

@@ -63,7 +63,8 @@ public class MenuController {
     @PutMapping("/restaurant/menu/update/{id}")
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
-                                                   @RequestBody MenuItem updatedItem) {
+                                                   @RequestBody MenuItem updatedItem
+    ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
