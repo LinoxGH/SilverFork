@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class User {
     private String email;
 
     @Lob
+    @JsonIgnore
     private byte[] picture;
 
     @Column(nullable = false)

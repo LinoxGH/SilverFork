@@ -5,6 +5,7 @@ import com.SAMURAI.HU_FDS.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,11 +39,20 @@ public class OrderService {
             throw new RuntimeException("Cart is empty");
         }
 
+        Restaurant restaurant = cart.getItems().get(0).getMenuItem().getRestaurant();
+
+        for (CartItem item : cart.getItems()) {
+            if (!item.getMenuItem().getRestaurant().equals(restaurant)) {
+                throw new RuntimeException("All items must be from the same restaurant");
+            }
+        }
+
         Order order = new Order();
         order.setUser(user);
         order.setAddress(address);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus("PENDING");
+        order.setRestaurant(restaurant);
 
         double total = 0.0;
 
@@ -75,9 +85,13 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order updateOrderStatus(Long orderId, String status) {
+    public Order updateOrderStatus(Long orderId, String status , String username) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (!order.getRestaurant().getOwnerUsername().equals(username)) {
+            throw new AccessDeniedException("Not authorized to update this order");
+        }
         order.setStatus(status);
         return orderRepository.save(order);
     }
@@ -85,6 +99,10 @@ public class OrderService {
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
+    }
+
+    public List<Order> getOrdersByOwnerUsername(String ownerUsername) {
+        return orderRepository.findByRestaurantOwnerUsername(ownerUsername);
     }
 }
 

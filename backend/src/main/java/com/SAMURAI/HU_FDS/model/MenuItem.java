@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Base64;
+
 
 @Entity
 @Data
@@ -23,6 +25,8 @@ public class MenuItem {
 
     private String description;
 
+    @Lob
+    @JsonIgnore
     private byte[] picture;
 
     @Column(nullable = true)
@@ -37,7 +41,15 @@ public class MenuItem {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
-    @JsonIgnoreProperties({"menuItems", "id"})
+    //@JsonIgnoreProperties({"menuItems", "id"})
+    @JsonIgnore
     private Restaurant restaurant;
+
+    public String getBase64Image() {
+        if (picture != null) {
+            return Base64.getEncoder().encodeToString(picture);
+        }
+        return null;
+    }
 
 }

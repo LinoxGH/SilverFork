@@ -31,4 +31,7 @@ public class Order {
 
     @ManyToOne
     private Address address;
+
+    @ManyToOne
+    private Restaurant restaurant;
 }

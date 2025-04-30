@@ -64,6 +64,9 @@ public class FavoriteController {
             List<Favorite> favorites = favoriteService.getUserFavorites(username);
             List<MenuItem> menuItems = favorites.stream()
                     .map(Favorite::getMenuItem)
+                    .peek(menuItem -> {
+                        menuItem.getBase64Image();
+                    })
                     .toList();
 
             return ResponseEntity.ok(menuItems);

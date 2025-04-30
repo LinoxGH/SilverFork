@@ -25,17 +25,20 @@ public class OrderController {
     private JwtService jwtService;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Order> createOrder(@RequestHeader("Authorization") String authHeader ,@RequestParam Long addressId) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
-            return ResponseEntity.ok(orderService.createOrderFromCart(username,addressId));
+            Order order = orderService.createOrderFromCart(username, addressId);
+            order.getItems().forEach(item -> item.getMenuItem().getBase64Image()); // Base64 resimleri alıyoruz
+            return ResponseEntity.ok(order);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
+
     }
 
     @GetMapping("/user")
@@ -45,39 +48,18 @@ public class OrderController {
 
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
-            return ResponseEntity.ok(orderService.getUserOrders(username));
+            List<Order> orders = orderService.getUserOrders(username);
+            // Her siparişin öğelerindeki menü resimlerini Base64 formatında alıyoruz
+            orders.forEach(order -> order.getItems().forEach(item -> item.getMenuItem().getBase64Image()));
+            return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Order>> getAllOrders(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok(orderService.getAllOrders());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok(orderService.getOrderById(id));
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        }
-    }
 
     @PutMapping("/{id}/status")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('RESTAURANT')")
     public ResponseEntity<Order> updateOrderStatus(
             @PathVariable Long id,
             @RequestParam String status,
@@ -87,7 +69,25 @@ public class OrderController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok(orderService.updateOrderStatus(id, status));
+            String username = userDetails.getUsername();
+            return ResponseEntity.ok(orderService.updateOrderStatus(id, status ,username));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
+
+    @GetMapping("/restaurant")
+    @PreAuthorize("hasRole('RESTAURANT')")
+    public ResponseEntity<List<Order>> getOrdersByOwner(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            String username = userDetails.getUsername();
+            List<Order> orders = orderService.getOrdersByOwnerUsername(username);
+            // Her siparişin öğelerindeki menü resimlerini Base64 formatında alıyoruz
+            orders.forEach(order -> order.getItems().forEach(item -> item.getMenuItem().getBase64Image()));
+            return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }

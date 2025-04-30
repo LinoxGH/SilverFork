@@ -1,6 +1,7 @@
 package com.SAMURAI.HU_FDS.controller;
 
 
+import com.SAMURAI.HU_FDS.model.Cart;
 import com.SAMURAI.HU_FDS.service.CartService;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,13 @@ public class CartController {
 
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
-            return ResponseEntity.ok(cartService.getCart(username));
+            Cart cart = cartService.getCart(username);
+
+            cart.getItems().forEach(item -> {
+                item.getMenuItem().getBase64Image();
+            });
+
+            return ResponseEntity.ok(cart);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }

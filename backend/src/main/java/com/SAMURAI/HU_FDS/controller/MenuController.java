@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,10 +33,14 @@ public class MenuController {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
-            return ResponseEntity.ok(menuService.getRestaurantMenu(username));
+            List<MenuItem> menuItems = menuService.getRestaurantMenu(username);
+            // Resimleri Base64 formatına çeviriyoruz
+            menuItems.forEach(menuItem -> {
+                menuItem.getBase64Image(); // Resmi Base64 formatında elde ediyoruz
+            });
+            return ResponseEntity.ok(menuItems);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
@@ -45,14 +50,22 @@ public class MenuController {
     //Add Product
     @PostMapping("/restaurant/menu/add")
     public ResponseEntity<MenuItem> addMenuItem(@RequestHeader("Authorization") String authHeader,
-                                                @RequestBody MenuItem menuItem) {
+                                                @RequestBody MenuItem menuItem,
+                                                @RequestParam MultipartFile image
+    ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (jwtService.validateToken(token, userDetails)) {
 
-            String username = userDetails.getUsername();
-            return ResponseEntity.ok(menuService.addMenuItem(username, menuItem));
+        if (jwtService.validateToken(token, userDetails)) {
+            try {
+                String username = userDetails.getUsername();
+                byte[] imageBytes = image.getBytes();
+                menuItem.setPicture(imageBytes);
+                return ResponseEntity.ok(menuService.addMenuItem(username, menuItem));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
@@ -63,15 +76,22 @@ public class MenuController {
     @PutMapping("/restaurant/menu/update/{id}")
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
-                                                   @RequestBody MenuItem updatedItem
+                                                   @RequestBody MenuItem updatedItem,
+                                                   @RequestParam MultipartFile image
+
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
-
-            String username = userDetails.getUsername();
-            return ResponseEntity.ok(menuService.updateMenuItem(username, id, updatedItem));
+            try {
+                String username = userDetails.getUsername();
+                byte[] imageBytes = image.getBytes();
+                updatedItem.setPicture(imageBytes);
+                return ResponseEntity.ok(menuService.updateMenuItem(username, id, updatedItem));
+            }catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
@@ -112,6 +132,10 @@ public class MenuController {
 
     @GetMapping("/restaurant/menu/items/{restaurantName}")
     public ResponseEntity<List<MenuItem>> getMenuByRestaurantName(@PathVariable String restaurantName) {
-        return ResponseEntity.ok(menuService.getRestaurantMenuByName(restaurantName));
+        List<MenuItem> menuItems = menuService.getRestaurantMenuByName(restaurantName);
+        menuItems.forEach(menuItem -> {
+            menuItem.getBase64Image();
+        });
+        return ResponseEntity.ok(menuItems);
     }
 }
