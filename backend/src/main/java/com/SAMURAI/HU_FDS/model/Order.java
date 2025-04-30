@@ -28,4 +28,7 @@ public class Order {
     private LocalDateTime orderDate;
     private String status; // "PENDING", "PROCESSING", "COMPLETED", "CANCELLED"
     private Double totalPrice;
+
+    @ManyToOne
+    private Address address;
 }

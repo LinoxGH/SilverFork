@@ -26,13 +26,13 @@ public class OrderController {
 
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Order> createOrder(@RequestHeader("Authorization") String authHeader ,@RequestParam Long addressId) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
-            return ResponseEntity.ok(orderService.createOrderFromCart(username));
+            return ResponseEntity.ok(orderService.createOrderFromCart(username,addressId));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }

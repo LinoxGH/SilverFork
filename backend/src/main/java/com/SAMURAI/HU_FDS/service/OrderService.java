@@ -23,10 +23,15 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     @Transactional
-    public Order createOrderFromCart(String username) {
+    public Order createOrderFromCart(String username ,Long addressId) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
         Cart cart = cartService.getCart(username);
 
         if (cart.getItems().isEmpty()) {
@@ -35,6 +40,7 @@ public class OrderService {
 
         Order order = new Order();
         order.setUser(user);
+        order.setAddress(address);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus("PENDING");
 
