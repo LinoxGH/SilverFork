@@ -23,6 +23,7 @@ public class Restaurant {
 
     private String ownerUsername;
 
+    @Lob
     private byte[] picture;
 
     @Column(nullable = true)
