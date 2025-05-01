@@ -3,11 +3,11 @@ package com.SAMURAI.HU_FDS.controller;
 
 import com.SAMURAI.HU_FDS.model.Address;
 import com.SAMURAI.HU_FDS.model.User;
-import com.SAMURAI.HU_FDS.repo.AddressRepository;
-import com.SAMURAI.HU_FDS.repo.UserRepository;
+import com.SAMURAI.HU_FDS.repo.*;
 import com.SAMURAI.HU_FDS.service.CartService;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import com.SAMURAI.HU_FDS.service.MenuService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +40,17 @@ public class AdminController {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
+
 
 
 
@@ -102,12 +113,17 @@ public class AdminController {
 
     // Delete user
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/users/{username}")
+    @DeleteMapping("/users/delete/{username}")
+    @Transactional
     public ResponseEntity<?> deleteUser(@PathVariable String username,
                                         @RequestHeader("Authorization") String authHeader) {
         if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
+            cartRepository.deleteByUser(user);
+            favoriteRepository.deleteAllByUser(user);
+            orderRepository.deleteAllByUser(user);
+            addressRepository.deleteAllByUsername(username);
             userRepository.delete(user.get());
             return ResponseEntity.ok("User deleted");
         }
