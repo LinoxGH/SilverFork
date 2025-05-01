@@ -33,7 +33,6 @@ function App() {
 
   return (
     <>
-      <NavBar />
       <div className="recommendations-page">
         <h1 className="recommendations-title">Recommendations</h1>
         <div className="products-grid">
