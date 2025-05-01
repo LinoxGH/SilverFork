@@ -2,6 +2,7 @@ package com.SAMURAI.HU_FDS.service;
 
 import com.SAMURAI.HU_FDS.model.*;
 import com.SAMURAI.HU_FDS.repo.*;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -154,6 +155,28 @@ public class OrderService {
             couriers.add(courierUser);
         }
         return couriers;
+    }
+
+    @Transactional
+    public void assignAllCouriersToAllRestaurants() {
+        List<User> couriers = userRepository.findByRank("COURIER");
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+
+        for (Restaurant restaurant : restaurants) {
+            for (User courier : couriers) {
+                if (!restaurantEmployeeRepository.existsByRestaurantAndCourier(restaurant, courier)) {
+                    RestaurantEmployee re = new RestaurantEmployee();
+                    re.setRestaurant(restaurant);
+                    re.setCourier(courier);
+                    restaurantEmployeeRepository.save(re);
+                }
+            }
+        }
+    }
+
+    @PostConstruct
+    public void assignCouriersOnStartup() {
+        assignAllCouriersToAllRestaurants();
     }
 }
 
