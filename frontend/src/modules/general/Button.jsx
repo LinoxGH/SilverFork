@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ label, onClick, width, height, position, top, left, borderRadius, background}) => {
+const Button = ({ label, onClick, width, height, position, top, left, borderRadius, background, fontSize = 20, color = "#FFFFFF"}) => {
   return (
     <button
       onClick={onClick}
@@ -12,12 +12,12 @@ const Button = ({ label, onClick, width, height, position, top, left, borderRadi
         left: left,
         borderRadius: borderRadius,
         background: background,
-        fontSize: "20px",
-        color: "#FFFFFF"
+        fontSize: fontSize + "px",
+        color: color
       }}
     >
       {label ? (
-        <span style={{fontSize: '20px', color: '#FFFFFF'}}>
+        <span style={{fontSize: fontSize + 'px', color: color}}>
           {label}
         </span>
       ) : null}

@@ -38,7 +38,7 @@ public class UserService {
         } else {
             if (user.getRank().equals("RESTAURANT") &&
                     restaurantRepository.findByOwnerUsername(user.getUsername()).isEmpty()) {
-                createRestaurantForUser(user.getUsername(), user.getUsername() + "'s Restaurant");
+                createRestaurantForUser(user.getUsername(), user.getUsername());
             }
             String token = jwtService.generateToken(user.getUsername(), user.getRank());
             return new LoginDto(token, user.getUsername(), user.getEmail(), user.getRank(), user.getPicture());
@@ -65,7 +65,7 @@ public class UserService {
         userRepository.save(user);
 
         if (user.getRank().equals("RESTAURANT")) {
-            createRestaurantForUser(user.getUsername(), user.getUsername() + "'s Restaurant");
+            createRestaurantForUser(user.getUsername(), user.getUsername());
         }
 
     }

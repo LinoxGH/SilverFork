@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
+import Button from "./Button.jsx";
 
 const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrderable, onRefresh }) => {
   const [favorite, setFavorite] = useState(false);
@@ -12,6 +13,21 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
   const goToProductPage = () => {
     navigate(`/product?id=${product.id}`);
   };
+
+  if (isFavoritable) {
+    useEffect(() => {
+      axios.get(
+        `http://localhost:8080/favourites/get/${product.id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+        .then((res) => {
+          if (res) setFavorite(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
+  }
 
   const toggleHeart = async () => {
     try {
@@ -75,15 +91,25 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
           {product.price}$
           {isOrderable ? (
             <>
-              <button className="push-btn" onClick={addToCart}>
-                <img src="/plus.png" alt={"+"} width={"5%"}/>
-              </button>
+              <Button
+                classname="push-btn"
+                label={(<img src="/plus.png" alt={"+"} width={"60%"}/>)}
+                onClick={addToCart}
+                width={"25%"}
+                borderRadius={"20px"}
+                background={"#000000"}
+              />
             </>
           ) : (handleEdit ? (
             <>
-              <button className="push-btn" onClick={handleEdit}>
-                <img src="/pen.png" alt={"✎"} width={"5%"}/>
-              </button>
+              <Button
+                classname="push-btn"
+                label={(<img src="/pen.png" alt={"+"} width={"60%"}/>)}
+                onClick={handleEdit}
+                width={"25%"}
+                borderRadius={"20px"}
+                background={"#000000"}
+              />
             </>
           ) : null)}
         </p>

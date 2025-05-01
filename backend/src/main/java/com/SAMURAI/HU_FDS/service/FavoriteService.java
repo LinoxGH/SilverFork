@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FavoriteService {
@@ -46,6 +47,10 @@ public class FavoriteService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         List<Favorite> favorites = favoriteRepository.findAllByUser(user);
         return favoriteRepository.findAllByUser(user);
+    }
+
+    public Optional<Favorite> getFavorite(String username, Long menuItemId) {
+        return favoriteRepository.findByUser_UsernameAndMenuItem_Id(username, menuItemId);
     }
 }
 

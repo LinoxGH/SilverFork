@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./SearchResult.css";
 import axios from "axios";
+import ProductCard from "../../modules/general/ProductCard.jsx";
 
 const ShowSearchResult = () => {
   const [sortOption, setSortOption] = useState("none");
@@ -18,6 +19,7 @@ const ShowSearchResult = () => {
         name: sessionStorage.getItem("search")
       }
     }).then((res) => {
+      console.log(res.data);
       setResults(res.data);
     }).catch((err) => {
       console.error(err);
@@ -93,17 +95,14 @@ const ShowSearchResult = () => {
           <h3 className="product-label">Products</h3>
           <div className="products">
             {display.map((product) => (
-              <div className="product-card" key={product.id}>
-                <div className="product-img">Food Img</div>
-                <div className="product-info">
-                  <p className="product-name">{product.name}</p>
-                  <p className="product-place">INSERT RESTAURANT NAME HERE</p>
-                  <p className="product-rating">{product.description}</p>
-                  <p className="product-price">
-                    {product.price}$
-                  </p>
-                </div>
-              </div>
+              <ProductCard
+                key={product.id}
+                product={product}
+                restaurantName={product.restaurant.name}
+                handleEdit={null}
+                isFavoritable={true}
+                isOrderable={true}
+              />
             ))}
           </div>
         </div>

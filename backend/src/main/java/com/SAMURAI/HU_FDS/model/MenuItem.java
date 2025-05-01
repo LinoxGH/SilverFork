@@ -2,6 +2,7 @@ package com.SAMURAI.HU_FDS.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,8 +56,7 @@ public class MenuItem {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
-    //@JsonIgnoreProperties({"menuItems", "id"})
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Restaurant restaurant;
 
 

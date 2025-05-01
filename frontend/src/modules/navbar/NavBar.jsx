@@ -26,6 +26,10 @@ function NavBar() {
     navigate("/cart");
   }
 
+  function handleFavoriteButton() {
+    navigate("/favourites");
+  }
+
   function handleManageUserButton() {
     navigate("/manage-user");
   }
@@ -45,7 +49,7 @@ function NavBar() {
           <>
             <Button
               label={(<img src="/heart.png" alt={"cart"} width="55%"/>)}
-              onClick={handleCartButton}
+              onClick={handleFavoriteButton}
               width={"3%"}
               borderRadius={"20px"}
               background={"#000000"}/>

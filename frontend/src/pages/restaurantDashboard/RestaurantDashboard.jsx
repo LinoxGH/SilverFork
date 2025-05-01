@@ -183,13 +183,13 @@ const RestaurantDashboard = () => {
           <div className="products">
             {products.map((product) => (
               <ProductCard
-              key={product.id}
-              product={product}
-              restaurantName={restaurantInfo.name}
-              handleEdit={handleEditProduct}
-              isFavoritable={false}
-              isOrderable={false}
-            />
+                key={product.id}
+                product={product}
+                restaurantName={restaurantInfo.name}
+                handleEdit={handleEditProduct}
+                isFavoritable={false}
+                isOrderable={false}
+              />
             ))}
           </div>
         </div>
