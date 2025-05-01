@@ -21,9 +21,9 @@ function NavBar() {
             name: search
           }
         }).then((res) => {
-          console.log(res);
+          sessionStorage.setItem("search-results", JSON.stringify(res.data));
         }).catch((err) => {
-            console.log(err);
+          console.error(err);
         });
         navigate("/search-result");
       }
