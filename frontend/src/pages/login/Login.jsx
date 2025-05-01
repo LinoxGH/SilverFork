@@ -38,6 +38,7 @@ function LoginForm() {
       localStorage.setItem("username", data.username);
       localStorage.setItem("email", data.email);
       localStorage.setItem("rank", data.rank);
+      window.dispatchEvent(new Event("storage"));
 
       alert("Login successful!");
       navigate("/");

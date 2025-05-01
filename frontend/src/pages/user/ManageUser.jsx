@@ -97,7 +97,14 @@ function ManageUser() {
       method: 'DELETE',
       url: 'http://localhost:8080/delete-account',
       headers: { Authorization: `Bearer ${token}` }
-    }).then(() => navigate("/"))
+    }).then(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("email");
+      localStorage.removeItem("rank");
+      window.dispatchEvent(new Event("storage"));
+      navigate("/");
+    })
       .catch((err) => alert(err));
   };
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styles from "./NavBar.module.css"
 import Button from "../general/Button.jsx";
@@ -8,6 +8,16 @@ function NavBar() {
   const [rank, setRank] = useState(localStorage.getItem("rank"));
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      setUsername(localStorage.getItem("username"));
+      setRank(localStorage.getItem("rank"));
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   function handleLogoutButton() {
     localStorage.removeItem("token");
