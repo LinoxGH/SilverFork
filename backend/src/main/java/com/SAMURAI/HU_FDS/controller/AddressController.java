@@ -43,10 +43,14 @@ public class AddressController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
-            // If address already exists.
-            if (addressRepository.findByUsernameAndName(address.getUsername(), address.getName()).isPresent()) {
+            String username = userDetails.getUsername();
+            address.setUsername(username);  // ← FIXED HERE
+
+            // Optional: prevent duplicates
+            if (addressRepository.findByUsernameAndName(username, address.getName()).isPresent()) {
                 return ResponseEntity.badRequest().body("An address with this name already exists.");
             }
+
             addressRepository.save(address);
             return ResponseEntity.ok("Added address " + address.getName());
         } else {

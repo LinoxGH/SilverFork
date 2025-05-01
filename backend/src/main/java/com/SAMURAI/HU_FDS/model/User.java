@@ -43,7 +43,12 @@ public class User {
     @Column(nullable = false)
     private String rank;
 
-    private String Status;
+    private String status;
+
+    private String courierStatus;
+
+    @OneToMany(mappedBy = "courier")
+    private List<RestaurantEmployee> restaurantEmployees;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
