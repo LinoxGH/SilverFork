@@ -36,6 +36,10 @@ public class UserService {
         if (!encoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Password is incorrect");
         } else {
+            if (user.getRank().equals("RESTAURANT") &&
+                    restaurantRepository.findByOwnerUsername(user.getUsername()).isEmpty()) {
+                createRestaurantForUser(user.getUsername(), user.getUsername() + "'s Restaurant");
+            }
             String token = jwtService.generateToken(user.getUsername(), user.getRank());
             return new LoginDto(token, user.getUsername(), user.getEmail(), user.getRank(), user.getPicture());
         }
