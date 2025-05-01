@@ -32,7 +32,6 @@ function App() {
 
   return (
     <>
-      <NavBar />
       <div className='welcome-text'>
         <h1>Welcome to the Simple Page</h1>
       </div>

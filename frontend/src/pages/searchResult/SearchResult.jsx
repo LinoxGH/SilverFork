@@ -46,7 +46,6 @@ const ShowSearchResult = () => {
 
   return (
     <div className="dashboard-container">
-      <NavBar/>
       <div>
         <p className="result-text"> X Result Found </p>
       </div>

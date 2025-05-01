@@ -1,39 +1,42 @@
 .navbar {
   width: 100vw;
+  height: 4vw;
   padding: 0.5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
   background-color:  #575757;
   font-size: 1rem;
   margin-bottom: 1rem;
 }
 
-.silverforkheader{
-  width: 50%;
+.silverforkheader {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
 }
-.silverforktext{
+.silverforktext {
   width: fit-content;
   padding: 1rem;
-  font-size: 2rem;
+  font-size: 36px;
   font-weight: bold;
 }
 
-.links{
+.links {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
   padding-right: 2rem;
-  width: 50%;
+  width: 80%;
+  height: 100%;
   gap: 25px;
-
 }
 
-.logoutButton{
+.logoutButton {
   padding: 1rem;
   border-radius: 1rem;
   border: none;
@@ -51,6 +54,20 @@
   justify-content: center;
 }
 
-.links a:hover {
-  color: #646cff;
+a:visited, a:link, a:active {
+  color: #FFFFFF;
+}
+
+.navButton {
+  border-radius: 10px;
+  width: 10%;
+}
+
+.searchBar {
+  background: #000000;
+  border-radius: 10px;
+  width: 50%;
+  height: 60%;
+  margin-right: auto;
+  padding-left: 8px;
 }

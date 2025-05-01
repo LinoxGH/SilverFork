@@ -37,6 +37,7 @@ function LoginForm() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("rank", data.rank);
       localStorage.setItem("email", data.email); //Might be wrong
 
       alert("Login successful!");
@@ -96,7 +97,6 @@ function AccountSection() {
 function Login() {
   return (
     <div className={styles.container}>
-      <NavBar />
       <div className={styles.loginContainer}>
         <LoginTitle />
         <LoginForm />

@@ -26,7 +26,6 @@ const AdminManageUser = () => {
 
   return (
     <div className="admin-manage-user">
-      <NavBar />
       <div className="user-container">
         <div className="user-info-section">
           <h1>{user.username}</h1>
