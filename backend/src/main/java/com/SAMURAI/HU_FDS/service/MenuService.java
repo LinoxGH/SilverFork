@@ -25,14 +25,14 @@ public class MenuService {
         Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
-        return menuItemRepository.findByRestaurant(restaurant);
+        return menuItemRepository.findByRestaurant(restaurant).stream().filter(item -> !item.getHidden()).toList();
     }
 
     public List<MenuItem> getRestaurantMenuById(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
-        return menuItemRepository.findByRestaurant(restaurant);
+        return menuItemRepository.findByRestaurant(restaurant).stream().filter(item -> !item.getHidden()).toList();
     }
 
 
@@ -78,7 +78,8 @@ public class MenuService {
             throw new RuntimeException("Unauthorized: You can only delete your own menu items");
         }
 
-        menuItemRepository.delete(existingItem);
+        existingItem.setHidden(true);
+        menuItemRepository.save(existingItem);
     }
 
     public Restaurant getRestaurantById(Long id) {
@@ -95,7 +96,7 @@ public class MenuService {
         Restaurant restaurant = restaurantRepository.findByName(restaurantName)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
-        return menuItemRepository.findByRestaurant(restaurant);
+        return menuItemRepository.findByRestaurant(restaurant).stream().filter(item -> !item.getHidden()).toList();
     }
 
 }

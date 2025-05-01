@@ -45,12 +45,17 @@ public class FavoriteService {
     public List<Favorite> getUserFavorites(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        List<Favorite> favorites = favoriteRepository.findAllByUser(user);
-        return favoriteRepository.findAllByUser(user);
+        return favoriteRepository.findAllByUser(user).stream().filter(fav -> !fav.getMenuItem().getHidden()).toList();
     }
 
     public Optional<Favorite> getFavorite(String username, Long menuItemId) {
-        return favoriteRepository.findByUser_UsernameAndMenuItem_Id(username, menuItemId);
+        Optional<Favorite> result = favoriteRepository.findByUser_UsernameAndMenuItem_Id(username, menuItemId);
+        if (result.isPresent()) {
+            if (result.get().getMenuItem().getHidden()) {
+                return Optional.empty();
+            }
+        }
+        return result;
     }
 }
 

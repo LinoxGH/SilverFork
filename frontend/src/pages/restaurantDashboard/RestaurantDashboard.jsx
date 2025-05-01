@@ -49,6 +49,13 @@ const RestaurantDashboard = () => {
       setProductPrice("");
       setProductDescription("");
     }
+
+    const nameField = document.getElementById("product-name-field");
+    if (nameField) nameField.value = productName;
+    const priceField = document.getElementById("product-price-field");
+    if (priceField) priceField.value = productPrice;
+    const descField = document.getElementById("product-desc-field");
+    if (descField) descField.value = productDescription;
   }, [editingProduct]);
 
   const handleEditProduct = (product) => {
@@ -214,6 +221,7 @@ const RestaurantDashboard = () => {
           </div>
         </div>
       </div>
+
       {showAddProductModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -222,9 +230,9 @@ const RestaurantDashboard = () => {
               setEditingProduct(null);
             }}>×</button>
             <h2>{editingProduct ? "Edit Product" : "Add New Product"}</h2>
-            <input type="text" placeholder="Food Name" value={productName} onChange={(e) => setProductName(e.target.value)} />
-            <input type="number" placeholder="Food Price" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
-            <textarea placeholder="Description" value={productDescription} onChange={(e) => setProductDescription(e.target.value)} />
+            <input id="product-name-field" type="text" placeholder="Food Name" value={productName} onChange={(e) => setProductName(e.target.value)} />
+            <input id="product-price-field" type="number" placeholder="Food Price" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
+            <textarea id="product-desc-field" placeholder="Description" value={productDescription} onChange={(e) => setProductDescription(e.target.value)} />
             <button onClick={handleSubmitProduct}>{editingProduct ? "Save Changes" : "Add"}</button>
             {editingProduct && <button className="delete-btn" onClick={handleDeleteProduct}>Delete</button>}
           </div>

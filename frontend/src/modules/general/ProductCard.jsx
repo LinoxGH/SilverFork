@@ -73,12 +73,6 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
 
   return (
     <div className="product-card">
-      {isFavoritable && (
-        <button className="heart-btn" onClick={toggleHeart}>
-          {favorite ? "❤️" : "🤍"}
-        </button>
-      )}
-
       <div className="product-img" onClick={goToProductPage} style={{ cursor: "pointer" }}>
         Food Img
       </div>
@@ -105,13 +99,27 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
               <Button
                 classname="push-btn"
                 label={(<img src="/pen.png" alt={"+"} width={"60%"}/>)}
-                onClick={handleEdit}
+                onClick={() => handleEdit(product)}
                 width={"25%"}
                 borderRadius={"20px"}
                 background={"#000000"}
               />
             </>
           ) : null)}
+          {isFavoritable && (
+            <Button
+              classname="heart-btn"
+              label={favorite ? (
+                <img src="/heart.png" alt="❤️" width={"70%"}/>
+              ) : (
+                <img src="/heart-empty.png" alt="🤍" width={"70%"}/>
+              )}
+              onClick={toggleHeart}
+              width={"25%"}
+              borderRadius={"20px"}
+              background={"#000000"}
+            />
+          )}
         </p>
       </div>
     </div>
