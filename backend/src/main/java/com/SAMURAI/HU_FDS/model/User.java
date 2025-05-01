@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Base64;
+import java.util.List;
 
 
 @Entity
@@ -41,7 +42,12 @@ public class User {
     @Column(nullable = false)
     private String rank;
 
-    private String Status;
+    private String status;
+
+    private String courierStatus;
+
+    @OneToMany(mappedBy = "courier")
+    private List<RestaurantEmployee> restaurantEmployees;
 
     public String getBase64Image() {
         if (picture != null) {

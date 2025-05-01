@@ -34,4 +34,8 @@ public class Order {
 
     @ManyToOne
     private Restaurant restaurant;
+
+
+    @ManyToOne
+    private User courier;
 }

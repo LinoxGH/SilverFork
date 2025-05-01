@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +27,14 @@ public class OrderService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private RestaurantEmployeeRepository restaurantEmployeeRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+
 
     @Transactional
     public Order createOrderFromCart(String username ,Long addressId) {
@@ -104,5 +113,51 @@ public class OrderService {
     public List<Order> getOrdersByOwnerUsername(String ownerUsername) {
         return orderRepository.findByRestaurantOwnerUsername(ownerUsername);
     }
+
+
+    public Order assignCourierToOrder(Long orderId, Long courierId, String username) {
+        Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        RestaurantEmployee restaurantEmployee = restaurantEmployeeRepository
+                .findByRestaurantIdAndCourierId(restaurant.getId(), courierId)
+                .orElseThrow(() -> new RuntimeException("Courier is not an employee of this restaurant"));
+
+        if ("AVAILABLE".equals(restaurantEmployee.getStatus())) {
+            Order order = orderRepository.findById(orderId)
+                    .orElseThrow(() -> new RuntimeException("Order not found"));
+
+            order.setStatus("On the Road");
+            order.setCourier(restaurantEmployee.getCourier());
+            restaurantEmployee.setStatus("BUSY");
+            restaurantEmployeeRepository.save(restaurantEmployee);
+
+            return orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Courier is not available");
+        }
+    }
+
+
+
+    public List<User> getCouriersForRestaurant(String username) {
+        Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        List<RestaurantEmployee> restaurantEmployees = restaurantEmployeeRepository.findByRestaurantId(restaurant.getId());
+
+
+        List<User> couriers = new ArrayList<>();
+        for (RestaurantEmployee employee : restaurantEmployees) {
+            User courierUser = employee.getCourier();
+            courierUser.setCourierStatus(employee.getStatus());
+            couriers.add(courierUser);
+        }
+        return couriers;
+    }
 }
+
+
+
+
 
