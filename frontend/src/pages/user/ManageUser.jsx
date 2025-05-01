@@ -208,7 +208,7 @@ function ManageUser() {
 
           <div className={styles.buttonGroup}>
             <button className={styles.button} onClick={() => {navigate("/address")}}>View Addresses</button>
-            <button className={styles.button}>View Order History</button>
+            <button className={styles.button} onClick={() => {navigate("/current-orders")}}>View Current Orders</button>
             <button className={styles.button} onClick={handleDelete}>Delete Account</button>
           </div>
         </div>
