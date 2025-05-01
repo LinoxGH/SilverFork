@@ -40,8 +40,7 @@ function LoginForm() {
       localStorage.setItem("rank", data.rank);
 
       alert("Login successful!");
-      navigate("/manage-user");
-      return;
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
       alert("Login failed: " + error.message);

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from "./ManageUser.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

@@ -31,18 +31,23 @@ public class MenuItem {
     private byte[] picture;
 
     @Column(nullable = true)
+    @JsonIgnore
     private String category;
 
     @Column(nullable = true)
+    @JsonIgnore
     private String cuisine;
 
     @Column(nullable = true)
+    @JsonIgnore
     private Integer popularity;
 
     @Column(nullable = true)
+    @JsonIgnore
     private Double rating = 0.0; // Ortalama kullanıcı puanı
 
     @Column(nullable = false, updatable = false)
+    @JsonIgnore
     private LocalDateTime createdAt;
 
 

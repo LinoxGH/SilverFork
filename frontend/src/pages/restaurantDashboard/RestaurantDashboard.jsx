@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./RestaurantDashboard.css";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import ProductCard from "../../modules/general/ProductCard.jsx";
 import ProductFilters from "../../modules/general/ProductFilter.jsx";
 
@@ -187,9 +186,9 @@ const RestaurantDashboard = () => {
               key={product.id}
               product={product}
               restaurantName={restaurantInfo.name}
-              onButtonClick={handleEditProduct}
-              buttonLabel="Edit"
-              showHeart={false}
+              handleEdit={handleEditProduct}
+              isFavoritable={false}
+              isOrderable={false}
             />
             ))}
           </div>

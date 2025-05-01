@@ -51,17 +51,21 @@ public class MenuController {
     @PostMapping("/restaurant/menu/add")
     public ResponseEntity<MenuItem> addMenuItem(@RequestHeader("Authorization") String authHeader,
                                                 @RequestBody MenuItem menuItem,
-                                                @RequestParam MultipartFile image
+                                                @RequestParam(required = false) MultipartFile image
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-
         if (jwtService.validateToken(token, userDetails)) {
             try {
+                if (image == null) {
+                    menuItem.setPicture(null);
+                } else {
+                    byte[] imageBytes = image.getBytes();
+                    menuItem.setPicture(imageBytes);
+                }
+
                 String username = userDetails.getUsername();
-                byte[] imageBytes = image.getBytes();
-                menuItem.setPicture(imageBytes);
                 return ResponseEntity.ok(menuService.addMenuItem(username, menuItem));
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -77,17 +81,21 @@ public class MenuController {
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
                                                    @RequestBody MenuItem updatedItem,
-                                                   @RequestParam MultipartFile image
-
+                                                   @RequestParam(required = false) MultipartFile image
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             try {
+                if (image == null) {
+                    updatedItem.setPicture(null);
+                } else {
+                    byte[] imageBytes = image.getBytes();
+                    updatedItem.setPicture(imageBytes);
+                }
+
                 String username = userDetails.getUsername();
-                byte[] imageBytes = image.getBytes();
-                updatedItem.setPicture(imageBytes);
                 return ResponseEntity.ok(menuService.updateMenuItem(username, id, updatedItem));
             }catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

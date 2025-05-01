@@ -1,14 +1,32 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./SearchResult.css";
+import axios from "axios";
 
 const ShowSearchResult = () => {
   const [sortOption, setSortOption] = useState("none");
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
-  const [results, setResults] = useState(JSON.parse(sessionStorage.getItem("search-results")));
+  const [results, setResults] = useState([]);
   const [display, setDisplay] = useState(results);
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: "http://localhost:8080/search/product",
+      params: {
+        name: sessionStorage.getItem("search")
+      }
+    }).then((res) => {
+      setResults(res.data);
+    }).catch((err) => {
+      console.error(err);
+    });
+  }, []);
+
+  useEffect(() => {
+    setDisplay(results)
+  }, [results]);
 
   const sortProducts = (option) => {
     setSortOption(option);
@@ -83,7 +101,6 @@ const ShowSearchResult = () => {
                   <p className="product-rating">{product.description}</p>
                   <p className="product-price">
                     {product.price}$
-                    <button className="edit-btn" onClick={() => handleEditProduct(product)}>Edit</button>
                   </p>
                 </div>
               </div>

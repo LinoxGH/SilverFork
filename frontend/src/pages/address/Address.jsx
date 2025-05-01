@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from './Address.module.css';
 import AddressCard from "../../modules/user/AddressCard.jsx";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 
 const Addresses = () => {
   const [addresses, setAddresses] = useState([]);

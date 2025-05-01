@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./Favourites.css";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import ProductCard from "../../modules/general/ProductCard.jsx";
 import ProductFilters from "../../modules/general/ProductFilter.jsx";
 
@@ -29,27 +28,6 @@ const Favourites = () => {
       setProducts(res.data);
     })
     .catch(err => console.error("Failed to fetch favourites:", err));
-  };  
-
-  const addToCart = async (productId) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/customer/cart/add",
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          params: {
-            menuItemId: productId,
-            quantity: 1 
-          }
-        }
-      );
-      console.log("Ürün sepete eklendi:", response.data);
-    } catch (error) {
-      console.error("Sepete ekleme hatası:", error);
-    }
   };
 
   const sortProducts = (option) => {
@@ -94,8 +72,9 @@ const Favourites = () => {
                   key={product.id}
                   product={product}
                   restaurantName={product.restaurant?.name}
-                  onButtonClick={() => addToCart(product.id)}
-                  buttonLabel="＋"
+                  handleEdit={null}
+                  isFavoritable={true}
+                  isOrderable={true}
                   onRefresh={fetchFavourites}
                 />
               ))}

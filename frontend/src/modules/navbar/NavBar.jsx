@@ -1,48 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styles from "./NavBar.module.css"
 import Button from "../general/Button.jsx";
-import axios from "axios";
 
 function NavBar() {
   const [username, setUsername] = useState(localStorage.getItem("username"));
   const [rank, setRank] = useState(localStorage.getItem("rank"));
   const [search, setSearch] = useState("");
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    function handleEnter(event) {
-      if (event.key === "Enter") {
-        axios({
-          method: "GET",
-          url: "http://localhost:8080/search/product",
-          params: {
-            name: search
-          }
-        }).then((res) => {
-          sessionStorage.setItem("search-results", JSON.stringify(res.data));
-        }).catch((err) => {
-          console.error(err);
-        });
-        navigate("/search-result");
-      }
-    }
-
-    window.addEventListener('keypress', handleEnter);
-    return () => window.removeEventListener('keypress', handleEnter);
-  }, []);
-
-  useEffect(() => {
-    function handleInput(event) {
-      if (event.target.className === styles.searchBar) {
-        setSearch(event.target.value);
-      }
-    }
-
-    window.addEventListener('input', handleInput);
-    return () => window.removeEventListener('input', handleInput);
-  }, []);
 
   function handleLogoutButton() {
     localStorage.removeItem("token");
@@ -130,7 +95,19 @@ function NavBar() {
         </a>
       </div>
       <div className={styles.links}>
-        <input className={styles.searchBar} type="text" placeholder="Search for a product..."/>
+        <input
+          className={styles.searchBar}
+          type="text"
+          placeholder="Search for a product..."
+          onChange={(event) => {
+            setSearch(event.target.value)
+          }}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              sessionStorage.setItem("search", search);
+              navigate("/search-result");
+            }
+          }}/>
         {username ? ( // If user is logged in.
           <>
             {rankButtons(rank)}
