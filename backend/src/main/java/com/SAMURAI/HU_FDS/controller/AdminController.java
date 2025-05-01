@@ -2,6 +2,8 @@ package com.SAMURAI.HU_FDS.controller;
 
 
 import com.SAMURAI.HU_FDS.model.Address;
+import com.SAMURAI.HU_FDS.model.Order;
+import com.SAMURAI.HU_FDS.model.OrderItem;
 import com.SAMURAI.HU_FDS.model.User;
 import com.SAMURAI.HU_FDS.repo.*;
 import com.SAMURAI.HU_FDS.service.CartService;
@@ -16,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,6 +141,56 @@ public class AdminController {
         if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         List<Address> addresses = addressRepository.findByUsername(username);
         return ResponseEntity.ok(addresses);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/user/orders/{username}")
+    public ResponseEntity<?> getOrdersByUser(@PathVariable String username,
+                                             @RequestHeader("Authorization") String authHeader) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) return ResponseEntity.status(404).body("User not found");
+
+        return ResponseEntity.ok(orderRepository.findByUser(user.get()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/user/orders/update/{orderId}")
+    @Transactional
+    public ResponseEntity<?> updateOrder(@PathVariable Long orderId,
+                                         @RequestBody Order updatedOrder,
+                                         @RequestHeader("Authorization") String authHeader) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
+
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isEmpty()) return ResponseEntity.status(404).body("Order not found");
+
+        Order order = optionalOrder.get();
+        order.setStatus(updatedOrder.getStatus());
+        order.setTotalPrice(updatedOrder.getTotalPrice());
+        order.setAddress(updatedOrder.getAddress());
+        order.setRestaurant(updatedOrder.getRestaurant());
+
+        order.getItems().clear();
+        for (OrderItem item : updatedOrder.getItems()) {
+            item.setOrder(order);
+            order.getItems().add(item);
+        }
+
+        return ResponseEntity.ok(orderRepository.save(order));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/user/orders/delete/{orderId}")
+    @Transactional
+    public ResponseEntity<?> deleteOrder(@PathVariable Long orderId,
+                                         @RequestHeader("Authorization") String authHeader) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
+
+        if (!orderRepository.existsById(orderId)) return ResponseEntity.status(404).body("Order not found");
+
+        orderRepository.deleteById(orderId);
+        return ResponseEntity.ok("Order deleted successfully");
     }
 
 }
