@@ -2,6 +2,7 @@ package com.SAMURAI.HU_FDS.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,18 +32,23 @@ public class MenuItem {
     private byte[] picture;
 
     @Column(nullable = true)
+    @JsonIgnore
     private String category;
 
     @Column(nullable = true)
+    @JsonIgnore
     private String cuisine;
 
     @Column(nullable = true)
+    @JsonIgnore
     private Integer popularity;
 
     @Column(nullable = true)
+    @JsonIgnore
     private Double rating = 0.0; // Ortalama kullanıcı puanı
 
     @Column(nullable = false, updatable = false)
+    @JsonIgnore
     private LocalDateTime createdAt;
 
 
@@ -50,8 +56,7 @@ public class MenuItem {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
-    //@JsonIgnoreProperties({"menuItems", "id"})
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Restaurant restaurant;
 
 

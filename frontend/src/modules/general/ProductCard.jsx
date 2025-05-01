@@ -1,11 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
+import Button from "./Button.jsx";
 
-const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, showHeart = true, onRefresh }) => {
-  const [liked, setLiked] = useState(false);
-  const navigate = useNavigate(); // add this
+const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrderable, onRefresh }) => {
+  const [favorite, setFavorite] = useState(false);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
@@ -13,17 +14,30 @@ const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, show
     navigate(`/product?id=${product.id}`);
   };
 
+  if (isFavoritable) {
+    useEffect(() => {
+      axios.get(
+        `http://localhost:8080/favourites/get/${product.id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+        .then((res) => {
+          if (res) setFavorite(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
+  }
+
   const toggleHeart = async () => {
-    setLiked(!liked);
     try {
-      if (!liked) {
+      if (!favorite) {
         await axios.post(
           `http://localhost:8080/favourites/add/${product.id}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
-      }
-      else {
+      } else {
         await axios.delete(
           `http://localhost:8080/favourites/remove/${product.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
@@ -33,27 +47,71 @@ const ProductCard = ({ product, restaurantName, onButtonClick, buttonLabel, show
     } catch (error) {
       console.error("Failed to update favorite:", error);
     }
+    setFavorite(!favorite);
+  };
+
+  const addToCart = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/customer/cart/add",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          params: {
+            menuItemId: product.id,
+            quantity: 1
+          }
+        }
+      );
+      console.log("Added product to cart:", response.data);
+    } catch (error) {
+      console.error("Could not add product to cart:", error);
+    }
   };
 
   return (
     <div className="product-card">
-      {showHeart && (
+      {isFavoritable && (
         <button className="heart-btn" onClick={toggleHeart}>
-          {liked ? "❤️" : "🤍"}
+          {favorite ? "❤️" : "🤍"}
         </button>
       )}
+
       <div className="product-img" onClick={goToProductPage} style={{ cursor: "pointer" }}>
         Food Img
       </div>
+
       <div className="product-info">
         <p className="product-name">{product.name}</p>
         <p className="product-place">{restaurantName}</p>
         <p className="product-rating">{product.description}</p>
         <p className="product-price">
           {product.price}$
-          <button className="push-btn" onClick={() => onButtonClick(product)}>
-            {buttonLabel}
-          </button>
+          {isOrderable ? (
+            <>
+              <Button
+                classname="push-btn"
+                label={(<img src="/plus.png" alt={"+"} width={"60%"}/>)}
+                onClick={addToCart}
+                width={"25%"}
+                borderRadius={"20px"}
+                background={"#000000"}
+              />
+            </>
+          ) : (handleEdit ? (
+            <>
+              <Button
+                classname="push-btn"
+                label={(<img src="/pen.png" alt={"+"} width={"60%"}/>)}
+                onClick={handleEdit}
+                width={"25%"}
+                borderRadius={"20px"}
+                background={"#000000"}
+              />
+            </>
+          ) : null)}
         </p>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import "./AdminManageUser.css";
 
 const AdminManageUser = () => {
@@ -50,8 +49,7 @@ const AdminManageUser = () => {
   if (!user) return <div>Loading...</div>;
 
   return (
-    <div className="admin-manage-user"> 
-      <NavBar />
+    <div className="admin-manage-user">
       <div className="user-container">
         <div className="user-info-section">
           <h1>{user.username}</h1>

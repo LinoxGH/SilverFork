@@ -8,6 +8,7 @@ import com.SAMURAI.HU_FDS.repo.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,6 +42,7 @@ public class MenuService {
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
         menuItem.setRestaurant(restaurant);
+        menuItem.setCreatedAt(LocalDateTime.now());
         return menuItemRepository.save(menuItem);
     }
 
@@ -63,6 +65,7 @@ public class MenuService {
             existingItem.setDescription(updatedItem.getDescription());
         }
 
+        existingItem.setCreatedAt(LocalDateTime.now());
         return menuItemRepository.save(existingItem);
     }
 

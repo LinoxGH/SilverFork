@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from './Signup.module.css';
 import axios from "axios";
 

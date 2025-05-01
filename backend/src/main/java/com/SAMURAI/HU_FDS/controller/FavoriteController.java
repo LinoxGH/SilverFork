@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/favourites")
@@ -70,6 +71,27 @@ public class FavoriteController {
                     .toList();
 
             return ResponseEntity.ok(menuItems);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
+        }
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getProductFavorite(@PathVariable Long id,
+                                                @RequestHeader("Authorization") String authHeader)
+    {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            String username = userDetails.getUsername();
+
+            Optional<Favorite> favorite = favoriteService.getFavorite(username, id);
+            if (favorite.isPresent()) {
+                return ResponseEntity.ok(favorite.get());
+            } else {
+                return ResponseEntity.ok(null);
+            }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
