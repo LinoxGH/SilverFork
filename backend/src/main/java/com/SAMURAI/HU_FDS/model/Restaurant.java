@@ -35,8 +35,11 @@ public class Restaurant {
     @Column(nullable = true)
     private Double rating;
 
+    @Column(nullable = false)
+    private Double minimumCart = 20.0;
+
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<MenuItem> Menu = new ArrayList<MenuItem>();
+    private List<MenuItem> Menu = new ArrayList<>();
 }

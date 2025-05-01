@@ -9,21 +9,27 @@ const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
     name: "Sample Restaurant",
     location: "123 Sample Street",
+    picture: null,
     productCount: 3,
     averageRating: 4.5,
-    minCartPrice: 20
+    minCartPrice: 20.0
   });
 
+  // Sorting and Filtering
   const [sortOption, setSortOption] = useState("none");
   const [minPriceInput, setMinPriceInput] = useState(restaurantInfo.minCartPrice);
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
+
+  // Add/Edit/Delete Product
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDescription, setProductDescription] = useState("");
+
+  // Products List
   const [products, setProducts] = useState([]);
   const [rawProducts, setRawProducts] = useState([]);
   const navigate = useNavigate();
@@ -34,11 +40,32 @@ const RestaurantDashboard = () => {
     axios.get("http://localhost:8080/restaurant/menu", {
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then(res => {
-      setRawProducts(res.data);
-      setProducts(res.data);
-    })    
-    .catch(err => console.error("Failed to fetch products:", err));
+      .then(res => {
+        setRawProducts(res.data);
+        setProducts(res.data);
+      })
+      .catch(err => console.error("Failed to fetch products:", err));
+
+    axios.get(`http://localhost:8080/restaurant/menu/info`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        restaurantInfo.name = res.data.name;
+        restaurantInfo.minCartPrice = res.data.minimumCart;
+        restaurantInfo.picture = res.data.picture;
+
+        setMinPriceInput(restaurantInfo.minCartPrice);
+        console.log(res.data);
+      })
+      .catch(err => console.error("Failed to fetch restaurant info:", err));
+
+    axios.get(`http://localhost:8080/restaurant/menu/address`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        restaurantInfo.location = res.data.details;
+      })
+      .catch(err => console.error("Failed to fetch restaurant address:", err));
   }, []);
 
   useEffect(() => {
@@ -64,6 +91,20 @@ const RestaurantDashboard = () => {
     setEditingProduct(product);
     setShowAddProductModal(true);
   };
+
+  const handleMinimumCart = async () => {
+    const token = localStorage.getItem("token");
+
+    axios.put(`http://localhost:8080/restaurant/menu/min-cart/${minPriceInput}`, null, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+  }
 
   const handleSubmitProduct = async () => {
     const token = localStorage.getItem("token");
@@ -133,11 +174,6 @@ const RestaurantDashboard = () => {
     setProducts(sorted);
   };
 
-  const updateMinPrice = () => {
-    setRestaurantInfo({ ...restaurantInfo, minCartPrice: minPriceInput });
-    console.log("Updated min cart price:", minPriceInput);
-  };
-
   const filterProducts = (cuisine = selectedCuisine) => {
     const min = minFilter === "" ? 0 : Number(minFilter);
     const max = maxFilter === "" ? Infinity : Number(maxFilter);
@@ -152,7 +188,9 @@ const RestaurantDashboard = () => {
     <div className="dashboard-container">
       <div className="restaurant-header">
         <div className="restaurant-main">
-          <div className="restaurant-logo">Restaurant Logo</div>
+          <div className="restaurant-logo">
+            <img src={"data:image/jpeg;base64," + restaurantInfo.picture} alt={"Restaurant Logo"} className="restaurant-logo-img"/>
+          </div>
           <div className="restaurant-info">
             <p>{restaurantInfo.name}</p>
             <p>{restaurantInfo.location}</p>
@@ -212,7 +250,7 @@ const RestaurantDashboard = () => {
               type="number" 
               value={minPriceInput} 
               onChange={(e) => setMinPriceInput(e.target.value)} 
-              onBlur={updateMinPrice} 
+              onBlur={handleMinimumCart}
             />$
           </div>
           <div className="chart">
