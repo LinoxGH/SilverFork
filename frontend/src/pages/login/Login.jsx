@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from './Login.module.css';
 
 function LoginTitle() {
@@ -97,7 +96,6 @@ function AccountSection() {
 function Login() {
   return (
     <div className={styles.container}>
-      <NavBar />
       <div className={styles.loginContainer}>
         <LoginTitle />
         <LoginForm />

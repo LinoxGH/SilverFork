@@ -75,7 +75,6 @@ const CartPage = () => {
 
   return (
     <div className="cart-container">
-      <NavBar />
       <div className={'itemContainer'}>
         <div className="cart-title">
           <h1 >Cart</h1>

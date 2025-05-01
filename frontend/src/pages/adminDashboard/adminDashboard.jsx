@@ -43,7 +43,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <NavBar />
       <div className="dashboard-body">
         <div className="left-panel">
           <input

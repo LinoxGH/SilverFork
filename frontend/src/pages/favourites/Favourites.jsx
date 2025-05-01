@@ -75,7 +75,6 @@ const Favourites = () => {
 
   return (
     <>
-      <NavBar/>
       <div className="favourites-page">
         <p className="favourites-title">My favourites</p>
         <div className="favourites-layout">

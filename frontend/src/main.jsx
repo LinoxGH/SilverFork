@@ -17,10 +17,12 @@ import ShowSearchResult from './pages/searchResult/SearchResult.jsx';
 import AdminDashboard from './pages/adminDashboard/adminDashboard.jsx';
 import AdminManageUser from "./pages/adminManageUser/adminManageUser.jsx";
 import ProtectedRoute from "./modules/general/ProtectedRoute.jsx";
+import NavBar from "./modules/navbar/NavBar.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <NavBar/>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/signup" element={<Signup />} />

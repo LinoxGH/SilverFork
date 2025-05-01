@@ -1,54 +1,43 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./SearchResult.css";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 
 const ShowSearchResult = () => {
   const [sortOption, setSortOption] = useState("none");
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
-  const [showAddProductModal, setShowAddProductModal] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [products, setProducts] = useState([]);
-
-
-  
+  const [results, setResults] = useState(JSON.parse(sessionStorage.getItem("search-results")));
+  const [display, setDisplay] = useState(results);
 
   const sortProducts = (option) => {
     setSortOption(option);
-    let sorted = [...products];
-    if (option === "lowest") sorted.sort((a, b) => a.price - b.price);
-    if (option === "highest") sorted.sort((a, b) => b.price - a.price);
-    if (option === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
-    if (option === "new") sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
-    if (option === "rated") sorted.sort((a, b) => b.rating - a.rating);
-    setProducts(sorted);
+    let sorted = [...results];
+    if (sortOption === "lowest") sorted.sort((a, b) => a.price - b.price);
+    if (sortOption === "highest") sorted.sort((a, b) => b.price - a.price);
+    if (sortOption === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
+    if (sortOption === "new") sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (sortOption === "rated") sorted.sort((a, b) => b.rating - a.rating);
+    setDisplay(sorted);
   };
 
-  const updateMinPrice = () => {
-    setRestaurantInfo({ ...restaurantInfo, minCartPrice: minPriceInput });
-    console.log("Updated min cart price:", minPriceInput);
-  };
-
-  const filterProducts = (cuisine = selectedCuisine) => {
+  const filterProducts = () => {
     const min = minFilter === "" ? 0 : Number(minFilter);
     const max = maxFilter === "" ? Infinity : Number(maxFilter);
-    const filtered = products.filter(p =>
+    let filtered = results.filter(p =>
       p.price >= min &&
       p.price <= max
     );
-    setProducts(filtered);
+    filtered = filtered.filter(p =>
+      p.cuisine === selectedCuisine
+    );
+    setDisplay(filtered);
   };
 
   return (
     <div className="dashboard-container">
-      <NavBar/>
       <div>
-        <p className="result-text"> X Result Found </p>
+        <p className="result-text"> {display.length} Result Found </p>
       </div>
       <div className="dashboard-body">
         <div className="filters">
@@ -67,7 +56,7 @@ const ShowSearchResult = () => {
                 key={cuisine}
                 onClick={() => {
                   setSelectedCuisine(cuisine);
-                  filterProducts(cuisine);
+                  filterProducts();
                 }}
               >{cuisine}</p>
             ))}
@@ -85,15 +74,15 @@ const ShowSearchResult = () => {
         <div className="product-location">
           <h3 className="product-label">Products</h3>
           <div className="products">
-            {products.map((product) => (
+            {display.map((product) => (
               <div className="product-card" key={product.id}>
                 <div className="product-img">Food Img</div>
                 <div className="product-info">
                   <p className="product-name">{product.name}</p>
-                  <p className="product-place">{restaurantInfo.name}</p>
+                  <p className="product-place">INSERT RESTAURANT NAME HERE</p>
                   <p className="product-rating">{product.description}</p>
                   <p className="product-price">
-                    {product.price}$ 
+                    {product.price}$
                     <button className="edit-btn" onClick={() => handleEditProduct(product)}>Edit</button>
                   </p>
                 </div>

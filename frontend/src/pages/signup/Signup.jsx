@@ -103,7 +103,6 @@ function Signup() {
   const navigate = useNavigate();
   return (
     <div className={styles.container}>
-      <NavBar />
       <div className={styles.signupContainer}>
         <SignupTitle />
         <SignupForm />

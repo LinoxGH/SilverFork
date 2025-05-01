@@ -142,7 +142,6 @@ const RestaurantDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <NavBar/>
       <div className="restaurant-header">
         <div className="restaurant-main">
           <div className="restaurant-logo">Restaurant Logo</div>
