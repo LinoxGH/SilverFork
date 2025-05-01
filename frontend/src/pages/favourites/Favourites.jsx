@@ -17,6 +17,10 @@ const Favourites = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    fetchFavourites();
+  }, []);
+  
+  const fetchFavourites = () => {
     axios.get("http://localhost:8080/favourites", {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -25,7 +29,7 @@ const Favourites = () => {
       setProducts(res.data);
     })
     .catch(err => console.error("Failed to fetch favourites:", err));
-  }, []);
+  };  
 
   const addToCart = async (productId) => {
     try {
@@ -92,6 +96,7 @@ const Favourites = () => {
                   restaurantName={product.restaurant?.name}
                   onButtonClick={() => addToCart(product.id)}
                   buttonLabel="＋"
+                  onRefresh={fetchFavourites}
                 />
               ))}
             </div>

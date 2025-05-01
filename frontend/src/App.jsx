@@ -1,5 +1,6 @@
 import './App.css';
 import NavBar from "./modules/navbar/NavBar.jsx";
+import ProductCard from "./modules/general/ProductCard.jsx";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -8,38 +9,45 @@ function App() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    axios.get("http://localhost:8080/restaurant/menu/items/restaurant1", {
-    })
+    axios.get("http://localhost:8080/restaurant/menu/items/restaurant1")
       .then((res) => {
         setProducts(res.data);
       })
       .catch((err) => console.error("Failed to load products:", err));
-  }, [token]);
+  }, []);
 
-  const addToCart = async (productId) => {
-    axios({
-      method: "POST",
-      url: "http://localhost:8080/customer/cart/add",
-      headers: { Authorization: `Bearer ${token}` },
-      params: {
-        menuItemId: productId,
-        quantity: 1
-      }
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+  const addToCart = async (product) => {
+    try {
+      await axios.post("http://localhost:8080/customer/cart/add", null, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          menuItemId: product.id,
+          quantity: 1
+        }
+      });
+      console.log("Added to cart:", product.name);
+    } catch (err) {
+      console.error("Add to cart failed:", err);
+    }
   };
 
   return (
     <>
-      <div className='welcome-text'>
-        <h1>Welcome to the Simple Page</h1>
-      </div>
-      
-      <div>
-        {products.map((product) => (
-          <button key={product.id} onClick={() => addToCart(product.id)}>{product.name}</button>
-        ))}
+      <NavBar />
+      <div className="recommendations-page">
+        <h1 className="recommendations-title">Recommendations</h1>
+        <div className="products-grid">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              restaurantName={product.restaurant?.name || "Unknown"}
+              onButtonClick={addToCart}
+              buttonLabel="＋"
+              showHeart={true}
+            />
+          ))}
+        </div>
       </div>
     </>
   );

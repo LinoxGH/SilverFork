@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../modules/navbar/NavBar.jsx";
 import styles from './Login.module.css';
 
 function LoginTitle() {
@@ -37,8 +36,8 @@ function LoginForm() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("email", data.email);
       localStorage.setItem("rank", data.rank);
-      localStorage.setItem("email", data.email); //Might be wrong
 
       alert("Login successful!");
       navigate("/manage-user");

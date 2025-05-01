@@ -5,6 +5,22 @@
   background-color: #1F1F1F;
 }
 
-.welcome-text{
-  padding-left: 1rem;
+.recommendations-page {
+  padding: 80px 3rem 2rem;
+  background-color: #1f1f1f;
+  color: white;
+}
+
+.recommendations-title {
+  font-size: 48px;
+  text-align: left;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 0 2rem;
 }

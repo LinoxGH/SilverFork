@@ -1,7 +1,5 @@
+import { useSearchParams } from "react-router-dom";
 import styles from "./Product.module.css";
-import NavBar from "../../modules/navbar/NavBar.jsx";
-
-
 
 function ProductSection() {
   return (
@@ -68,14 +66,15 @@ function ReviewSection() {
 }
 
 function ProductDetail() {
+  const [searchParams] = useSearchParams();
+  const productId = searchParams.get("id");
+
   return (
     <div className={styles.productContainer}>
-      <div><ProductSection /></div>
+      <div><ProductSection productId={productId} /></div>
       <hr className={styles.productDivider} />
-      <div><ReviewSection /></div>
+      <div><ReviewSection productId={productId} /></div>
     </div>
-    
-      
   );
 }
 export default ProductDetail;
