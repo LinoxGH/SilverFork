@@ -75,7 +75,6 @@ const Favourites = () => {
 
   return (
     <>
-      <NavBar/>
       <div className="favourites-page">
         <p className="favourites-title">My favourites</p>
         <div className="favourites-layout">
@@ -95,7 +94,7 @@ const Favourites = () => {
                   key={product.id}
                   product={product}
                   restaurantName={product.restaurant?.name}
-                  onButtonClick={addToCart}
+                  onButtonClick={() => addToCart(product.id)}
                   buttonLabel="＋"
                   onRefresh={fetchFavourites}
                 />

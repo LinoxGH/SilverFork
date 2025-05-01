@@ -26,7 +26,6 @@ const Addresses = () => {
 
   return (
     <>
-      <NavBar/>
       <div className={"address-page-parent"}>
         <h2>ADDRESSES</h2>
         <div className={"address-page"}>

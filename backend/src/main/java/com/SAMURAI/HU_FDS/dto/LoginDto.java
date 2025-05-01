@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class LoginDto {
     private String username;
     private String email;
     private String rank;
+    @JsonIgnore
     private String picture;
 
     public LoginDto(String token, String username, String email, String rank, byte[] picture) {
