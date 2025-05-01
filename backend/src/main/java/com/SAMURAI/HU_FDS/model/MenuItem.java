@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 
@@ -38,6 +39,14 @@ public class MenuItem {
     @Column(nullable = true)
     private Integer popularity;
 
+    @Column(nullable = true)
+    private Double rating = 0.0; // Ortalama kullanıcı puanı
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+
+
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
@@ -45,6 +54,11 @@ public class MenuItem {
     @JsonIgnore
     private Restaurant restaurant;
 
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
     public String getBase64Image() {
         if (picture != null) {
             return Base64.getEncoder().encodeToString(picture);
