@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class OrderItem {
     private Double priceAtOrder; // Sipariş anındaki fiyat
 
     @ManyToOne
+    @JsonIgnore
     private Order order;
 }
 

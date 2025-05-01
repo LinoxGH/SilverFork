@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./RestaurantDashboard.css";
 import ProductCard from "../../modules/general/ProductCard.jsx";
 import ProductFilters from "../../modules/general/ProductFilter.jsx";
@@ -25,6 +26,7 @@ const RestaurantDashboard = () => {
   const [productDescription, setProductDescription] = useState("");
   const [products, setProducts] = useState([]);
   const [rawProducts, setRawProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -160,7 +162,9 @@ const RestaurantDashboard = () => {
             }}>Add Product ➕</button>
           </div>
           <div className="second-buttons">
-            <button>Current Orders</button>
+          <button onClick={() => navigate("/current-orders")}>
+            Current Orders
+          </button>
             <button>Employed Couriers</button>
           </div>
         </div>

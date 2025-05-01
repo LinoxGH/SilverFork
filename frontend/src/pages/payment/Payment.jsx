@@ -1,55 +1,87 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Payment.module.css';
-import TextBox from "../../modules/general/TextBox.jsx";
-import Checkbox from "../../modules/general/Checkbox.jsx";
-import Button from "../../modules/general/Button.jsx";
+
 
 function PaymentPage() {
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [cardNumber, setCardNumber] = useState('');
-    const [cvv, setCvv] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
-    const [address, setAddress] = useState('');
-    const [deliveryDate, setDeliveryDate] = useState('');
-    const [termsAccepted, setTermsAccepted] = useState(false);
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [deliveryDate, setDeliveryDate] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState('');
 
-    const handleInputChange = (event, setState) => {
-        setState(event.target.value);
-    };
+  const token = localStorage.getItem("token");
 
-    const handleCheckboxChange = () => {
-        setTermsAccepted(!termsAccepted);
-    };
+  useEffect(() => {
+    axios.get("http://localhost:8080/address/list", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => setAddresses(res.data))
+    .catch(err => console.error("Failed to fetch addresses", err));
+  }, []);
 
-    const handleConfirm = () => {
-        if (!name || !surname || !cardNumber || !cvv || !expiryDate || !address || !deliveryDate || !termsAccepted) {
-            alert('Please fill in all fields and accept the terms and conditions.');
-        } else {
-            //GET CONFIRMATION
-        }
+  const confirmOrder = () => {
+    if (!termsAccepted || !selectedAddressId) {
+      alert("Please accept terms and select an address.");
+      return;
     }
-    
-    return (
-        <>
-            <div className="payment-label">Payment</div>
-            <div className="payment-box"></div>
-            <TextBox placeholder="Name" width="270px" height="50px" top="210px" left="400px" value={name} onChange={(event) => handleInputChange(event, setName)}/>
-            <TextBox placeholder="Surname" width="270px" height="50px" top="210px" left="700px" value={surname} onChange={(event) => handleInputChange(event, setSurname)}/>
-            <TextBox placeholder="Card Number" width="570px" height="50px" top="290px" left="400px" value={cardNumber} onChange={(event) => handleInputChange(event, setCardNumber)}/>
-            <TextBox placeholder="CVV" width="270px" height="50px" top="370px" left="400px" value={cvv} onChange={(event) => handleInputChange(event, setCvv)}/>
-            <TextBox placeholder="MM/YY" width="270px" height="50px" top="370px" left="700px" value={expiryDate} onChange={(event) => handleInputChange(event, setExpiryDate)}/>
-            <TextBox placeholder="" width="570px" height="100px" top="490px" left="400px" value={address} onChange={(event) => handleInputChange(event, setAddress)}/>
-            <TextBox placeholder="" width="270px" height="50px" top="660px" left="400px" value={deliveryDate} onChange={(event) => handleInputChange(event, setDeliveryDate)}/>
-            <Checkbox width= "32px" height= "32px" top = "670px" left = "1050px" checked={termsAccepted} onChange={handleCheckboxChange}/>
-            <div className="adress-label">Adress</div>
-            <div className="delivery-label">Delivery Date</div>
-            <div className="addInfo-label">Terms of Service etc.</div>
-            <div className="checkBox-label">I have read and agree to Terms of Service.</div>
 
-            <Button label="Confirm Payment" onClick={handleConfirm} width="270px" height="50px" position="absolute" top="660px" left="710px"/>
-        </>
-    );
+    axios.post(`http://localhost:8080/order/create`, null, {
+      params: { addressId: selectedAddressId },
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => alert("Order placed successfully!"))
+    .catch(err => alert("Order failed."));
+  };
+
+  return (
+    <div>
+      <h2>Payment</h2>
+      <div>
+        <div>
+          <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+        </div>
+        <div>
+          <input placeholder="Surname" value={surname} onChange={e => setSurname(e.target.value)} />
+        </div>
+        <div>
+          <input placeholder="Card Number" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
+        </div>
+        <div>
+          <input placeholder="CVV" value={cvv} onChange={e => setCvv(e.target.value)} />
+        </div>
+        <div>
+          <input placeholder="MM / YY" value={expiryDate} onChange={e => setExpiryDate(e.target.value)} />
+        </div>
+        <div>
+          <label>Address</label>
+          <select value={selectedAddressId} onChange={e => setSelectedAddressId(e.target.value)}>
+            <option value="">Select Address</option>
+            {addresses.map((addr) => (
+                <option key={addr.id} value={addr.id}>
+                    {addr.name} – {addr.details}
+                </option>
+                ))}
+          </select>
+        </div>
+        <div>
+          <label>Delivery Date</label>
+          <input type="date" value={deliveryDate} onChange={e => setDeliveryDate(e.target.value)} />
+        </div>
+        <div>
+          <button onClick={confirmOrder}>Confirm Payment</button>
+        </div>
+        <div>
+          <input type="checkbox" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} />
+          <label>I have read and agree to Terms of Service.</label>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default PaymentPage;
