@@ -1,31 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../../modules/navbar/NavBar.jsx";
 import "./AdminManageUser.css";
 
 const AdminManageUser = () => {
   const { username } = useParams();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
+  const token = localStorage.getItem("token");
+  const headers = { Authorization: `Bearer ${token}` };
+
   useEffect(() => {
-    /*
-    axios.get(`http://localhost:8080/admin/user/${username}`)
+    axios.get(`http://localhost:8080/admin/users/${username}`, { headers })
       .then(res => setUser(res.data))
       .catch(err => console.error("Failed to fetch user:", err));
-      */
-      setUser({
-        username: "User12345",
-        email: "user12345@example.com",
-        registeredAt: "12/05/2022 15:42",
-        lastOnline: "23/04/2025 11:15"
-      });
   }, [username]);
+
+  const deleteUser = () => {
+    axios.delete(`http://localhost:8080/admin/users/delete/${username}`, { headers })
+      .then(() => {
+        alert("User deleted.");
+        navigate("/admin-dashboard");
+      })
+      .catch(err => alert("Delete failed"));
+  };
+
+  const updateStatus = (status) => {
+    axios.put(`http://localhost:8080/admin/users/${username}/status`, null, {
+      headers,
+      params: { status }
+    })
+    .then(() => alert(`Status changed to ${status}`))
+    .catch(err => alert("Failed to change status"));
+  };
+
+  const changeRank = () => {
+    const newRank = prompt("Enter new rank:");
+    if (!newRank) return;
+    axios.put(`http://localhost:8080/admin/users/${username}/rank`, null, {
+      headers,
+      params: { rank: newRank }
+    })
+    .then(() => alert("Rank updated"))
+    .catch(err => alert("Failed to update rank"));
+  };
 
   if (!user) return <div>Loading...</div>;
 
   return (
-    <div className="admin-manage-user">
+    <div className="admin-manage-user"> 
+      <NavBar />
       <div className="user-container">
         <div className="user-info-section">
           <h1>{user.username}</h1>
@@ -34,17 +60,15 @@ const AdminManageUser = () => {
 
           <div className="button-grid">
             <button>View Addresses</button>
-            <button>Delete Account</button>
+            <button onClick={deleteUser}>Delete Account</button>
             <button>View Order History</button>
-            <button>Ban Account</button>
+            <button onClick={() => updateStatus("BANNED")}>Ban Account</button>
             <button>View Reviews</button>
-            <button>Restrict Account</button>
+            <button onClick={() => updateStatus("RESTRICTED")}>Restrict Account</button>
             <button>View Reports</button>
-            <button>Change Rank</button>
+            <button onClick={changeRank}>Change Rank</button>
           </div>
 
-          <p>Registered In: {user.registeredAt}</p>
-          <p>Last Online: {user.lastOnline}</p>
           <hr className="user-divider" />
         </div>
 

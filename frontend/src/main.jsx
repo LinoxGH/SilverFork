@@ -36,17 +36,17 @@ createRoot(document.getElementById('root')).render(
         <Route path="/product" element={<ProductDetail />} />
         <Route path="/search-result" element={<ShowSearchResult />} />
         <Route path="/restaurant-dashboard" element={
-          <ProtectedRoute allowedRoles={['restaurant']}>
+          <ProtectedRoute allowedRoles={['RESTAURANT']}>
             <RestaurantDashboard />
           </ProtectedRoute>
         } />
         <Route path="/admin-dashboard" element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['ADMIN']}>
             <AdminDashboard />
           </ProtectedRoute>
         } />
         <Route path="/admin-dashboard/:username" element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['ADMIN']}>
             <AdminManageUser />
           </ProtectedRoute>
         } />
