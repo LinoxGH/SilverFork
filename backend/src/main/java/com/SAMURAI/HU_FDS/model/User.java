@@ -47,6 +47,7 @@ public class User {
     private String courierStatus;
 
     @OneToMany(mappedBy = "courier")
+    @JsonIgnore
     private List<RestaurantEmployee> restaurantEmployees;
 
     public String getBase64Image() {
