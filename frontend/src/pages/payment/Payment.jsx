@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Payment.module.css';
+import styles from './Payment.module.css';
 
 
 function PaymentPage() {
@@ -39,49 +39,61 @@ function PaymentPage() {
   };
 
   return (
-    <div>
-      <h2>Payment</h2>
-      <div>
-        <div>
-          <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-        </div>
-        <div>
-          <input placeholder="Surname" value={surname} onChange={e => setSurname(e.target.value)} />
-        </div>
-        <div>
-          <input placeholder="Card Number" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
-        </div>
-        <div>
-          <input placeholder="CVV" value={cvv} onChange={e => setCvv(e.target.value)} />
-        </div>
-        <div>
-          <input placeholder="MM / YY" value={expiryDate} onChange={e => setExpiryDate(e.target.value)} />
-        </div>
-        <div>
-          <label>Address</label>
-          <select value={selectedAddressId} onChange={e => setSelectedAddressId(e.target.value)}>
-            <option value="">Select Address</option>
-            {addresses.map((addr) => (
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Payment</h2>
+      <div className={styles.form}>
+        <div className={styles.left}>
+  
+          <div className={styles.row}>
+            <input className={`${styles.input} ${styles.shortInput}`} placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+            <input className={`${styles.input} ${styles.shortInput}`} placeholder="Surname" value={surname} onChange={e => setSurname(e.target.value)} />
+          </div>
+  
+          <div className={styles.row}>
+            <input className={`${styles.input} ${styles.cardNumber}`} placeholder="Card Number" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
+          </div>
+  
+          <div className={styles.row}>
+            <input className={`${styles.input} ${styles.shortInput}`} placeholder="CVV" value={cvv} onChange={e => setCvv(e.target.value)} />
+            <input className={`${styles.input} ${styles.shortInput}`} placeholder="MM / YY" value={expiryDate} onChange={e => setExpiryDate(e.target.value)} />
+          </div>
+  
+          <div className={styles.column}>
+            <label className={styles.label}>Address</label>
+            <select className={styles.select} value={selectedAddressId} onChange={e => setSelectedAddressId(e.target.value)}>
+              <option value="">Select Address</option>
+              {addresses.map((addr) => (
                 <option key={addr.id} value={addr.id}>
-                    {addr.name} – {addr.details}
+                  {addr.name} – {addr.details}
                 </option>
-                ))}
-          </select>
+              ))}
+            </select>
+          </div>
+  
+          <div className={`${styles.row} ${styles.alignEnd}`}>
+            <div className={styles.column}>
+              <label className={styles.label}>Delivery Date</label>
+              <input className={`${styles.input} ${styles.shortInput}`} type="date" value={deliveryDate} onChange={e => setDeliveryDate(e.target.value)} />
+            </div>
+            <button className={styles.button} onClick={confirmOrder}>Confirm Payment</button>
+          </div>
+  
         </div>
-        <div>
-          <label>Delivery Date</label>
-          <input type="date" value={deliveryDate} onChange={e => setDeliveryDate(e.target.value)} />
-        </div>
-        <div>
-          <button onClick={confirmOrder}>Confirm Payment</button>
-        </div>
-        <div>
-          <input type="checkbox" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} />
-          <label>I have read and agree to Terms of Service.</label>
+  
+        <div className={styles.right}>
+          <p><strong>Additional information:</strong></p>
+          <p>Terms of Service,<br />Legal procedures etc.</p>
+          <div className={styles.checkboxRow}>
+            <input type="checkbox" id="terms" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} />
+            <label htmlFor="terms">
+              I have read and agree to Terms of Service.
+            </label>
+          </div>
         </div>
       </div>
     </div>
-  );
+  );  
+  
 }
 
 export default PaymentPage;
