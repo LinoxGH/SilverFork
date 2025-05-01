@@ -48,6 +48,7 @@ public class User {
     private String courierStatus;
 
     @OneToMany(mappedBy = "courier")
+    @JsonIgnore
     private List<RestaurantEmployee> restaurantEmployees;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
