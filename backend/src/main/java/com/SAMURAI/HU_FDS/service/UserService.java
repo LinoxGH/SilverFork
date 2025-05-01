@@ -1,8 +1,12 @@
 package com.SAMURAI.HU_FDS.service;
 
 import com.SAMURAI.HU_FDS.dto.LoginDto;
+import com.SAMURAI.HU_FDS.model.Cart;
+import com.SAMURAI.HU_FDS.model.Favorite;
 import com.SAMURAI.HU_FDS.model.Restaurant;
 import com.SAMURAI.HU_FDS.model.User;
+import com.SAMURAI.HU_FDS.repo.CartRepository;
+import com.SAMURAI.HU_FDS.repo.FavoriteRepository;
 import com.SAMURAI.HU_FDS.repo.RestaurantRepository;
 import com.SAMURAI.HU_FDS.repo.UserRepository;
 import jakarta.transaction.Transactional;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +31,10 @@ public class UserService {
 
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private FavoriteRepository favoriteRepository;
 
 
     @Transactional
@@ -112,13 +121,6 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setPicture(newPicture);
-        userRepository.save(user);
-    }
-
-    public void updateUserRank(String username, String newRank) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setRank(newRank);
         userRepository.save(user);
     }
 

@@ -105,7 +105,6 @@ function ManageUser() {
     const file = event.target.files[0];
     if (file) {
       setImage(file); // Gerçek dosya
-      setImagePreview(URL.createObjectURL(file)); // Sadece önizleme
     }
   };
 
@@ -133,8 +132,7 @@ function ManageUser() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.parentImageContainer}>
-        <div className={styles.profileLogin}>
+        <div className={styles.leftContainer}>
           <div className={styles.titleContainer}>
             <h2 className={styles.title}>{username}</h2>
           </div>
@@ -177,10 +175,11 @@ function ManageUser() {
           </div>
           <hr className={styles.bottomLine} />
         </div>
-        <div className={styles.profileRightContainer}>
+
+        <div className={styles.rightContainer}>
           <div className={styles.imageContainer}>
             {imagePreview ? (
-              <img src={imagePreview} alt="Profile" className={styles.profileImage} />
+              <img className={styles.profileImage} src={imagePreview} alt="Profile" className={styles.profileImage} />
             ) : (
               <div className={styles.placeholderContainer}>
                 <span className={styles.placeholderText}>Upload Image</span>
@@ -195,7 +194,7 @@ function ManageUser() {
               />
             </div>
           <div className={styles.saveButton}>
-          <button className={styles.button} onClick={handleSaveImage}>Save Picture</button>
+            <button className={styles.button} onClick={handleSaveImage}>Save Picture</button>
           </div>
           
           </div>  
@@ -206,7 +205,6 @@ function ManageUser() {
             <button className={styles.button} onClick={handleDelete}>Delete Account</button>
           </div>
         </div>
-      </div>
     </div>
   );
 }
