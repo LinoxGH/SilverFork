@@ -16,4 +16,5 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     List<Address> findByUsername(String username);
 
+    void deleteAllByUsername(String username);
 }

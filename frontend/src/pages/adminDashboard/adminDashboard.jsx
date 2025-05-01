@@ -17,21 +17,27 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     // Replace with real API endpoints
-    axios.get("http://localhost:8080/admin/accounts")
-      .then(res => setAccounts(res.data))
-      .catch(err => console.error("Failed to fetch accounts:", err));
+    axios.get("http://localhost:8080/admin/users", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    .then(res => setAccounts(res.data))
+    .catch(err => console.error("Failed to fetch accounts:", err));
+    
 
+    /*
     axios.get("http://localhost:8080/admin/report-stats")
       .then(res => setStats(res.data))
       .catch(err => console.error("Failed to fetch stats:", err));
-
+    */
     
   }, []);
 
 
   //might need fixing
   const filteredAccounts = accounts.filter(acc =>
-    acc.name.toLowerCase().includes(search.toLowerCase()) ||
+    acc.username.toLowerCase().includes(search.toLowerCase()) ||
     acc.email.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -56,9 +62,9 @@ const AdminDashboard = () => {
               >
                 <div className="account-image">Account Image</div>
                 <div className="account-info">
-                  <p><strong>{acc.name}</strong></p>
+                  <p><strong>{acc.username}</strong></p>
                   <p>{acc.email}</p>
-                  <p>{acc.type}</p>
+                  <p>{acc.rank}</p>
                   <p>{acc.status}</p>
                 </div>
               </div>

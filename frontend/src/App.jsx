@@ -9,11 +9,11 @@ function App() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    axios.get("http://localhost:8080/restaurant/menu/items/restaurant1")
+    /*axios.get("http://localhost:8080/restaurant/menu/items/restaurant1")
       .then((res) => {
         setProducts(res.data);
       })
-      .catch((err) => console.error("Failed to load products:", err));
+      .catch((err) => console.error("Failed to load products:", err));*/
   }, []);
 
   const addToCart = async (product) => {

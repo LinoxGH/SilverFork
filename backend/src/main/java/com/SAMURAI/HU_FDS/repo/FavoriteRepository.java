@@ -16,4 +16,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite,Long> {
     Optional<Favorite> findByUser_UsernameAndMenuItem_Id(String username, Long menuItemId);
 
     boolean existsByUserAndMenuItem(User user, MenuItem menuItem);
+
+    void deleteAllByUser(Optional<User> user);
 }
