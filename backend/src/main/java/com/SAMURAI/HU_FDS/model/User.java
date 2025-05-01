@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -49,9 +50,14 @@ public class User {
     @OneToMany(mappedBy = "courier")
     private List<RestaurantEmployee> restaurantEmployees;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
+
     public String getBase64Image() {
         if (picture != null) {
-            System.out.println("denebakim");
             return Base64.getEncoder().encodeToString(picture);
         }
         return null;

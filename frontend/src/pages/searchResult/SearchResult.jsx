@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./SearchResult.css";
 import axios from "axios";
 import ProductCard from "../../modules/general/ProductCard.jsx";
+import { useParams } from "react-router-dom";
 
 const ShowSearchResult = () => {
+  const { keyword } = useParams();
   const [sortOption, setSortOption] = useState("none");
   const [minFilter, setMinFilter] = useState("");
   const [maxFilter, setMaxFilter] = useState("");
@@ -16,7 +18,7 @@ const ShowSearchResult = () => {
       method: "GET",
       url: "http://localhost:8080/search/product",
       params: {
-        name: sessionStorage.getItem("search")
+        name: keyword
       }
     }).then((res) => {
       console.log(res.data);
@@ -24,7 +26,7 @@ const ShowSearchResult = () => {
     }).catch((err) => {
       console.error(err);
     });
-  }, []);
+  }, [keyword]);
 
   useEffect(() => {
     setDisplay(results)

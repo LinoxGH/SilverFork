@@ -35,7 +35,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/product" element={<ProductDetail />} />
-        <Route path="/search-result" element={<ShowSearchResult />} />
+        <Route path="/search-result/:keyword" element={<ShowSearchResult />} />
         <Route path="/restaurant-dashboard" element={
           <ProtectedRoute allowedRoles={['RESTAURANT']}>
             <RestaurantDashboard />

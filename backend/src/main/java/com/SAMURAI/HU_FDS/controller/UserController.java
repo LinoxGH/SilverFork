@@ -1,6 +1,5 @@
 package com.SAMURAI.HU_FDS.controller;
 
-
 import com.SAMURAI.HU_FDS.dto.LoginDto;
 import com.SAMURAI.HU_FDS.model.User;
 import com.SAMURAI.HU_FDS.repo.UserRepository;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Base64;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping
@@ -142,22 +140,6 @@ public class UserController {
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
-        }
-    }
-
-    @PutMapping("/update-rank")
-    public ResponseEntity<String> updateRank (@RequestHeader("Authorization") String authHeader,
-                                              @RequestParam String username,
-                                              @RequestParam String newRank){
-        String token = authHeader.replace("Bearer ", "");
-        if (!isAuthorized(token, username)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized action");
-        }
-        try {
-            userService.updateUserRank(username, newRank);
-            return ResponseEntity.ok("Rank updated successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Rank update failed: " + e.getMessage());
         }
     }
 

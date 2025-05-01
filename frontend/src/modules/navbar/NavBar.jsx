@@ -108,8 +108,7 @@ function NavBar() {
           }}
           onKeyPress={(event) => {
             if (event.key === "Enter") {
-              sessionStorage.setItem("search", search);
-              navigate("/search-result");
+              navigate(`/search-result/${encodeURIComponent(search)}`);
             }
           }}/>
         {username ? ( // If user is logged in.
