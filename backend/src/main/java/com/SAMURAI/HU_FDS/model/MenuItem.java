@@ -45,14 +45,15 @@ public class MenuItem {
 
     @Column(nullable = true)
     @JsonIgnore
-    private Double rating = 0.0; // Ortalama kullanıcı puanı
+    private Double rating = 0.0; // Average user rating
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     @JsonIgnore
     private LocalDateTime createdAt;
 
-
-
+    @Column(nullable = true)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Boolean hidden = false;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

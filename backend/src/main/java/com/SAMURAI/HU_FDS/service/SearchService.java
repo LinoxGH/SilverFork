@@ -8,6 +8,7 @@ import com.SAMURAI.HU_FDS.repo.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class SearchService {
 
 
     public List<MenuItem> searchMenuItems(String keyword) {
-        return menuItemRepository.findByNameContainingIgnoreCase(keyword);
+        return menuItemRepository.findByNameContainingIgnoreCase(keyword).stream().filter(item -> !item.getHidden()).toList();
     }
 
 
@@ -31,23 +32,25 @@ public class SearchService {
 
 
     public List<MenuItem> filterMenuItems(String category, String cuisine, Integer popularity) {
+        List<MenuItem> result = new ArrayList<>();
         if (category != null && cuisine != null && popularity != null) {
-            return menuItemRepository.findByCategoryIgnoreCaseAndCuisineIgnoreCaseAndPopularityGreaterThanEqual(category, cuisine, popularity);
+            result = menuItemRepository.findByCategoryIgnoreCaseAndCuisineIgnoreCaseAndPopularityGreaterThanEqual(category, cuisine, popularity);
         } else if (category != null && cuisine != null) {
-            return menuItemRepository.findByCategoryIgnoreCaseAndCuisineIgnoreCase(category, cuisine);
+            result = menuItemRepository.findByCategoryIgnoreCaseAndCuisineIgnoreCase(category, cuisine);
         } else if (category != null && popularity != null) {
-            return menuItemRepository.findByCategoryIgnoreCaseAndPopularityGreaterThanEqual(category,popularity);
+            result = menuItemRepository.findByCategoryIgnoreCaseAndPopularityGreaterThanEqual(category,popularity);
         } else if (cuisine != null && popularity != null) {
-            return menuItemRepository.findByCuisineIgnoreCaseAndPopularityGreaterThanEqual(cuisine, popularity);
+            result = menuItemRepository.findByCuisineIgnoreCaseAndPopularityGreaterThanEqual(cuisine, popularity);
         } else if (category != null) {
-            return menuItemRepository.findByCategoryIgnoreCase(category);
+            result = menuItemRepository.findByCategoryIgnoreCase(category);
         } else if (cuisine != null) {
-            return menuItemRepository.findByCuisineIgnoreCase(cuisine);
+            result = menuItemRepository.findByCuisineIgnoreCase(cuisine);
         } else if (popularity != null) {
-            return menuItemRepository.findByPopularityGreaterThanEqual(popularity);
+            result = menuItemRepository.findByPopularityGreaterThanEqual(popularity);
         } else {
-            return menuItemRepository.findAll();
+            result = menuItemRepository.findAll();
         }
+        return result.stream().filter(item -> !item.getHidden()).toList();
     }
 
     public List<Restaurant> filterRestaurants(String category, String cuisine, Double rating) {

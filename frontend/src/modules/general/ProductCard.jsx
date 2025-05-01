@@ -99,7 +99,7 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
               <Button
                 classname="push-btn"
                 label={(<img src="/pen.png" alt={"+"} width={"60%"}/>)}
-                onClick={handleEdit}
+                onClick={() => handleEdit(product)}
                 width={"25%"}
                 borderRadius={"20px"}
                 background={"#000000"}
