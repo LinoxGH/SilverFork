@@ -55,7 +55,6 @@ const RestaurantDashboard = () => {
         restaurantInfo.picture = res.data.picture;
 
         setMinPriceInput(restaurantInfo.minCartPrice);
-        console.log(res.data);
       })
       .catch(err => console.error("Failed to fetch restaurant info:", err));
 
