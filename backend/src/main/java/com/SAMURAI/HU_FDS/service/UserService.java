@@ -56,6 +56,7 @@ public class UserService {
         user.setPassword(encoder.encode(password));
         user.setPicture(picture);
         user.setRank(rank);
+        user.setStatus("none");
 
         userRepository.save(user);
 

@@ -1,10 +1,14 @@
 package com.SAMURAI.HU_FDS.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Base64;
 
 
 @Entity
@@ -12,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +27,7 @@ public class User {
 
 
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 
@@ -35,5 +41,13 @@ public class User {
     @Column(nullable = false)
     private String rank;
 
+    private String Status;
 
+    public String getBase64Image() {
+        if (picture != null) {
+            System.out.println("denebakim");
+            return Base64.getEncoder().encodeToString(picture);
+        }
+        return null;
+    }
 }
