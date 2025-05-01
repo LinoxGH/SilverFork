@@ -69,11 +69,10 @@ function ReviewSection() {
 
 function ProductDetail() {
   return (
-    <div className={styles.productContainer}><>
-      <NavBar />
+    <div className={styles.productContainer}>
       <div><ProductSection /></div>
       <hr className={styles.productDivider} />
-      <div><ReviewSection /></div></>
+      <div><ReviewSection /></div>
     </div>
     
       

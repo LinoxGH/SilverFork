@@ -27,17 +27,10 @@ public class SearchController {
 
     // Ürün adına göre arama
     @GetMapping("/product")
-    public ResponseEntity<?> searchMenuItems(@RequestHeader("Authorization") String authHeader,
-                                             @RequestParam String name) {
-        String token = authHeader.replace("Bearer ", "");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok(searchService.searchMenuItems(name));
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
-        }
+    public ResponseEntity<?> searchMenuItems(@RequestParam String name) {
+        return ResponseEntity.ok(searchService.searchMenuItems(name));
     }
+
     // Restoran adına göre arama
     @GetMapping("/restaurants")
     public ResponseEntity<?> searchRestaurants(@RequestHeader("Authorization") String authHeader,

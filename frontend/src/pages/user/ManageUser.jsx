@@ -134,7 +134,6 @@ function ManageUser() {
 
   return (
     <div className={styles.container}>
-      <NavBar />
       <div className={styles.parentImageContainer}>
         <div className={styles.profileLogin}>
           <div className={styles.titleContainer}>
