@@ -69,7 +69,7 @@ function ManageUser() {
           }
         }).then(() => {
           localStorage.setItem("email", email);
-          navigate("/manage-user");
+          location.reload();
         }).catch((err) => alert(err));
       } else {
         axios({
@@ -83,7 +83,7 @@ function ManageUser() {
           }
         }).then(() => {
           localStorage.setItem("email", email);
-          navigate("/manage-user");
+          location.reload();
         }).catch((err) => alert(err));
       }
     }).catch((err) => {
@@ -131,6 +131,7 @@ function ManageUser() {
       }
     }).then(() => {
       alert("Profile picture updated successfully.");
+      location.reload();
     }).catch((err) => {
       console.error(err);
       alert("Failed to update profile picture.");
