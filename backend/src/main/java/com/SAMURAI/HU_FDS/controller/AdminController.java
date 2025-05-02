@@ -9,6 +9,7 @@ import com.SAMURAI.HU_FDS.repo.*;
 import com.SAMURAI.HU_FDS.service.CartService;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import com.SAMURAI.HU_FDS.service.MenuService;
+import com.SAMURAI.HU_FDS.service.OrderService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,10 +37,11 @@ public class AdminController {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private UserRepository userRepository;
-
 
     @Autowired
     private AddressRepository addressRepository;
@@ -177,6 +179,22 @@ public class AdminController {
             order.getItems().add(item);
         }
 
+        return ResponseEntity.ok(orderRepository.save(order));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/user/orders/assign-courier/{orderId}")
+    @Transactional
+    public ResponseEntity<?> assignCourier(@PathVariable Long orderId,
+                                         @RequestParam Long courierId,
+                                         @RequestParam String restaurantName,
+                                         @RequestHeader("Authorization") String authHeader) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
+
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isEmpty()) return ResponseEntity.status(404).body("Order not found");
+
+        Order order = orderService.assignCourierToOrder(orderId, courierId, restaurantName);
         return ResponseEntity.ok(orderRepository.save(order));
     }
 
