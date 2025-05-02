@@ -11,6 +11,7 @@ const AdminManageUser = () => {
   const [orders, setOrders] = useState([]);
   const [showAddressesModal, setShowAddressesModal] = useState(false);
   const [showOrdersModal, setShowOrdersModal] = useState(false);
+  const [showRankModal, setShowRankModal] = useState(false);
 
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
@@ -40,14 +41,19 @@ const AdminManageUser = () => {
   };
 
   const changeRank = () => {
-    const newRank = prompt("Enter new rank:");
-    if (!newRank) return;
+    setShowRankModal(true);
+  };
+  
+  const sendNewRank = (newRank) => {
     axios.put(`http://localhost:8080/admin/users/${username}/rank`, null, {
       headers,
       params: { rank: newRank }
     })
-    .then(() => alert("Rank updated"))
-    .catch(err => alert("Failed to update rank"));
+      .then(() => {
+        alert("Rank updated");
+        setShowRankModal(false);
+      })
+      .catch(err => alert("Failed to update rank"));
   };
 
   const viewAddresses = () => {
@@ -71,10 +77,21 @@ const AdminManageUser = () => {
   const handleOrderChange = (id, field, value) => {
     setOrders(prev =>
       prev.map(order =>
-        order.id === id ? { ...order, [field]: value } : order
+        order.id === id
+          ? {
+              ...order,
+              [field]:
+                field === "courier"
+                  ? value
+                    ? { id: parseInt(value) }
+                    : null
+                  : value
+            }
+          : order
       )
     );
   };
+  
 
   const updateOrder = (id) => {
     const order = orders.find(o => o.id === id);
@@ -148,16 +165,31 @@ const AdminManageUser = () => {
               {orders.map(order => (
                 <div className="order-card" key={order.id}>
                   <p><strong>Order Date:</strong> {order.orderDate}</p>
-                  <p><strong>Status:</strong> 
-                    <input 
-                      value={order.status} 
-                      onChange={e => handleOrderChange(order.id, "status", e.target.value)} 
-                    />
+                  <p><strong>Status:</strong>
+                    <select
+                      value={order.status}
+                      onChange={e => handleOrderChange(order.id, "status", e.target.value)}
+                    >
+                      <option value="PENDING">PENDING</option>
+                      <option value="PROCESSING">PROCESSING</option>
+                      <option value="ON_THE_ROAD">On the Road</option>
+                      <option value="COMPLETED">COMPLETED</option>
+                      <option value="CANCELLED">CANCELLED</option>
+                    </select>
                   </p>
                   <p><strong>Total Price:</strong> ₺{order.totalPrice}</p>
                   <p><strong>Address:</strong> {order.address?.details || 'N/A'}</p>
                   <p><strong>Restaurant:</strong> {order.restaurant?.name || 'N/A'}</p>
                   <p><strong>Courier:</strong> {order.courier?.username || '-'}</p>
+                  <p><strong>Courier ID:</strong>
+                    <input
+                      type="number"
+                      placeholder="Enter courier ID"
+                      value={order.courier?.id || ""}
+                      onChange={(e) => handleOrderChange(order.id, "courier", e.target.value)}
+                    />
+                  </p>
+
                   <div className="order-items">
                     <p><strong>Items:</strong></p>
                     <ul>
@@ -179,8 +211,20 @@ const AdminManageUser = () => {
           </div>
         </div>
       )}
-
-
+      {showRankModal && (
+        <div className="modal">
+          <div className="modal-content rank-modal">
+            <button className="modal-close" onClick={() => setShowRankModal(false)}>×</button>
+            <h2>Select New Rank</h2>
+            <div className="rank-options">
+              <button onClick={() => sendNewRank("ADMIN")}>ADMIN</button>
+              <button onClick={() => sendNewRank("COURIER")}>COURIER</button>
+              <button onClick={() => sendNewRank("CUSTOMER")}>CUSTOMER</button>
+              <button onClick={() => sendNewRank("RESTAURANT")}>RESTAURANT</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
