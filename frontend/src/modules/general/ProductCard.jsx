@@ -21,7 +21,7 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
         { headers: { Authorization: `Bearer ${token}` } }
       )
         .then((res) => {
-          if (res) setFavorite(true);
+          if (res.data) setFavorite(true);
         })
         .catch((err) => {
           console.log(err);
