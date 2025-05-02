@@ -122,6 +122,13 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setPicture(newPicture);
         userRepository.save(user);
+
+        if (user.getRank().equalsIgnoreCase("RESTAURANT")) {
+            Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
+                    .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+            restaurant.setPicture(newPicture);
+            restaurantRepository.save(restaurant);
+        }
     }
 
     public void updateUser(String username, String email, String password) {

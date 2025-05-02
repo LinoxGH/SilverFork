@@ -23,5 +23,5 @@ public class RestaurantEmployee {
     @JoinColumn(name = "user_id")
     private User courier;
 
-    private String status;
+    private String status = "AVAILABLE";
 }

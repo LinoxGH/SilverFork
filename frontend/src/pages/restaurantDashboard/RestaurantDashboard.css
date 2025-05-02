@@ -62,6 +62,14 @@
     justify-content: center;
     margin-right: 20px;
   }
+.restaurant-logo-img {
+  width: 175px;
+  height: 175px;
+  background-color: #727272;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   
   .restaurant-info p {
     margin: 4px 0;

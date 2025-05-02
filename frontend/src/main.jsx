@@ -18,7 +18,7 @@ import AdminDashboard from './pages/adminDashboard/adminDashboard.jsx';
 import AdminManageUser from "./pages/adminManageUser/adminManageUser.jsx";
 import ProtectedRoute from "./modules/general/ProtectedRoute.jsx";
 import NavBar from "./modules/navbar/NavBar.jsx";
-import CurrentOrders from './pages/restaurantCurrentOrders/restaurantCurrentOrders.jsx';
+import CurrentOrders from "./pages/currentOrders/CurrentOrders.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -36,6 +36,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/product" element={<ProductDetail />} />
         <Route path="/search-result/:keyword" element={<ShowSearchResult />} />
+        <Route path="/current-orders" element={<CurrentOrders />} />
         <Route path="/restaurant-dashboard" element={
           <ProtectedRoute allowedRoles={['RESTAURANT']}>
             <RestaurantDashboard />
@@ -49,11 +50,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/admin-dashboard/:username" element={
           <ProtectedRoute allowedRoles={['ADMIN']}>
             <AdminManageUser />
-          </ProtectedRoute>
-        } />
-        <Route path="/current-orders" element={
-          <ProtectedRoute allowedRoles={['RESTAURANT']}>
-            <CurrentOrders />
           </ProtectedRoute>
         } />
       </Routes>
