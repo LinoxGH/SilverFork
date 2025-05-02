@@ -172,6 +172,7 @@ public class AdminController {
         order.setTotalPrice(updatedOrder.getTotalPrice());
         order.setAddress(updatedOrder.getAddress());
         order.setRestaurant(updatedOrder.getRestaurant());
+        order.setCourier(updatedOrder.getCourier());
 
         order.getItems().clear();
         for (OrderItem item : updatedOrder.getItems()) {
@@ -182,6 +183,8 @@ public class AdminController {
         return ResponseEntity.ok(orderRepository.save(order));
     }
 
+
+    //UNNECESSARY
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/user/orders/assign-courier/{orderId}")
     @Transactional
