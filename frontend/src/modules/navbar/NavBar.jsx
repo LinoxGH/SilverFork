@@ -105,6 +105,9 @@ function NavBar() {
     <div className={styles.navbar}>
       <div className={styles.silverforkheader}>
         <a href={"/"}>
+          <img src="/logo-noname.png" width="46px"/>
+        </a>
+        <a href={"/"}>
           <p className={styles.silverforktext}>SilverFork</p>
         </a>
       </div>
