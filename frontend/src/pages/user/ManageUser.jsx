@@ -187,7 +187,7 @@ function ManageUser() {
         <div className={styles.rightContainer}>
           <div className={styles.imageContainer}>
             {imagePreview ? (
-              <img className={styles.profileImage} src={imagePreview} alt="Profile" className={styles.profileImage} />
+              <img className={styles.profileImage} src={imagePreview} alt="Profile" />
             ) : (
               <div className={styles.placeholderContainer}>
                 <span className={styles.placeholderText}>Upload Image</span>
