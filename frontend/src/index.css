@@ -3,9 +3,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #1F1F1F;
+  color-scheme: light;
+  color: var(--text-color, #000000);
+  background-color: var(--bg-color, #ffffff);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,4 +14,20 @@
 
   display: flex;
   flex-direction: column;
+
+  --bg-color: #ffffff;
+  --module-bg: #f0f0f0;
+  --text-color: #000000;
+  --detail-color: #444444;
+  --additional-color: #888888;
+  --darker-additional: #aaaaaa;
+}
+
+:root.dark {
+  --bg-color: #1f1f1f;
+  --module-bg: #505050;
+  --text-color: #ffffff;
+  --detail-color: #878787;
+  --additional-color: #727272;
+  --darker-additional: #646464;
 }

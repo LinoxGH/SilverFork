@@ -1,5 +1,5 @@
 .filters {
-    background-color: #505050;
+    background-color: var(--module-bg);
     padding: 15px;
     border-radius: 8px;
     width: 180px;
@@ -13,12 +13,12 @@
   
   .sort-label {
     font-size: 24px;
-    color: #FFFFFF;
+    color: var(--text-color);
   }
 
   .sort-option {
     font-size: 16px;
-    color: #FFFFFF;
+    color: var(--text-color);
     cursor: pointer;
     padding: 0px 15px;
   }

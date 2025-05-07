@@ -1,13 +1,13 @@
-.productContainer{
+.productContainer {
   width: 100%;
   height: 100%;
-  background-color: #1F1F1F;
+  background-color: var(--bg-color);
 }
 
 .productButton {
-  background-color: #575757;
+  background-color: var(--additional-color);
   border: none;
-  color: white;
+  color: var(--text-color);
   padding: 1rem 2rem;
   border-radius: 1rem;
   font-size: 1.6rem;
@@ -18,17 +18,17 @@
   display: flex;
   justify-content: flex-start;
   margin-bottom: 2rem;
-  background-color: #1F1F1F;
+  background-color: var(--bg-color);
 }
 
 .productImage {
   width: 300px;
   height: 370px;
-  background-color: #575757;
+  background-color: var(--additional-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-color);
   font-size: 1.6rem;
   border-radius: 1rem;
   margin-left: 4rem;
@@ -56,46 +56,51 @@
   gap: 1rem;
   margin-top: 1rem;
 }
+
 .productDivider {
   display: flex;
   border: 0.5px solid #ccc;
   max-width: 20px 0;
-  margin-left: 4rem ;
+  margin-left: 4rem;
   margin-bottom: 2rem;
 }
+
 .productReviewSection {
   display: flex;
   flex-direction: column;
-  margin-left: 4rem ;
+  margin-left: 4rem;
   width: 100%;
-  color: white;
+  color: var(--text-color);
 }
 
 .productReviewTitle {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
-.productReviewOrder{
+
+.productReviewOrder {
   display: flex;
   flex-direction: row;
 }
+
 .productReviewCard {
   display: flex;
   flex-direction: row;
-  background-color: #575757;
+  background-color: var(--additional-color);
   padding: 1rem;
   border-radius: 1rem;
   width: 20%;
   margin-right: 1rem;
 }
-.productReviewCard p{
+
+.productReviewCard p {
   background-color: #2c2c2c;
   padding: 2rem;
   border-radius: 1rem;
-
 }
-.productReviewCard hr{
-  background-color: #575757;
+
+.productReviewCard hr {
+  background-color: var(--additional-color);
   padding: 0.5rem;
   border: none;
 }

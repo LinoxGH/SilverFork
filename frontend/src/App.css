@@ -2,13 +2,13 @@
   max-width: 100%;
   max-height: 100%;
   margin: 0 0;
-  background-color: #1F1F1F;
+  background-color: var(--bg-color);
 }
 
 .recommendations-page {
   padding: 80px 3rem 2rem;
-  background-color: #1f1f1f;
-  color: white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .recommendations-title {
