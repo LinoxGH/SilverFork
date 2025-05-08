@@ -71,4 +71,5 @@ a:visited, a:link, a:active {
   height: 60%;
   margin-right: auto;
   padding-left: 8px;
+  color: var(--text-color)
 }

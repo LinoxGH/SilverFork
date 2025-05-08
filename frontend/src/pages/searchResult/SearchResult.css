@@ -8,13 +8,10 @@
   font-family: sans-serif;
 }
 
+/* what for ?? */
 .dashboard-buttons button:hover {
   background-color: #686868;
   transition: background-color 0.2s ease;
-}
-
-.sort-option:hover {
-  color: #ffd700;
 }
 
 .divider {

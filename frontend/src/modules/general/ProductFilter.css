@@ -24,7 +24,7 @@
   }
 
   .sort-option:hover {
-    color: #ffd700;
+    color: var(--text-hover-color);
   }  
   
   .price-range {

@@ -36,7 +36,7 @@
   background-color: var(--module-bg);
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: transform 0.2s ease;
   overflow: hidden;
   word-wrap: break-word;
   display: flex;
@@ -47,7 +47,7 @@
 }
 
 .account-card:hover {
-  background-color: #3a3a3a;
+  transform: translateY(-4px);
 }
 
 .account-image {

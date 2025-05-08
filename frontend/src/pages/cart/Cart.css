@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  background-color: #1a1a1a;
+  background-color: var(--bg-color);
 }
 
 .itemContainer {
@@ -23,7 +23,7 @@ body {
 }
 
 .divider {
-  border: 1px solid #ccc;
+  border: 1px solid var(--text-color);
   margin: 20px 0;
 }
 

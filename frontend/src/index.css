@@ -21,6 +21,7 @@
   --detail-color: #444444;
   --additional-color: #888888;
   --darker-additional: #aaaaaa;
+  --text-hover-color: #a70000;
 }
 
 :root.dark {
@@ -30,4 +31,5 @@
   --detail-color: #878787;
   --additional-color: #727272;
   --darker-additional: #646464;
+  --text-hover-color: #ffd700;
 }
