@@ -53,20 +53,8 @@ public class SearchService {
         return result.stream().filter(item -> !item.getHidden()).toList();
     }
 
-    public List<Restaurant> filterRestaurants(String category, String cuisine, Double rating) {
-        if (category != null && cuisine != null && rating != null) {
-            return restaurantRepository.findByCategoryIgnoreCaseAndCuisineIgnoreCaseAndRatingGreaterThanEqual(category, cuisine, rating);
-        } else if (category != null && cuisine != null) {
-            return restaurantRepository.findByCategoryIgnoreCaseAndCuisineIgnoreCase(category, cuisine);
-        } else if (category != null && rating != null) {
-            return restaurantRepository.findByCategoryIgnoreCaseAndRatingGreaterThanEqual(category, rating);
-        } else if (cuisine != null && rating != null) {
-            return restaurantRepository.findByCuisineIgnoreCaseAndRatingGreaterThanEqual(cuisine, rating);
-        } else if (category != null) {
-            return restaurantRepository.findByCategoryIgnoreCase(category);
-        } else if (cuisine != null) {
-            return restaurantRepository.findByCuisineIgnoreCase(cuisine);
-        } else if (rating != null) {
+    public List<Restaurant> filterRestaurants(Double rating) {
+        if (rating != null) {
             return restaurantRepository.findByRatingGreaterThanEqual(rating);
         } else {
             return restaurantRepository.findAll();

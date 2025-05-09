@@ -45,7 +45,6 @@ public class User {
 
     private String status;
 
-    private String courierStatus;
 
     @OneToMany(mappedBy = "courier")
     @JsonIgnore

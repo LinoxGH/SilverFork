@@ -64,14 +64,12 @@ public class SearchController {
     // Restoranları filtreleme
     @GetMapping("/restaurants/filter")
     public ResponseEntity<?> filterRestaurants(@RequestHeader("Authorization") String authHeader,
-                                               @RequestParam(required = false) String category,
-                                               @RequestParam(required = false) String cuisine,
                                                @RequestParam(required = false) Double rating) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
-            return ResponseEntity.ok(searchService.filterRestaurants(category, cuisine, rating));
+            return ResponseEntity.ok(searchService.filterRestaurants(rating));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid token");
         }
