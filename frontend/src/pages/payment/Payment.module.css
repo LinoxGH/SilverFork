@@ -1,6 +1,6 @@
 .container {
-  background-color: #1f1f1f;
-  color: white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   padding: 2.8%;
   font-family: sans-serif;
 }
@@ -12,7 +12,7 @@
 
 .form {
   display: flex;
-  background-color: #505050;
+  background-color: var(--module-bg);
   border-radius: 10px;
   padding: 2%;
   gap: 4%;
@@ -31,7 +31,7 @@
 
 .right {
   flex: 1;
-  background-color: #727272;
+  background-color: var(--additional-color);
   padding: 1.4%;
   border-radius: 4px;
   font-size: 2.3vh;
@@ -62,9 +62,9 @@
 .select,
 textarea {
   padding: 1vh;
-  background-color: #727272;
+  background-color: var(--additional-color);
   border: none;
-  color: white;
+  color: var(--text-color);
   font-size: 2.3vh;
   height: 4.9vh;
   border-radius: 3px;
@@ -85,14 +85,14 @@ textarea {
 
 .label {
   font-size: 2.3vh;
-  color: white;
+  color: var(--text-color);
 }
 
 .button {
   width: 16.2vw;
   height: 4.9vh;
-  background-color: #727272;
-  color: white;
+  background-color: var(--additional-color);
+  color: var(--text-color);
   font-size: 2.3vh;
   padding: 0.5vh 1.5vh;
   border: none;
@@ -109,10 +109,10 @@ textarea {
 }
 
 .checkboxRow input[type="checkbox"] {
-  accent-color: white;
+  accent-color: var(--text-color);
 }
 
 ::placeholder {
-  color: white;
+  color: var(--text-color);
   opacity: 1;
 }

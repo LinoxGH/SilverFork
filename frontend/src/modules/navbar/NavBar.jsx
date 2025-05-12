@@ -19,6 +19,12 @@ function NavBar() {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+  useEffect(() => {
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   function handleLogoutButton() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -100,6 +106,11 @@ function NavBar() {
         );
     }
   }
+  
+  function handleToggleTheme() {
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }
 
   return (
     <div className={styles.navbar}>
@@ -124,6 +135,13 @@ function NavBar() {
               navigate(`/search-result/${encodeURIComponent(search)}`);
             }
           }}/>
+        <Button
+          label="☀️ / 🌙"
+          onClick={handleToggleTheme}
+          width={"5%"}
+          borderRadius={"10px"}
+          background={"#000000"}
+        />
         {username ? ( // If user is logged in.
           <>
             {rankButtons(rank)}

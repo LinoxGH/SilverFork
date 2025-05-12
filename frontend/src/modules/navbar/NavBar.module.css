@@ -6,7 +6,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  background-color:  #575757;
+  background-color:  var(--module-bg);
   font-size: 1rem;
   margin-bottom: 1rem;
 }
@@ -46,7 +46,7 @@
 .links a {
   width: fit-content;
   font-size: 1.2rem;
-  color: white;  
+  color: var(--text-color);  
 }
 
 .links div {
@@ -56,7 +56,7 @@
 }
 
 a:visited, a:link, a:active {
-  color: #FFFFFF;
+  color: var(--text-color);
 }
 
 .navButton {
@@ -65,10 +65,11 @@ a:visited, a:link, a:active {
 }
 
 .searchBar {
-  background: #000000;
+  background: var(--bg-color);
   border-radius: 10px;
   width: 50%;
   height: 60%;
   margin-right: auto;
   padding-left: 8px;
+  color: var(--text-color)
 }
