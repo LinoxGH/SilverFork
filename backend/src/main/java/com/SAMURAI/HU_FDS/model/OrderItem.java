@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Base64;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -15,14 +18,27 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private MenuItem menuItem;
+    private String name;
+    private String description;
+    private double price;
 
+    @Lob
+    private byte[] picture;
+
+    private String category;
+    private String cuisine;
     private int quantity;
-    private Double priceAtOrder; // Sipariş anındaki fiyat
 
     @ManyToOne
     @JsonIgnore
     private Order order;
+
+
+    public String getBase64Image() {
+        if (picture != null) {
+            return Base64.getEncoder().encodeToString(picture);
+        }
+        return null;
+    }
 }
 

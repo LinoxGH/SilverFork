@@ -65,6 +65,14 @@ public class MenuService {
             existingItem.setDescription(updatedItem.getDescription());
         }
 
+        if (updatedItem.getCuisine() != null) {
+            existingItem.setCuisine(updatedItem.getCuisine());
+        }
+
+        if (updatedItem.getCategory() != null) {
+            existingItem.setCategory(updatedItem.getCategory());
+        }
+
         existingItem.setCreatedAt(LocalDateTime.now());
         return menuItemRepository.save(existingItem);
     }

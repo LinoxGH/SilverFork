@@ -1,9 +1,6 @@
 package com.SAMURAI.HU_FDS.controller;
 
-import com.SAMURAI.HU_FDS.model.Order;
-import com.SAMURAI.HU_FDS.model.Restaurant;
-import com.SAMURAI.HU_FDS.model.RestaurantEmployee;
-import com.SAMURAI.HU_FDS.model.User;
+import com.SAMURAI.HU_FDS.model.*;
 import com.SAMURAI.HU_FDS.service.JwtService;
 import com.SAMURAI.HU_FDS.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +35,9 @@ public class OrderController {
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
             Order order = orderService.createOrderFromCart(username, addressId);
-            order.getItems().forEach(item -> item.getMenuItem().getBase64Image()); // Base64 resimleri alıyoruz
+            order.getItems().forEach(item -> item.getBase64Image());
+            // Yeni alan eklemek isterseniz
+
             return ResponseEntity.ok(order);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -54,7 +54,7 @@ public class OrderController {
             String username = userDetails.getUsername();
             List<Order> orders = orderService.getUserOrders(username);
             // Her siparişin öğelerindeki menü resimlerini Base64 formatında alıyoruz
-            orders.forEach(order -> order.getItems().forEach(item -> item.getMenuItem().getBase64Image()));
+            orders.forEach(order -> order.getItems().forEach(item -> item.getBase64Image()));
             return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -89,7 +89,7 @@ public class OrderController {
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
             List<Order> orders = orderService.getOrdersByOwnerUsername(username);
-            orders.forEach(order -> order.getItems().forEach(item -> item.getMenuItem().getBase64Image()));
+            orders.forEach(order -> order.getItems().forEach(item -> item.getBase64Image()));
             return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);

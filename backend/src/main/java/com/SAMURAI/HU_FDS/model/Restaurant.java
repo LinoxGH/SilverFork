@@ -27,12 +27,6 @@ public class Restaurant {
     private byte[] picture;
 
     @Column(nullable = true)
-    private String category;
-
-    @Column(nullable = true)
-    private String cuisine;
-
-    @Column(nullable = true)
     private Double rating;
 
     @Column(nullable = false)

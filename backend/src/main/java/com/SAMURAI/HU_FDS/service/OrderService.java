@@ -68,9 +68,14 @@ public class OrderService {
 
         for (CartItem cartItem : cart.getItems()) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setMenuItem(cartItem.getMenuItem());
+            orderItem.setName(cartItem.getMenuItem().getName());
+            orderItem.setDescription(cartItem.getMenuItem().getDescription());
+            orderItem.setPrice(cartItem.getMenuItem().getPrice());
+            orderItem.setCategory(cartItem.getMenuItem().getCategory());
+            orderItem.setCuisine(cartItem.getMenuItem().getCuisine());
+            orderItem.setPrice(cartItem.getMenuItem().getPrice());
+            orderItem.setPicture(cartItem.getMenuItem().getPicture());
             orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setPriceAtOrder(cartItem.getMenuItem().getPrice());
             orderItem.setOrder(order);
 
             order.getItems().add(orderItem);
@@ -129,8 +134,7 @@ public class OrderService {
                     .orElseThrow(() -> new RuntimeException("Order not found"));
 
             order.setStatus("On the Road");
-            order.setCourier(restaurantEmployee.getCourier());
-            restaurantEmployee.setStatus("BUSY");
+            order.setCourier(restaurantEmployee.getCourier());;
             restaurantEmployeeRepository.save(restaurantEmployee);
 
             return orderRepository.save(order);
@@ -151,7 +155,6 @@ public class OrderService {
         List<User> couriers = new ArrayList<>();
         for (RestaurantEmployee employee : restaurantEmployees) {
             User courierUser = employee.getCourier();
-            courierUser.setCourierStatus(employee.getStatus());
             couriers.add(courierUser);
         }
         return couriers;

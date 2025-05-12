@@ -31,12 +31,10 @@ public class MenuItem {
     @JsonIgnore
     private byte[] picture;
 
-    @Column(nullable = true)
-    @JsonIgnore
+    @Column(nullable = false)
     private String category;
 
-    @Column(nullable = true)
-    @JsonIgnore
+    @Column(nullable = false)
     private String cuisine;
 
     @Column(nullable = true)
