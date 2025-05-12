@@ -35,8 +35,6 @@ public class OrderService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-
-
     @Transactional
     public Order createOrderFromCart(String username ,Long addressId) {
         User user = userRepository.findByUsername(username)
@@ -120,7 +118,6 @@ public class OrderService {
         return orderRepository.findByRestaurantOwnerUsername(ownerUsername);
     }
 
-
     public Order assignCourierToOrder(Long orderId, Long courierId, String username) {
         Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
@@ -142,8 +139,6 @@ public class OrderService {
             throw new RuntimeException("Courier is not available");
         }
     }
-
-
 
     public List<User> getCouriersForRestaurant(String username) {
         Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
@@ -181,6 +176,24 @@ public class OrderService {
     public void assignCouriersOnStartup() {
         assignAllCouriersToAllRestaurants();
     }
+
+    public List<Order> getOrdersAssignedToCourier(String courierUsername) {
+        return orderRepository.findByCourierUsername(courierUsername);
+    }
+    
+    @Transactional
+    public boolean deliverOrder(Long orderId, String courierUsername) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+    
+        if (order.getCourier() != null && order.getCourier().getUsername().equals(courierUsername)) {
+            order.setStatus("DELIVERED");
+            orderRepository.save(order);
+            return true;
+        }
+        return false;
+    }
+    
 }
 
 

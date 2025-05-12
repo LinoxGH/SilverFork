@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUser(User user);
     List<Order> findByRestaurantOwnerUsername(String ownerUsername);
-
     List<Order> findByCourier(User courier);
-
+    List<Order> findByCourierUsername(String courierUsername);
+    
     void deleteAllByUser(Optional<User> user);
 }
