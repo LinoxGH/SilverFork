@@ -37,5 +37,5 @@ public class Order {
 
 
     @ManyToOne
-    private User courier;
+    private Courier courier;
 }

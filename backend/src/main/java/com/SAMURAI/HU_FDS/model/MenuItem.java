@@ -31,10 +31,10 @@ public class MenuItem {
     @JsonIgnore
     private byte[] picture;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String category;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String cuisine;
 
     @Column(nullable = true)
@@ -45,7 +45,7 @@ public class MenuItem {
     @JsonIgnore
     private Double rating = 0.0; // Average user rating
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @JsonIgnore
     private LocalDateTime createdAt;
 
