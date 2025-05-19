@@ -36,7 +36,7 @@ public class CourierController {
         if (jwtService.validateToken(token, userDetails)) {
             String username = userDetails.getUsername();
             List<Order> orders = orderService.getOrdersAssignedToCourier(username);
-            orders.forEach(order -> order.getItems().forEach(item -> item.getMenuItem().getBase64Image()));
+            orders.forEach(order -> order.getItems().forEach(item -> item.getBase64Image()));
             return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.status(403).body(null);

@@ -42,6 +42,7 @@ public class MenuService {
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
         menuItem.setRestaurant(restaurant);
+        menuItem.setPopularity(0);
         menuItem.setCreatedAt(LocalDateTime.now());
         return menuItemRepository.save(menuItem);
     }
