@@ -46,9 +46,6 @@ public class User {
     private String status;
 
 
-    @OneToMany(mappedBy = "courier")
-    @JsonIgnore
-    private List<RestaurantEmployee> restaurantEmployees;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
@@ -62,4 +59,8 @@ public class User {
         }
         return null;
     }
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private Courier courier;
 }
