@@ -23,6 +23,8 @@ public class Review {
 
     private LocalDateTime createdAt;
 
+    private String RestaurantResponse;
+
     @ManyToOne
     private User user;
 

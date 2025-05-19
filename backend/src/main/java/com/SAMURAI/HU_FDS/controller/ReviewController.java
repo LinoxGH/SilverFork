@@ -66,4 +66,13 @@ public class ReviewController {
     public ResponseEntity<List<Review>> getReviews(@PathVariable Long menuItemId) {
         return ResponseEntity.ok(reviewService.getReviewsByMenuItem(menuItemId));
     }
+
+    @PutMapping("/respond/{id}")
+    @PreAuthorize("hasRole('RESTAURANT')")
+    public ResponseEntity<Review> respondToReview(@PathVariable Long id,
+                                                  @RequestParam String response) {
+        String restaurantUsername = getUsername();
+        Review updated = reviewService.respondToReview(id, response, restaurantUsername);
+        return ResponseEntity.ok(updated);
+    }
 }
