@@ -85,12 +85,12 @@ function NavBar() {
         return (
           <>
             <Button
-              label={(<img id="heart-img" src="/heart.png" alt={"cart"} width="55%"/>)}
+              label={(<img id="heart-img" src={theme === "dark" ? "/heart.png" : "/heart-black.png"} alt={"cart"} width="55%"/>)}
               onClick={handleFavoriteButton}
               width={"3%"}
               borderRadius={"20px"}/>
             <Button
-              label={(<img id="shopping-cart-img" src="/shopping-cart.png" alt={"cart"} width="55%"/>)}
+              label={(<img id="shopping-cart-img" src={theme === "dark" ? "/shopping-cart.png" : "/shopping-cart-black.png"} alt={"cart"} width="55%"/>)}
               onClick={handleCartButton}
               width={"3%"}
               borderRadius={"20px"}/>
@@ -100,9 +100,9 @@ function NavBar() {
         return (
           <>
             <Button
-              label={"Restaurant Dashboard"}
+              label={"Dashboard"}
               onClick={handleRestaurantButton}
-              width={"20%"}
+              width={"16%"}
               borderRadius={"10px"}/>
           </>
         );
@@ -110,9 +110,9 @@ function NavBar() {
         return (
           <>
             <Button
-              label={"Courier Dashboard"}
+              label={"Dashboard"}
               onClick={handleCourierButton}
-              width={"20%"}
+              width={"16%"}
               borderRadius={"10px"}/>
           </>
         );
@@ -120,7 +120,7 @@ function NavBar() {
         return (
           <>
             <Button
-              label={"Admin Dashboard"}
+              label={"Dashboard"}
               onClick={handleAdminButton}
               width={"16%"}
               borderRadius={"10px"}/>
@@ -164,7 +164,7 @@ function NavBar() {
             <Button
               label={username}
               onClick={handleManageUserButton}
-              width={"10%"}
+              width={"14%"}
               borderRadius={"10px"}/>
             <Button
               label={"Logout"}
