@@ -6,6 +6,7 @@ import Button from "../general/Button.jsx";
 function NavBar() {
   const [username, setUsername] = useState(localStorage.getItem("username"));
   const [rank, setRank] = useState(localStorage.getItem("rank"));
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -13,6 +14,7 @@ function NavBar() {
     const handleStorageChange = (event) => {
       setUsername(localStorage.getItem("username"));
       setRank(localStorage.getItem("rank"));
+      setTheme(localStorage.getItem("theme"));
     }
 
     window.addEventListener("storage", handleStorageChange);
@@ -24,6 +26,14 @@ function NavBar() {
       document.documentElement.classList.add("dark");
     }
   }, []);
+
+  useEffect(() => {
+    const heart = document.getElementById("heart-img");
+    if (heart != null) heart.src = theme === "dark" ? "/heart.png" : "/heart-black.png";
+
+    const shoppingCart = document.getElementById("shopping-cart-img");
+    if (shoppingCart != null) shoppingCart.src = theme === "dark" ? "/shopping-cart.png" : "/shopping-cart-black.png";
+  }, [theme]);
 
   function handleLogoutButton() {
     localStorage.removeItem("token");
@@ -62,23 +72,28 @@ function NavBar() {
     navigate("/admin-dashboard");
   }
 
+  function handleToggleTheme() {
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    setTheme(isDark ? "dark" : "light");
+    window.dispatchEvent(new Event("storage"));
+  }
+
   const rankButtons = (rank) => {
     switch (rank) {
       case "CUSTOMER":
         return (
           <>
             <Button
-              label={(<img src="/heart.png" alt={"cart"} width="55%"/>)}
+              label={(<img id="heart-img" src="/heart.png" alt={"cart"} width="55%"/>)}
               onClick={handleFavoriteButton}
               width={"3%"}
-              borderRadius={"20px"}
-              background={"#000000"}/>
+              borderRadius={"20px"}/>
             <Button
-              label={(<img src="/shopping-cart.png" alt={"cart"} width="55%"/>)}
+              label={(<img id="shopping-cart-img" src="/shopping-cart.png" alt={"cart"} width="55%"/>)}
               onClick={handleCartButton}
               width={"3%"}
-              borderRadius={"20px"}
-              background={"#000000"}/>
+              borderRadius={"20px"}/>
           </>
         );
       case "RESTAURANT":
@@ -88,8 +103,7 @@ function NavBar() {
               label={"Restaurant Dashboard"}
               onClick={handleRestaurantButton}
               width={"20%"}
-              borderRadius={"10px"}
-              background={"#000000"}/>
+              borderRadius={"10px"}/>
           </>
         );
       case "COURIER":
@@ -99,8 +113,7 @@ function NavBar() {
               label={"Courier Dashboard"}
               onClick={handleCourierButton}
               width={"20%"}
-              borderRadius={"10px"}
-              background={"#000000"}/>
+              borderRadius={"10px"}/>
           </>
         );
       case "ADMIN":
@@ -110,16 +123,10 @@ function NavBar() {
               label={"Admin Dashboard"}
               onClick={handleAdminButton}
               width={"16%"}
-              borderRadius={"10px"}
-              background={"#000000"}/>
+              borderRadius={"10px"}/>
           </>
         );
     }
-  }
-  
-  function handleToggleTheme() {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
   }
 
   return (
@@ -146,11 +153,10 @@ function NavBar() {
             }
           }}/>
         <Button
-          label="☀️ / 🌙"
+          label={"Change Theme"}
           onClick={handleToggleTheme}
-          width={"5%"}
+          width={"17%"}
           borderRadius={"10px"}
-          background={"#000000"}
         />
         {username ? ( // If user is logged in.
           <>
@@ -159,14 +165,12 @@ function NavBar() {
               label={username}
               onClick={handleManageUserButton}
               width={"10%"}
-              borderRadius={"10px"}
-              background={"#000000"}/>
+              borderRadius={"10px"}/>
             <Button
               label={"Logout"}
               onClick={handleLogoutButton}
               width={"10%"}
-              borderRadius={"10px"}
-              background={"#000000"}/>
+              borderRadius={"10px"}/>
           </>
         ) : ( // If not logged in.
           <>
@@ -174,8 +178,7 @@ function NavBar() {
               label={"Login"}
               onClick={handleLoginButton}
               width={"10%"}
-              borderRadius={"10px"}
-              background={"#000000"}/>
+              borderRadius={"10px"}/>
           </>
         )}
       </div>
