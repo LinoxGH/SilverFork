@@ -2,20 +2,16 @@ package com.SAMURAI.HU_FDS.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Dispute {
-
+public class ReviewDispute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String type;
 
     private String reason;
 
@@ -25,8 +21,5 @@ public class Dispute {
     private User raisedBy;
 
     @ManyToOne
-    private Order order;
-
-    @ManyToOne
-    private Review review; 
+    private Review review;
 }
