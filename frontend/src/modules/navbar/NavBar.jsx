@@ -54,6 +54,10 @@ function NavBar() {
     navigate("/restaurant-dashboard");
   }
 
+  function handleCourierButton() {
+    navigate("/courier-dashboard");
+  }
+
   function handleAdminButton() {
     navigate("/admin-dashboard");
   }
@@ -91,6 +95,12 @@ function NavBar() {
       case "COURIER":
         return (
           <>
+            <Button
+              label={"Courier Dashboard"}
+              onClick={handleCourierButton}
+              width={"20%"}
+              borderRadius={"10px"}
+              background={"#000000"}/>
           </>
         );
       case "ADMIN":

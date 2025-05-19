@@ -19,6 +19,7 @@ import AdminManageUser from "./pages/adminManageUser/adminManageUser.jsx";
 import ProtectedRoute from "./modules/general/ProtectedRoute.jsx";
 import NavBar from "./modules/navbar/NavBar.jsx";
 import CurrentOrders from "./pages/currentOrders/CurrentOrders.jsx";
+import CourierDashboard from "./pages/courierDashboard/courierDashboard.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -50,6 +51,11 @@ createRoot(document.getElementById('root')).render(
         <Route path="/admin-dashboard/:username" element={
           <ProtectedRoute allowedRoles={['ADMIN']}>
             <AdminManageUser />
+          </ProtectedRoute>
+        } />
+        <Route path="/courier-dashboard" element={
+          <ProtectedRoute allowedRoles={['COURIER']}>
+            <CourierDashboard />
           </ProtectedRoute>
         } />
       </Routes>
