@@ -68,7 +68,6 @@
 .productReviewSection {
   display: flex;
   flex-direction: column;
-  margin-left: 4rem;
   width: 100%;
   color: var(--text-color);
 }
