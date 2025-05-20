@@ -41,6 +41,9 @@ public class OrderService {
     @Autowired
     private CourierRepository courierRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Transactional
     public Order createOrderFromCart(String username ,Long addressId) {
         User user = userRepository.findByUsername(username)
@@ -97,6 +100,11 @@ public class OrderService {
 
         cartService.clearCart(username);
 
+        String restaurantOwner = restaurant.getOwnerUsername(); // Owner tanımı varsa
+        notificationService.sendNotificationToUser(
+                restaurantOwner, "Yeni bir sipariş aldınız. Sipariş ID: " + order.getId()
+        );
+
         return order;
     }
 
@@ -147,6 +155,10 @@ public class OrderService {
             order.setStatus("On the Road");
             order.setCourier(courier);;
             restaurantEmployeeRepository.save(restaurantEmployee);
+
+            notificationService.sendNotificationToUser(
+                    courier.getUser().getUsername(), "Yeni bir sipariş size atandı! Sipariş ID: " + order.getId()
+            );
 
             return orderRepository.save(order);
         } else {

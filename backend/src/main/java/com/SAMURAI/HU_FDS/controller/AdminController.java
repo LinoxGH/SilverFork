@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin")
@@ -54,6 +55,9 @@ public class AdminController {
 
     @Autowired
     private CourierRepository courierRepository;
+
+    @Autowired
+    private RestaurantEmployeeRepository restaurantEmployeeRepository;
 
 
 
@@ -138,16 +142,32 @@ public class AdminController {
                                         @RequestHeader("Authorization") String authHeader) {
         if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            cartRepository.deleteByUser(user);
-            favoriteRepository.deleteAllByUser(user);
-            orderRepository.deleteAllByUser(user);
-            addressRepository.deleteAllByUsername(username);
-            userRepository.delete(user.get());
-            return ResponseEntity.ok("User deleted");
+
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+
+        Optional<Courier> courierOpt = courierRepository.findByUser(user.get());
+
+        courierOpt.ifPresent(courier -> {
+            restaurantEmployeeRepository.deleteAllByCourier(courier);
+
+            List<Order> ordersWithCourier = orderRepository.findAllByCourier(courier);
+            for (Order order : ordersWithCourier) {
+                order.setCourier(null); // bağlantıyı koparıyoruz
+            }
+            courierRepository.delete(courier);
+        });
+
+        cartRepository.deleteByUser(user);
+        favoriteRepository.deleteAllByUser(user);
+        orderRepository.deleteAllByUser(user);
+        addressRepository.deleteAllByUsername(username);
+        userRepository.delete(user.get());
+
+        return ResponseEntity.ok("User deleted");
     }
+
 
     // View addresses
     @PreAuthorize("hasRole('ADMIN')")
