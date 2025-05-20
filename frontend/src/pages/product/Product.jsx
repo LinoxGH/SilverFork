@@ -1,25 +1,37 @@
 import { useSearchParams } from "react-router-dom";
 import styles from "./Product.module.css";
-
+import React, { useState } from "react";
+import AddReviewCard from '../../modules/review/AddReviewCard.jsx';
+import RespondReviewCard from '../../modules/review/RespondReviewCard.jsx';
+import ReportReviewCard from '../../modules/review/ReportReviewCard.jsx';
 function ProductSection() {
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
     <div className={styles.productSection}>
       <div className={styles.productImage}>Food Image</div>
       <div className={styles.productDetails}>
         <div className={styles.productName}>Food Name</div>
         <div className={styles.productRestaurantName}>Restaurant Name - Location</div>
-        <div className={styles.productrating}>Rating</div>
+        <div className={styles.productRating}>Rating</div>
         <div className={styles.productDescription}>Description</div>
         <div className={styles.productPrice}>Price</div>
         <div className={styles.productActionButtons}>
           <button className={styles.productButton}>Add to Cart</button>
-          <button className={styles.productButton}>Add Review</button>
+          <div>
+            <button
+              className={styles.productButton}
+              onClick={() => setShowPopup(true)}
+            >
+              Add Review
+            </button>
+          </div>
         </div>
       </div>
+      {showPopup && <AddReviewCard onClose={() => setShowPopup(false)} />}
     </div>
   );
 }
-
 function ReviewCard({ user, comment, reply }) {
   return (
     <div className={styles.productReviewOrder}>
