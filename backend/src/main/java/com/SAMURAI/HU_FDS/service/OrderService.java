@@ -35,6 +35,12 @@ public class OrderService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+
+    @Autowired
+    private CourierRepository courierRepository;
+
     @Transactional
     public Order createOrderFromCart(String username ,Long addressId) {
         User user = userRepository.findByUsername(username)
@@ -65,6 +71,9 @@ public class OrderService {
         double total = 0.0;
 
         for (CartItem cartItem : cart.getItems()) {
+
+            MenuItem menuItem = cartItem.getMenuItem();
+
             OrderItem orderItem = new OrderItem();
             orderItem.setName(cartItem.getMenuItem().getName());
             orderItem.setDescription(cartItem.getMenuItem().getDescription());
@@ -78,6 +87,9 @@ public class OrderService {
 
             order.getItems().add(orderItem);
             total += cartItem.getMenuItem().getPrice() * cartItem.getQuantity();
+
+            menuItem.setPopularity(menuItem.getPopularity() + cartItem.getQuantity());
+            menuItemRepository.save(menuItem);
         }
 
         order.setTotalPrice(total);
@@ -126,12 +138,14 @@ public class OrderService {
                 .findByRestaurantIdAndCourierId(restaurant.getId(), courierId)
                 .orElseThrow(() -> new RuntimeException("Courier is not an employee of this restaurant"));
 
-        if ("AVAILABLE".equals(restaurantEmployee.getStatus())) {
+        Courier courier = restaurantEmployee.getCourier();
+
+        if ("AVAILABLE".equals(courier.getStatus())) {
             Order order = orderRepository.findById(orderId)
                     .orElseThrow(() -> new RuntimeException("Order not found"));
 
             order.setStatus("On the Road");
-            order.setCourier(restaurantEmployee.getCourier());;
+            order.setCourier(courier);;
             restaurantEmployeeRepository.save(restaurantEmployee);
 
             return orderRepository.save(order);
@@ -149,36 +163,14 @@ public class OrderService {
 
         List<User> couriers = new ArrayList<>();
         for (RestaurantEmployee employee : restaurantEmployees) {
-            User courierUser = employee.getCourier();
+            User courierUser = employee.getCourier().getUser();
             couriers.add(courierUser);
         }
         return couriers;
     }
 
-    @Transactional
-    public void assignAllCouriersToAllRestaurants() {
-        List<User> couriers = userRepository.findByRank("COURIER");
-        List<Restaurant> restaurants = restaurantRepository.findAll();
-
-        for (Restaurant restaurant : restaurants) {
-            for (User courier : couriers) {
-                if (!restaurantEmployeeRepository.existsByRestaurantAndCourier(restaurant, courier)) {
-                    RestaurantEmployee re = new RestaurantEmployee();
-                    re.setRestaurant(restaurant);
-                    re.setCourier(courier);
-                    restaurantEmployeeRepository.save(re);
-                }
-            }
-        }
-    }
-
-    @PostConstruct
-    public void assignCouriersOnStartup() {
-        assignAllCouriersToAllRestaurants();
-    }
-
     public List<Order> getOrdersAssignedToCourier(String courierUsername) {
-        return orderRepository.findByCourierUsername(courierUsername);
+        return orderRepository.findByCourierUserUsername(courierUsername);
     }
     
     @Transactional
@@ -186,14 +178,13 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     
-        if (order.getCourier() != null && order.getCourier().getUsername().equals(courierUsername)) {
+        if (order.getCourier() != null && order.getCourier().getUser().getUsername().equals(courierUsername)) {
             order.setStatus("DELIVERED");
             orderRepository.save(order);
             return true;
         }
         return false;
     }
-    
 }
 
 

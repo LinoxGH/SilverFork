@@ -1,33 +1,25 @@
 package com.SAMURAI.HU_FDS.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
-
+public class OrderDispute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;
-
-    private int rating;
+    private String reason;
 
     private LocalDateTime createdAt;
 
-    private String RestaurantResponse;
+    @ManyToOne
+    private User raisedBy;
 
     @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private MenuItem menuItem;
+    private Order order;
 }

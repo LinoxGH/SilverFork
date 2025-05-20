@@ -65,4 +65,18 @@ public class ReviewService {
     public List<Review> getReviewsByMenuItem(Long menuItemId) {
         return reviewRepository.findByMenuItemId(menuItemId);
     }
+
+
+    public Review respondToReview(Long reviewId, String response, String restaurantUsername) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        String ownerUsername = review.getMenuItem().getRestaurant().getOwnerUsername();
+        if (!ownerUsername.equals(restaurantUsername)) {
+            throw new RuntimeException("Unauthorized to respond to this review");
+        }
+
+        review.setRestaurantResponse(response);
+        return reviewRepository.save(review);
+    }
 }

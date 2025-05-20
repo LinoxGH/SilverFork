@@ -20,8 +20,7 @@ public class RestaurantEmployee {
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User courier;
+    @JoinColumn(name = "courier_id")
+    private Courier courier;
 
-    private String status = "AVAILABLE";
 }
