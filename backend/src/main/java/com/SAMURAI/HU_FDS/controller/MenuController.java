@@ -196,4 +196,15 @@ public class MenuController {
         menuItems.forEach(MenuItem::getBase64Image);
         return ResponseEntity.ok(menuItems);
     }
+
+    @GetMapping("/menu/{id}")
+    public ResponseEntity<MenuItem> getMenuItemById(@PathVariable Long id) {
+        MenuItem item = menuService.getMenuItemById(id);
+        if (item != null) {
+            item.getBase64Image(); // to populate image
+            return ResponseEntity.ok(item);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
 }
