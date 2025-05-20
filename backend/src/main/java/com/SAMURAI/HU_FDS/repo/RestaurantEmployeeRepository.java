@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.repo;
 
+import com.SAMURAI.HU_FDS.model.Courier;
 import com.SAMURAI.HU_FDS.model.Restaurant;
 import com.SAMURAI.HU_FDS.model.RestaurantEmployee;
 import com.SAMURAI.HU_FDS.model.User;
@@ -18,5 +19,5 @@ public interface RestaurantEmployeeRepository extends JpaRepository<RestaurantEm
 
     List<RestaurantEmployee> findByCourierId(Long courierId);
 
-    boolean existsByRestaurantAndCourier(Restaurant restaurant, User courier);
+    boolean existsByRestaurantAndCourier(Restaurant restaurant, Courier courier);
 }

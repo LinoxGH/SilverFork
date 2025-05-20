@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.repo;
 
+import com.SAMURAI.HU_FDS.model.Courier;
 import com.SAMURAI.HU_FDS.model.Order;
 import com.SAMURAI.HU_FDS.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,8 +13,8 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUser(User user);
     List<Order> findByRestaurantOwnerUsername(String ownerUsername);
-    List<Order> findByCourier(User courier);
-    List<Order> findByCourierUsername(String courierUsername);
+    List<Order> findByCourier(Courier courier);
+    List<Order>findByCourierUserUsername(String username);
     
     void deleteAllByUser(Optional<User> user);
 }

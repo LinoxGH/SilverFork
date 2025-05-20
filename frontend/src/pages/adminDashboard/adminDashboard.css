@@ -112,3 +112,111 @@
   border-radius: 10px;
   margin-top: 10px;
 }
+
+
+
+
+/* Modal overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content.wide {
+  background-color: var(--module-bg);
+  color: var(--text-color);
+  padding: 30px;
+  border-radius: 12px;
+  width: 60vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 2px solid var(--detail-color);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: var(--text-hover-color);
+}
+
+.tab-button.active {
+  border-bottom: 3px solid var(--text-hover-color);
+  font-weight: bold;
+}
+
+/* Modal close button */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+/* Report card */
+.order-card {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: var(--additional-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 5px solid var(--darker-additional);
+}
+
+/* Actions */
+.order-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.order-actions button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: var(--darker-additional);
+  color: var(--text-color);
+}
+
+.order-actions button:hover {
+  background-color: var(--detail-color);
+}
+
+

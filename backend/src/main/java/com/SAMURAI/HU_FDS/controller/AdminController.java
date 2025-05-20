@@ -1,10 +1,7 @@
 package com.SAMURAI.HU_FDS.controller;
 
 
-import com.SAMURAI.HU_FDS.model.Address;
-import com.SAMURAI.HU_FDS.model.Order;
-import com.SAMURAI.HU_FDS.model.OrderItem;
-import com.SAMURAI.HU_FDS.model.User;
+import com.SAMURAI.HU_FDS.model.*;
 import com.SAMURAI.HU_FDS.repo.*;
 import com.SAMURAI.HU_FDS.service.CartService;
 import com.SAMURAI.HU_FDS.service.JwtService;
@@ -54,6 +51,9 @@ public class AdminController {
 
     @Autowired
     private FavoriteRepository favoriteRepository;
+
+    @Autowired
+    private CourierRepository courierRepository;
 
 
 
@@ -107,12 +107,26 @@ public class AdminController {
                                         @RequestParam String rank,
                                         @RequestHeader("Authorization") String authHeader) {
         if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            user.get().setRank(rank);
-            userRepository.save(user.get());
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        if (optionalUser.isPresent()) {
+            User realUser = optionalUser.get();
+
+            realUser.setRank(rank);
+            userRepository.save(realUser);
+
+            if ("COURIER".equalsIgnoreCase(rank)) {
+                if (!courierRepository.existsByUser(realUser)) {
+                    Courier courier = new Courier();
+                    courier.setUser(realUser);
+                    courier.setStatus("AVAILABLE");
+                    courierRepository.save(courier);
+                }
+            }
+
             return ResponseEntity.ok("Rank updated");
         }
+
         return ResponseEntity.notFound().build();
     }
 
