@@ -17,4 +17,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order>findByCourierUserUsername(String username);
     
     void deleteAllByUser(Optional<User> user);
+    List<Order> findAllByCourier(Courier courier);
 }

@@ -20,4 +20,6 @@ public interface RestaurantEmployeeRepository extends JpaRepository<RestaurantEm
     List<RestaurantEmployee> findByCourierId(Long courierId);
 
     boolean existsByRestaurantAndCourier(Restaurant restaurant, Courier courier);
+
+    void deleteAllByCourier(Courier courier);
 }
