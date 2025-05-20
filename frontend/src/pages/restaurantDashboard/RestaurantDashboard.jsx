@@ -28,6 +28,8 @@ const RestaurantDashboard = () => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDescription, setProductDescription] = useState("");
+  const [productImage, setProductImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
   // Products List
   const [products, setProducts] = useState([]);
@@ -72,10 +74,12 @@ const RestaurantDashboard = () => {
       setProductName(editingProduct.name);
       setProductPrice(editingProduct.price);
       setProductDescription(editingProduct.description || "");
+      setProductImage(editingProduct.picture || null);
     } else {
       setProductName("");
       setProductPrice("");
       setProductDescription("");
+      setProductImage(null);
     }
 
     const nameField = document.getElementById("product-name-field");
@@ -105,6 +109,15 @@ const RestaurantDashboard = () => {
       })
   }
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProductImage(file); // Gerçek dosya
+      setImagePreview(URL.createObjectURL(file));
+      console.log(productImage);
+    }
+  };
+
   const handleSubmitProduct = async () => {
     const token = localStorage.getItem("token");
 
@@ -112,19 +125,34 @@ const RestaurantDashboard = () => {
       name: productName,
       price: Number(productPrice),
       description: productDescription,
-      picture: null
+      picture: null,
+      category: productCategory,
+      cuisine: productCuisine
     };
 
+    const formData = new FormData();
+    formData.append("newPicture", productImage);
+
     try {
+      let productId;
       if (editingProduct) {
         await axios.put(`http://localhost:8080/restaurant/menu/update/${editingProduct.id}`, productData, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        productId = editingProduct.id;
       } else {
-        await axios.post("http://localhost:8080/restaurant/menu/add", productData, {
+        const res = await axios.post("http://localhost:8080/restaurant/menu/add", productData, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        productId = res.data.id;
       }
+
+      await axios.put(`http://localhost:8080/restaurant/menu/picture/${productId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       const res = await axios.get("http://localhost:8080/restaurant/menu", {
         headers: { Authorization: `Bearer ${token}` }
@@ -227,6 +255,15 @@ const RestaurantDashboard = () => {
           setMaxFilter={setMaxFilter}
         />
         <div>
+          <div className="min-price">
+            <label>Minimum Cart Price:   </label>
+            <input
+              type="number"
+              value={minPriceInput}
+              onChange={(e) => setMinPriceInput(e.target.value)}
+              onBlur={handleMinimumCart}
+            />$
+          </div>
           <h3 className="product-label">Products</h3>
           <div className="products">
             {products.map((product) => (
@@ -241,26 +278,6 @@ const RestaurantDashboard = () => {
             ))}
           </div>
         </div>
-
-        <div className="statistics">
-          <div className="min-price">
-            Minimum Cart Price: 
-            <input 
-              type="number" 
-              value={minPriceInput} 
-              onChange={(e) => setMinPriceInput(e.target.value)} 
-              onBlur={handleMinimumCart}
-            />$
-          </div>
-          <div className="chart">
-            <div className="chart-bars"></div>
-            <p>Order Statistics</p>
-          </div>
-          <div className="chart">
-            <div className="chart-bars"></div>
-            <p>Earning Statistics</p>
-          </div>
-        </div>
       </div>
 
       {showAddProductModal && (
@@ -271,6 +288,25 @@ const RestaurantDashboard = () => {
               setEditingProduct(null);
             }}>×</button>
             <h2>{editingProduct ? "Edit Product" : "Add New Product"}</h2>
+
+            <div className="modal-image-container">
+              {imagePreview ? (
+                <img className="modal-image" src={imagePreview} alt="Product Image" />
+              ) : (
+                <div className="modal-placeholder-container">
+                  <span className="modal-placeholder-text">Upload Image</span>
+                </div>
+              )}
+              <div className="modal-file-input">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="modal-file-input-button"
+                />
+              </div>
+            </div>
+
             <input id="product-name-field" type="text" placeholder="Food Name" value={productName} onChange={(e) => setProductName(e.target.value)} />
             <input id="product-price-field" type="number" placeholder="Food Price" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} />
             <textarea id="product-desc-field" placeholder="Description" value={productDescription} onChange={(e) => setProductDescription(e.target.value)} />

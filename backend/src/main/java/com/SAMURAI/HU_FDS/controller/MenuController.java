@@ -58,21 +58,14 @@ public class MenuController {
     //Add Product
     @PostMapping("/restaurant/menu/add")
     public ResponseEntity<MenuItem> addMenuItem(@RequestHeader("Authorization") String authHeader,
-                                                @RequestBody MenuItem menuItem,
-                                                @RequestParam(required = false) MultipartFile image
+                                                @RequestBody MenuItem menuItem
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             try {
-                if (image == null) {
-                    menuItem.setPicture(null);
-                } else {
-                    byte[] imageBytes = image.getBytes();
-                    menuItem.setPicture(imageBytes);
-                }
-
+                menuItem.setPicture(null);
                 String username = userDetails.getUsername();
                 return ResponseEntity.ok(menuService.addMenuItem(username, menuItem));
             } catch (Exception e) {
@@ -88,23 +81,38 @@ public class MenuController {
     @PutMapping("/restaurant/menu/update/{id}")
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
-                                                   @RequestBody MenuItem updatedItem,
-                                                   @RequestParam(required = false) MultipartFile image
+                                                   @RequestBody MenuItem updatedItem
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             try {
-                if (image == null) {
-                    updatedItem.setPicture(null);
-                } else {
-                    byte[] imageBytes = image.getBytes();
-                    updatedItem.setPicture(imageBytes);
-                }
-
+                updatedItem.setPicture(null);
                 String username = userDetails.getUsername();
                 return ResponseEntity.ok(menuService.updateMenuItem(username, id, updatedItem));
+            }catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
+
+    //Product update
+    @PutMapping("/restaurant/menu/picture/{id}")
+    public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
+                                                   @PathVariable Long id,
+                                                   @RequestPart MultipartFile newPicture
+    ) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            try {
+                byte[] pictureBytes = newPicture.getBytes();
+                String username = userDetails.getUsername();
+                return ResponseEntity.ok(menuService.updateMenuItemPicture(username, id, pictureBytes));
             }catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }

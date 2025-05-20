@@ -9,6 +9,7 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const navigate = useNavigate();
 
+  const imagePreview = product.base64Image ? `data:image/jpeg;base64,${product.base64Image}` : null;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -111,7 +112,11 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
   return (
     <div className="product-card">
       <div className="product-img" onClick={goToProductPage} style={{ cursor: "pointer" }}>
-        Food Img
+        {imagePreview ? (
+          <img src={imagePreview} alt="Food Image"/>
+        ) : (
+          <p>Food Image</p>
+        )}
       </div>
 
       <div className="product-info">
