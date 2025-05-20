@@ -1,0 +1,77 @@
+.reviewCardContainer{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    background: rgba(0,0,0,0.5);
+}
+
+
+.addReviewCard {
+  width: 50%;
+  border: 1px solid gray;
+  background-color: var(--bg-color);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 2rem;
+  justify-content: flex-start;
+  padding: 2rem;
+}
+
+.addReviewHeader {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.addReviewCardX{
+  height: 50px;
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+  margin-bottom: 2rem;
+
+  border-radius: 1rem;
+
+}
+
+.addReviewCloseButton{
+height: 50px;
+  font-size: 2rem;
+
+width: 50px;
+}
+
+
+.addReviewHeader.button{
+  width: 50px;
+}
+.addReviewButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.reviewCardText{
+    width: 80%;
+    margin-bottom: 2rem;
+    min-height: 200px;
+}
+
+.addReviewButtons button {
+    width: 250px;
+    border-radius: 1rem;
+    height: fit-content;
+    font-size: 1.3rem;
+
+    border: none;
+    text-align: center;
+    padding: 1rem;
+
+}
