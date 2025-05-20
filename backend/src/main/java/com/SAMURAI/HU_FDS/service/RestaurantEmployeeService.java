@@ -90,6 +90,13 @@ public class RestaurantEmployeeService {
         }
     }
 
+    public String getCourierStatus(String username) {
+        Courier courier = courierRepository.findByUserUsername(username)
+                .orElseThrow(() -> new RuntimeException("Courier not found"));
+
+        return courier.getStatus();
+    }
+
     @PostConstruct
     public void initCouriers() {
         createCouriersFromExistingUsers();

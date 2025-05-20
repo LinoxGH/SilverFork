@@ -193,9 +193,9 @@ public class MenuController {
         }
     }
 
-    @GetMapping("/restaurant/menu/info/{restaurantName}")
-    public ResponseEntity<Restaurant> getRestaurantInfo(@PathVariable String restaurantName) {
-        return ResponseEntity.ok(menuService.getRestaurantByName(restaurantName));
+    @GetMapping("/restaurant/menu/info/{id}")
+    public ResponseEntity<Restaurant> getRestaurantInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(menuService.getRestaurantById(id));
     }
 
     @GetMapping("/restaurant/menu/items/{restaurantName}")

@@ -1,63 +1,58 @@
-.courier-dashboard {
+.courierDashboard {
   background-color: var(--bg-color);
   color: var(--text-color);
   min-height: 100vh;
 }
 
-.dashboard-body {
+.dashboardBody {
   display: flex;
-  padding-left: 90px;
-  padding-right: 90px;
-  gap: 75px;
+  flex-direction: row;
 }
 
-.left-panel {
-  flex: 3;
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+
+  width: 60%;
+  margin-left: 5%;
+  margin-right: 3%;
+  background: violet;
 }
 
-.assignments-list {
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+
+  width: 24%;
+  margin-left: 3%;
+  margin-right: 5%;
+  background: wheat;
+  gap: 2rem;
+}
+
+.assignmentsList {
+  overflow: auto;
+
   display: flex;
   flex-direction: column;
 }
 
-.assignment-card {
-  background-color: var(--module-bg);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  overflow: hidden;
-  word-wrap: break-word;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 250px;
-  width: 150px;
+.assignmentCard {
+
 }
 
-.assignment-card:hover {
-  transform: translateY(-4px);
-}
-
-.right-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 24px;
-}
-
-.stats p {
+.stats {
   margin: 5px 0;
 }
 
-.view-restaurants {
-  background-color: var(--module-bg);
-  color: var(--text-color);
-  border: none;
-  padding: 10px;
-  border-radius: 15px;
-  cursor: pointer;
-  margin: 10px 0;
-  font-size: 24px;
-  width: 250px;
+.availabilityLabel {
+  margin-left: 10px;
+}
+
+.restaurantsList {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  gap: 5px;
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
-import Button from "./Button.jsx";
+import Button from "../general/Button.jsx";
 
 const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrderable, onRefresh }) => {
   const [favorite, setFavorite] = useState(false);

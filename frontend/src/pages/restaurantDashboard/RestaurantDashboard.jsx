@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./RestaurantDashboard.css";
-import ProductCard from "../../modules/general/ProductCard.jsx";
-import ProductFilters from "../../modules/general/ProductFilter.jsx";
+import ProductCard from "../../modules/product/ProductCard.jsx";
+import ProductFilters from "../../modules/product/ProductFilter.jsx";
 
 const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
@@ -114,7 +114,6 @@ const RestaurantDashboard = () => {
     if (file) {
       setProductImage(file); // Gerçek dosya
       setImagePreview(URL.createObjectURL(file));
-      console.log(productImage);
     }
   };
 

@@ -1,5 +1,5 @@
 import './App.css';
-import ProductCard from "./modules/general/ProductCard.jsx";
+import ProductCard from "./modules/product/ProductCard.jsx";
 import React, { useState } from "react";
 
 function App() {

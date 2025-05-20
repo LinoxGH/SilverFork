@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./Favourites.css";
-import ProductCard from "../../modules/general/ProductCard.jsx";
-import ProductFilters from "../../modules/general/ProductFilter.jsx";
+import ProductCard from "../../modules/product/ProductCard.jsx";
+import ProductFilters from "../../modules/product/ProductFilter.jsx";
 
 const Favourites = () => {
   const token = localStorage.getItem("token");

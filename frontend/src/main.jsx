@@ -33,7 +33,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/payment" element={<Payment />} />
         <Route path="/manage-user" element={<ManageUser />} />
         <Route path="/address" element={<Adresses />} />
-        <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/product" element={<ProductDetail />} />
         <Route path="/search-result/:keyword" element={<ShowSearchResult />} />
