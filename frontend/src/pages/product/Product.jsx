@@ -8,31 +8,75 @@ function ProductSection({ productId }) {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(5);
   const [product, setProduct] = useState(null);
+  const [existingReview, setExistingReview] = useState(null);
+  const currentUsername = localStorage.getItem("username");
+  const currentRank = localStorage.getItem("rank");
+
 
   useEffect(() => {
+    // fetch product info
     axios.get(`http://localhost:8080/menu/${productId}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error("Failed to fetch product:", err));
+
+    // fetch user's existing review
+    axios.get(`http://localhost:8080/reviews/menu/${productId}`)
+      .then(res => {
+        const found = res.data.find(r => r.user.username === currentUsername);
+        if (found) setExistingReview(found);
+      })
+      .catch(err => console.error("Failed to fetch reviews:", err));
   }, [productId]);
 
+
   const handleReviewSubmit = () => {
-    axios.post(`http://localhost:8080/reviews/create`, null, {
-      params: {
-        menuItemId: productId,
-        content,
-        rating
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
-    })
-    .then(() => {
-      alert("Review submitted!");
-      setShowReviewModal(false);
-      setContent("");
-      setRating(5);
-    })
-    .catch(() => alert("Failed to submit review."));
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please log in first.");
+      return;
+    }
+
+    if (existingReview) {
+      // Edit existing review
+      axios.put(`http://localhost:8080/reviews/edit/${existingReview.id}`, null, {
+        params: {
+          content,
+          rating
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        alert("Review updated!");
+        setShowReviewModal(false);
+        setContent("");
+        setRating(5);
+        window.location.reload();
+      })
+      .catch(() => alert("Failed to update review."));
+    } else {
+      // Create new review
+      axios.post(`http://localhost:8080/reviews/create`, null, {
+        params: {
+          menuItemId: productId,
+          content,
+          rating
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        alert("Review submitted!");
+        setShowReviewModal(false);
+        setContent("");
+        setRating(5);
+        window.location.reload();
+      })
+      .catch(() => alert("Failed to submit review."));
+    }
   };
 
   const addToCart = async () => {
@@ -85,15 +129,41 @@ function ProductSection({ productId }) {
 
         <div className={styles.productActionButtons}>
           <button className={styles.productButton} onClick={addToCart}>Add to Cart</button>
-          <button
-            className={styles.productButton}
-            onClick={() => setShowReviewModal(true)}
-          >
-            Add Review
-          </button>
+          {existingReview ? (
+            <>
+              <button
+                className={styles.productButton}
+                onClick={() => {
+                  setContent(existingReview.content);
+                  setRating(existingReview.rating);
+                  setShowReviewModal(true);
+                }}
+              >
+                Edit Review
+              </button>
+              <button
+                className={styles.productButton}
+                onClick={() => {
+                  axios.delete(`http://localhost:8080/reviews/delete/${existingReview.id}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                  })
+                  .then(() => window.location.reload());
+                }}
+              >
+                Delete Review
+              </button>
+            </>
+          ) : (
+            <button
+              className={styles.productButton}
+              onClick={() => setShowReviewModal(true)}
+            >
+              Add Review
+            </button>
+          )}
+
         </div>
       </div>
-
       {showReviewModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
@@ -124,20 +194,43 @@ function ProductSection({ productId }) {
   );
 }
 
-function ReviewCard({ user, comment, reply }) {
+function ReviewCard({ review }) {
+  const currentRank = localStorage.getItem("rank");
+
+  const handleRespond = () => {
+    const response = prompt("Enter your response to the review:");
+    if (!response) return;
+
+    axios.put(`http://localhost:8080/reviews/respond/${review.id}`, null, {
+      params: { response },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then(() => window.location.reload())
+    .catch(err => console.error("Failed to submit response:", err));
+  };
+
   return (
     <div className={styles.productReviewOrder}>
-      <strong>{user}</strong>
+      <strong>{review.user.username}</strong>
       <hr />
-      <p>{comment}</p>
+      <p>{review.content}</p>
       <hr />
-      <p><em>{reply}</em></p>
+      <p><em>{review.restaurantResponse}</em></p>
+      {currentRank === "RESTAURANT" && (
+        <button onClick={handleRespond}>Respond</button>
+      )}
     </div>
   );
 }
 
+
 function ReviewSection({ productId }) {
   const [reviews, setReviews] = useState([]);
+  const currentUsername = localStorage.getItem("username");
+  const currentRank = localStorage.getItem("rank");
+
 
   useEffect(() => {
     axios.get(`http://localhost:8080/reviews/menu/${productId}`)
@@ -151,11 +244,7 @@ function ReviewSection({ productId }) {
       <div className={styles.productReviewOrder}>
         {reviews.map((review) => (
           <div key={review.id} className={styles.productReviewCard}>
-            <ReviewCard
-              user={review.user.username}
-              comment={review.content}
-              reply={review.restaurantResponse}
-            />
+            <ReviewCard review={review} />
           </div>
         ))}
       </div>
