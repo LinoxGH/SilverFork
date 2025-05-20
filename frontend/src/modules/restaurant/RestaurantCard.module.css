@@ -1,0 +1,44 @@
+.restaurantCard {
+  position: relative;
+  background-color: var(--module-bg);
+  padding-top: 20px;
+  border-radius: 8px;
+  width: 142px;
+  color: var(--text-color);
+  white-space: normal;
+  overflow-wrap: break-word;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.restaurantCard:hover {
+  transform: translateY(-4px);
+}
+
+.restaurantImg {
+  background-color: #ccc;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.restaurantImg img {
+  width: 100px;
+  height: 100px;
+}
+
+.restaurantInfo p {
+  margin: 4px 0;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.restaurantName {
+  font-size: 24px;
+}
+
+.restaurantRating {
+  font-size: 11px;
+}

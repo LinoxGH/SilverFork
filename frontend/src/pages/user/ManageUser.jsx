@@ -5,7 +5,7 @@ import axios from "axios";
 
 function ManageUser() {
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [username] = useState(localStorage.getItem("username") || "");
   const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [newPassword, setNewPassword] = useState("");
@@ -201,11 +201,10 @@ function ManageUser() {
                 className={styles.fileInputButton}
               />
             </div>
-          <div className={styles.saveButton}>
-            <button className={styles.button} onClick={handleSaveImage}>Save Picture</button>
+            <div className={styles.saveButton}>
+              <button className={styles.button} onClick={handleSaveImage}>Save Picture</button>
+            </div>
           </div>
-          
-          </div>  
 
           <div className={styles.buttonGroup}>
             <button className={styles.button} onClick={() => {navigate("/address")}}>View Addresses</button>

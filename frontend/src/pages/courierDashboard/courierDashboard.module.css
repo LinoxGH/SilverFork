@@ -1,0 +1,58 @@
+.courierDashboard {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+.dashboardBody {
+  display: flex;
+  flex-direction: row;
+}
+
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+
+  width: 60%;
+  margin-left: 5%;
+  margin-right: 3%;
+  background: violet;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+
+  width: 24%;
+  margin-left: 3%;
+  margin-right: 5%;
+  background: wheat;
+  gap: 2rem;
+}
+
+.assignmentsList {
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.assignmentCard {
+
+}
+
+.stats {
+  margin: 5px 0;
+}
+
+.availabilityLabel {
+  margin-left: 10px;
+}
+
+.restaurantsList {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  gap: 5px;
+}

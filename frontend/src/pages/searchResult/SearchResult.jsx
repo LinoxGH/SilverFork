@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./SearchResult.css";
 import axios from "axios";
-import ProductCard from "../../modules/general/ProductCard.jsx";
+import ProductCard from "../../modules/product/ProductCard.jsx";
 import { useParams } from "react-router-dom";
 
 const ShowSearchResult = () => {
