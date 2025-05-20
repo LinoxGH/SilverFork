@@ -113,4 +113,9 @@ public class MenuService {
         return menuItemRepository.findByRestaurant(restaurant).stream().filter(item -> !item.getHidden()).toList();
     }
 
+    public MenuItem getMenuItemById(Long id) {
+        return menuItemRepository.findById(id).orElse(null);
+    }
+
+
 }
