@@ -122,6 +122,7 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
         <p className="product-name">{product.name}</p>
         <p className="product-place">{restaurantName}</p>
         <p className="product-rating">{product.description}</p>
+        <p className="product-rating">{product.rating} ⭐</p>
         <p className="product-price">
           {product.price}$
           {isOrderable ? (

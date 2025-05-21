@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import styles from "./Product.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Button from "../../modules/general/Button.jsx";
 
 function ProductSection({ productId }) {
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -123,7 +124,7 @@ function ProductSection({ productId }) {
       <div className={styles.productDetails}>
         <div className={styles.productName}>{product?.name}</div>
         <div className={styles.productRestaurantName}>{product?.restaurantName}</div>
-        <div className={styles.productrating}>{product?.rating} ⭐</div>
+        <div className={styles.productRating}>{product?.rating} ⭐</div>
         <div className={styles.productDescription}>{product?.description}</div>
         <div className={styles.productPrice}>{product?.price}₺</div>
 
@@ -213,14 +214,31 @@ function ReviewCard({ review }) {
   };
 
   return (
-    <div className={styles.productReviewOrder}>
-      <strong>{review.user.username}</strong>
-      <hr />
-      <p>{review.content}</p>
-      <hr />
-      <p><em>{review.restaurantResponse}</em></p>
-      {currentRank === "RESTAURANT" && (
-        <button onClick={handleRespond}>Respond</button>
+    <div className={styles.productReviewCard}>
+      <div className={styles.reviewHeader}>
+        <p className={styles.reviewerName}>{review.user.username}</p>
+        <p className={styles.reviewerName}>{review.rating} ⭐</p>
+      </div>
+      <div className={styles.reviewContent}>
+        {review.content}
+      </div>
+      {review.restaurantResponse === null ? (
+        currentRank === "RESTAURANT" && (
+          <Button
+            label={"Respond"}
+            onClick={handleRespond}
+            borderRadius={"10px"}
+            margin={"1% auto 1% auto"}
+            width={"30%"}
+          />
+        )
+      ) : (
+        <div className={styles.reviewResponseContainer}>
+          Restaurant's Response:
+          <div className={styles.reviewResponse}>
+            {review.restaurantResponse}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -244,9 +262,7 @@ function ReviewSection({ productId }) {
       <div className={styles.productReviewTitle}>Reviews</div>
       <div className={styles.productReviewOrder}>
         {reviews.map((review) => (
-          <div key={review.id} className={styles.productReviewCard}>
-            <ReviewCard review={review} />
-          </div>
+          <ReviewCard key={review.id} review={review} />
         ))}
       </div>
     </div>

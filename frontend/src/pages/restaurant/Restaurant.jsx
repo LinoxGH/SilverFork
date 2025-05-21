@@ -107,7 +107,7 @@ const Restaurant = () => {
       label={"Register as employee"}
       onClick={handleRegisterButton}
       width={"100%"}
-      borderRadius={"10%"}
+      borderRadius={"10px"}
       useLighter={true}
     />);
 
@@ -117,7 +117,7 @@ const Restaurant = () => {
       label={"Unregister as employee"}
       onClick={handleRegisterButton}
       width={"100%"}
-      borderRadius={"10%"}
+      borderRadius={"10px"}
       useLighter={true}
     />);
 

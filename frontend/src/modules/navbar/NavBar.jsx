@@ -233,6 +233,7 @@ function NavBar() {
                 <Button
                   label={"🔔"}
                   onClick={toggleDropdown}
+                  borderRadius={"10px"}
                 />
                 {notifications.some(n => n.status === "UNREAD") && (
                   <div className={styles.notificationBadge}>
