@@ -76,11 +76,13 @@ const RestaurantDashboard = () => {
       setProductPrice(editingProduct.price);
       setProductDescription(editingProduct.description || "");
       setProductImage(editingProduct.picture || null);
+      setImagePreview(editingProduct.picture || null)
     } else {
       setProductName("");
       setProductPrice("");
       setProductDescription("");
       setProductImage(null);
+      setImagePreview(null)
     }
 
     const nameField = document.getElementById("product-name-field");
@@ -89,6 +91,8 @@ const RestaurantDashboard = () => {
     if (priceField) priceField.value = productPrice;
     const descField = document.getElementById("product-desc-field");
     if (descField) descField.value = productDescription;
+    const imgField = document.getElementById("modal-image");
+    if (imgField) imgField.src = imagePreview;
   }, [editingProduct]);
 
   const handleEditProduct = (product) => {
@@ -126,8 +130,8 @@ const RestaurantDashboard = () => {
       price: Number(productPrice),
       description: productDescription,
       picture: null,
-      category: productCategory,
-      cuisine: productCuisine
+      category: null,
+      cuisine: null
     };
 
     const formData = new FormData();
@@ -303,6 +307,7 @@ const RestaurantDashboard = () => {
               )}
               <div className="modal-file-input">
                 <input
+                  id="modal-file-input-id"
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
