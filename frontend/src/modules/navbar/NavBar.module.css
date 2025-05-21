@@ -73,3 +73,80 @@ a:visited, a:link, a:active {
   padding-left: 8px;
   color: var(--text-color)
 }
+
+.notificationContainer {
+  position: relative;
+}
+
+.notificationDropdown {
+  position: absolute;
+  top: 3rem;
+  right: 0;
+  background-color: var(--module-bg);
+  color: var(--text-color);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.5rem;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notificationItem {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items:flex-start;
+  padding: 0.25rem;
+  background-color: var(--bg-color);
+  border-radius: 5px;
+}
+
+.notificationItem span:first-child {
+  text-align: left;
+  flex-grow: 1;
+  white-space: pre-wrap;
+}
+
+.notificationMessage {
+  flex: 1;
+  text-align: left;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.notificationUnread {
+  background-color: var(--additional-color);
+  border-left: 4px solid red;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.notificationDelete {
+  margin-left: 10px;
+  cursor: pointer;
+  color: gray;
+  flex-shrink: 0;
+}
+
+.notificationDelete:hover {
+  color: red;
+}

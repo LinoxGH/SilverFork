@@ -68,4 +68,19 @@ public class NotificationService {
 
         notificationRepository.save(notification);
     }
+
+    public void deleteNotification(String username, Long id) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Notification notification = notificationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+
+        if (!notification.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Access denied");
+        }
+
+        notificationRepository.delete(notification);
+    }
+
 }
