@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./RestaurantDashboard.css";
 import ProductCard from "../../modules/product/ProductCard.jsx";
 import ProductFilters from "../../modules/product/ProductFilter.jsx";
+import Button from "../../modules/general/Button.jsx";
 
 const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
@@ -225,18 +226,22 @@ const RestaurantDashboard = () => {
           </div>
         </div>
         <div className="dashboard-buttons">
-          <div className="first-buttons">
-            <button>Past Orders</button>
-            <button onClick={() => {
-              setEditingProduct(null);
-              setShowAddProductModal(true);
-            }}>Add Product ➕</button>
-          </div>
-          <div className="second-buttons">
-          <button onClick={() => navigate("/current-orders")}>
-            Current Orders
-          </button>
-            <button>Employed Couriers</button>
+          <div className="buttons">
+            <Button
+              label={"Add Product +"}
+              onClick={() => {
+                setEditingProduct(null);
+                setShowAddProductModal(true);
+              }}
+              borderRadius={"10px"}
+              width={"100%"}
+            />
+            <Button
+              label={"Current Orders"}
+              onClick={() => navigate("/current-orders")}
+              borderRadius={"10px"}
+              width={"100%"}
+            />
           </div>
         </div>
       </div>
