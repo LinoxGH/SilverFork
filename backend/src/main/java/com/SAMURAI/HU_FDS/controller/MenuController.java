@@ -198,11 +198,23 @@ public class MenuController {
         return ResponseEntity.ok(menuService.getRestaurantById(id));
     }
 
-    @GetMapping("/restaurant/menu/items/{restaurantName}")
-    public ResponseEntity<List<MenuItem>> getMenuByRestaurantName(@PathVariable String restaurantName) {
-        List<MenuItem> menuItems = menuService.getRestaurantMenuByName(restaurantName);
+    @GetMapping("/restaurant/menu/items/{restaurantId}")
+    public ResponseEntity<List<MenuItem>> getMenuByRestaurantId(@PathVariable Long restaurantId) {
+        List<MenuItem> menuItems = menuService.getRestaurantMenuById(restaurantId);
         menuItems.forEach(MenuItem::getBase64Image);
         return ResponseEntity.ok(menuItems);
+    }
+
+    @GetMapping("/restaurant/menu/address/{restaurantId}")
+    public ResponseEntity<Address> getRestaurantAddress(@PathVariable Long restaurantId) {
+        Restaurant restaurant = menuService.getRestaurantById(restaurantId);
+        if (restaurant == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        List<Address> address = addressRepository.findByUsername(restaurant.getOwnerUsername());
+        if (address.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        return ResponseEntity.ok(address.get(0));
     }
 
     @GetMapping("/menu/{id}")

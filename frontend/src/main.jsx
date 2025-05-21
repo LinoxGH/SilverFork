@@ -20,6 +20,7 @@ import ProtectedRoute from "./modules/general/ProtectedRoute.jsx";
 import NavBar from "./modules/navbar/NavBar.jsx";
 import CurrentOrders from "./pages/currentOrders/CurrentOrders.jsx";
 import CourierDashboard from "./pages/courierDashboard/courierDashboard.jsx";
+import Restaurant from "./pages/restaurant/Restaurant.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/product" element={<ProductDetail />} />
         <Route path="/search-result/:keyword" element={<ShowSearchResult />} />
         <Route path="/current-orders" element={<CurrentOrders />} />
+        <Route path="/restaurant/:restaurantId" element={<Restaurant />} />
         <Route path="/restaurant-dashboard" element={
           <ProtectedRoute allowedRoles={['RESTAURANT']}>
             <RestaurantDashboard />

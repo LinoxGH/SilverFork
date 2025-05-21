@@ -118,8 +118,6 @@ const AdminDashboard = () => {
           </div>
           <hr />
           <button className="view-reports" onClick={() => setShowModal(true)}>View Reports</button>
-          <div className="chart-placeholder">New Reports</div>
-          <div className="chart-placeholder">Resolved Reports</div>
         </div>
       </div>
       {showModal && (
