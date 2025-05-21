@@ -52,6 +52,7 @@ const Restaurant = () => {
         restaurantInfo.name = res.data.name;
         restaurantInfo.minCartPrice = res.data.minimumCart;
         restaurantInfo.picture = res.data.picture;
+        restaurantInfo.averageRating = res.data.rating ? res.data.rating : 0;
 
         setMinPriceInput(restaurantInfo.minCartPrice);
       })
@@ -106,7 +107,7 @@ const Restaurant = () => {
       label={"Register as employee"}
       onClick={handleRegisterButton}
       width={"100%"}
-      borderRadius={"10%"}
+      borderRadius={"10px"}
       useLighter={true}
     />);
 
@@ -116,7 +117,7 @@ const Restaurant = () => {
       label={"Unregister as employee"}
       onClick={handleRegisterButton}
       width={"100%"}
-      borderRadius={"10%"}
+      borderRadius={"10px"}
       useLighter={true}
     />);
 
