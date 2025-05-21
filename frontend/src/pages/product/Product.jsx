@@ -127,42 +127,43 @@ function ProductSection({ productId }) {
         <div className={styles.productDescription}>{product?.description}</div>
         <div className={styles.productPrice}>{product?.price}₺</div>
 
-        <div className={styles.productActionButtons}>
-          <button className={styles.productButton} onClick={addToCart}>Add to Cart</button>
-          {existingReview ? (
-            <>
+        {currentRank === "CUSTOMER" ? (
+          <div className={styles.productActionButtons}>
+            <button className={styles.productButton} onClick={addToCart}>Add to Cart</button>
+            {existingReview ? (
+              <>
+                <button
+                  className={styles.productButton}
+                  onClick={() => {
+                    setContent(existingReview.content);
+                    setRating(existingReview.rating);
+                    setShowReviewModal(true);
+                  }}
+                >
+                  Edit Review
+                </button>
+                <button
+                  className={styles.productButton}
+                  onClick={() => {
+                    axios.delete(`http://localhost:8080/reviews/delete/${existingReview.id}`, {
+                      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    })
+                      .then(() => window.location.reload());
+                  }}
+                >
+                  Delete Review
+                </button>
+              </>
+            ) : (
               <button
                 className={styles.productButton}
-                onClick={() => {
-                  setContent(existingReview.content);
-                  setRating(existingReview.rating);
-                  setShowReviewModal(true);
-                }}
+                onClick={() => setShowReviewModal(true)}
               >
-                Edit Review
+                Add Review
               </button>
-              <button
-                className={styles.productButton}
-                onClick={() => {
-                  axios.delete(`http://localhost:8080/reviews/delete/${existingReview.id}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-                  })
-                  .then(() => window.location.reload());
-                }}
-              >
-                Delete Review
-              </button>
-            </>
-          ) : (
-            <button
-              className={styles.productButton}
-              onClick={() => setShowReviewModal(true)}
-            >
-              Add Review
-            </button>
-          )}
-
-        </div>
+            )}
+          </div>
+        ) : (<></>)}
       </div>
       {showReviewModal && (
         <div className={styles.modalOverlay}>

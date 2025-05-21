@@ -52,6 +52,7 @@ const Restaurant = () => {
         restaurantInfo.name = res.data.name;
         restaurantInfo.minCartPrice = res.data.minimumCart;
         restaurantInfo.picture = res.data.picture;
+        restaurantInfo.averageRating = res.data.rating ? res.data.rating : 0;
 
         setMinPriceInput(restaurantInfo.minCartPrice);
       })

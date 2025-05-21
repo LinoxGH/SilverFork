@@ -98,7 +98,7 @@ public class ReviewService {
                 .toList();
 
         if (reviews.isEmpty()) {
-            item.setRating(0.0);
+            item.setRating(5.0);
         } else {
             double sum = 0;
             for (Review r : reviews) {
@@ -121,7 +121,7 @@ public class ReviewService {
                 .toList();
 
         if (visibleItems.isEmpty()){
-            restaurant.setRating(0.0);
+            restaurant.setRating(5.0);
         }
 
         double sum = 0.0;
