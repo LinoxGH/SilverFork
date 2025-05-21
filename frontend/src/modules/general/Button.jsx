@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from "./Button.module.css";
 
-const Button = ({ label, onClick, width, height, margin, position, top, left, borderRadius, fontSize = 20}) => {
+const Button = ({ label, onClick, width, height, margin, position, top, left, borderRadius, useLighter = false, fontSize = 20}) => {
   return (
     <button
       onClick={onClick}
-      className={styles.button}
+      className={useLighter ? styles.buttonLighter : styles.button}
       style={{
         width: width,
         height: height,

@@ -25,7 +25,6 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
     const elementsHE = document.getElementsByClassName("heart-empty-img");
     for (let i = 0; i < elementsHE.length; i++) {
       const element = elementsHE.item(i);
-      console.log(element);
       element.src = theme === "dark" ? "/heart-empty.png" : "/heart-empty-black.png";
     }
 

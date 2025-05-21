@@ -6,3 +6,8 @@
 .label {
   color: var(--text-color);
 }
+
+.buttonLighter {
+  background: var(--module-bg);
+  color: var(--text-color);
+}
