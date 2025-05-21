@@ -1,9 +1,11 @@
 import React from 'react';
+import styles from "./Button.module.css";
 
-const Button = ({ label, onClick, width, height, margin, position, top, left, borderRadius, background, fontSize = 20, color = "#FFFFFF"}) => {
+const Button = ({ label, onClick, width, height, margin, position, top, left, borderRadius, useLighter = false, fontSize = 20}) => {
   return (
     <button
       onClick={onClick}
+      className={useLighter ? styles.buttonLighter : styles.button}
       style={{
         width: width,
         height: height,
@@ -12,13 +14,11 @@ const Button = ({ label, onClick, width, height, margin, position, top, left, bo
         top: top,
         left: left,
         borderRadius: borderRadius,
-        background: background,
-        fontSize: fontSize + "px",
-        color: color
+        fontSize: fontSize + "px"
       }}
     >
       {label ? (
-        <span style={{fontSize: fontSize + 'px', color: color}}>
+        <span className={styles.label} style={{fontSize: fontSize + 'px'}}>
           {label}
         </span>
       ) : null}

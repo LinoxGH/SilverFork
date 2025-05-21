@@ -102,7 +102,21 @@ public class CourierController {
         }
     }
 
-    @PutMapping("/status")
+    @GetMapping("/status")
+    @PreAuthorize("hasRole('COURIER')")
+    public ResponseEntity<String> getStatus(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            String username = userDetails.getUsername();
+            return ResponseEntity.ok(restaurantEmployeeService.getCourierStatus(username));
+        } else {
+            return ResponseEntity.status(403).body("Invalid token");
+        }
+    }
+
+    @PutMapping("/update-status")
     @PreAuthorize("hasRole('COURIER')")
     public ResponseEntity<String> updateStatus(@RequestHeader("Authorization") String authHeader,
                                                @RequestParam String status) {

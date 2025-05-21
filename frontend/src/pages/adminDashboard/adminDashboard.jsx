@@ -11,6 +11,10 @@ const AdminDashboard = () => {
     solved: 0,
     ongoing: 0,
   });
+  const [showModal, setShowModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("delivery");
+  const [orderDisputes, setOrderDisputes] = useState([]);
+  const [reviewDisputes, setReviewDisputes] = useState([]);
 
   const navigate = useNavigate();
 
@@ -33,6 +37,23 @@ const AdminDashboard = () => {
     
   }, []);
 
+  useEffect(() => {
+    if (!showModal) return;
+
+    const token = localStorage.getItem("token");
+
+    axios.get("http://localhost:8080/order-disputes", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => setOrderDisputes(res.data))
+      .catch(err => console.error("Failed to fetch order disputes:", err));
+
+    axios.get("http://localhost:8080/review-disputes", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => setReviewDisputes(res.data))
+      .catch(err => console.error("Failed to fetch review disputes:", err));
+  }, [showModal]);
 
   //might need fixing
   const filteredAccounts = accounts.filter(acc =>
@@ -40,47 +61,24 @@ const AdminDashboard = () => {
     acc.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  const [showModal, setShowModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("delivery");
+  const handleDelete = (id, type) => {
+  const token = localStorage.getItem("token");
+  const url = type === "delivery"
+    ? `http://localhost:8080/order-disputes/${id}`
+    : `http://localhost:8080/review-disputes/${id}`;
 
-  const sampleReports = {
-    delivery: [
-      {
-        id: 101,
-        description: "Late delivery",
-        user: "userA",
-        delivery: "Order #1234"
-      },
-      {
-        id: 102,
-        description: "Wrong address",
-        user: "userB",
-        delivery: "Order #5678"
-      },
-    ],
-    review: [
-      {
-        id: 201,
-        description: "Offensive language",
-        user: "userC",
-        review: "Review #9981"
-      },
-      {
-        id: 202,
-        description: "Spam review",
-        user: "userD",
-        review: "Review #8844"
-      },
-    ],
-  };
-
-  const handleMarkSolved = (id) => {
-    console.log("Mark solved:", id);
-  };
-
-  const handleAction = (id, type) => {
-    console.log(type === "delivery" ? "Cancel delivery:" : "Remove review:", id);
-  };
+  axios.delete(url, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+    .then(() => {
+      if (type === "delivery") {
+        setOrderDisputes(prev => prev.filter(r => r.id !== id));
+      } else {
+        setReviewDisputes(prev => prev.filter(r => r.id !== id));
+      }
+    })
+    .catch(err => console.error("Failed to delete report:", err));
+};
 
 
   return (
@@ -120,8 +118,6 @@ const AdminDashboard = () => {
           </div>
           <hr />
           <button className="view-reports" onClick={() => setShowModal(true)}>View Reports</button>
-          <div className="chart-placeholder">New Reports</div>
-          <div className="chart-placeholder">Resolved Reports</div>
         </div>
       </div>
       {showModal && (
@@ -136,38 +132,34 @@ const AdminDashboard = () => {
             </div>
 
             <div className="order-list">
-              {(sampleReports[activeTab]).map((report) => (
+              {(activeTab === "delivery" ? orderDisputes : reviewDisputes).map((report) => (
                 <div key={report.id} className="order-card">
                   <p><strong>ID:</strong> {report.id}</p>
-                  <p><strong>Description:</strong> {report.description}</p>
+                  <p><strong>Description:</strong> {report.reason}</p>
                   <p><strong>
                     {activeTab === "review" ? "Reporting Restaurant:" : "Reporting User:"}
-                  </strong> {report.user}</p>
+                  </strong> {report.raisedBy.username}</p>
                   <p>
                     <strong>
                       {activeTab === "delivery" ? "Reported Delivery:" : "Reported Review:"}
-                    </strong> {activeTab === "delivery" ? report.delivery : report.review}
+                    </strong> {activeTab === "delivery" ? `Order #${report.order.id}` : `Review #${report.review.id}`}
                   </p>
                   <div className="order-actions">
                     {activeTab === "review" && (
                       <>
-                        <button onClick={() => console.log("View user:", report.user)}>
+                        <button onClick={() => navigate(`/admin-dashboard/${encodeURIComponent(report.review.user.username)}`)}>
                           View User
                         </button>
-                        <button onClick={() => handleAction(report.id, activeTab)}>
+                        <button onClick={() => handleDelete(report.id, "review")}>
                           Delete Review
                         </button>
                       </>
                     )}
-                    {activeTab === "delivery" && (
-                      <button onClick={() => handleMarkSolved(report.id)}>Mark as Solved</button>
-                    )}
-                    {activeTab === "review" && (
-                      <button onClick={() => handleMarkSolved(report.id)}>Mark as Solved</button>
-                    )}
+                    <button onClick={() => handleDelete(report.id, activeTab)}>Mark as Solved</button>
                   </div>
                 </div>
               ))}
+
             </div>
           </div>
         </div>

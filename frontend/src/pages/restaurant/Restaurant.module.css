@@ -1,0 +1,96 @@
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: sans-serif;
+}
+
+.restaurantHeader {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 100%;
+  padding-left: 90px;
+  padding-right: 90px;
+  margin-bottom: 20px;
+}
+
+.restaurantMain {
+  display: flex;
+  align-items: flex-start;
+  width: 50%;
+  margin-left: 3rem;
+  margin-top: 1rem;
+}
+
+.restaurantLogo {
+  width: 175px;
+  height: 175px;
+  background-color: var(--additional-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.restaurantLogoImg {
+  width: 175px;
+  height: 175px;
+  background-color: var(--additional-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.restaurantInfo p {
+  margin: 4px 0;
+  font-size: 24px;
+  text-align: left;
+}
+
+.buttonContainer {
+  width: 12%;
+  margin-left: auto;
+  margin-top: auto;
+  margin-right: 80px;
+}
+
+.divider {
+  border: 0.5px solid var(--text-color);
+}
+
+.dashboardBody {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.filter {
+  width: 20%;
+  margin-left: 90px;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.productLabel {
+  padding: 15px;
+  text-align: left;
+  font-size: 24px;
+}
+
+.products {
+  padding-left: 20px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  width: 80%;
+  gap: 20px;
+}

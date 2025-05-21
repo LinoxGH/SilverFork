@@ -78,6 +78,23 @@ public class MenuService {
         return menuItemRepository.save(existingItem);
     }
 
+    //Menüdeki ürünün resmini güncelleme
+    public MenuItem updateMenuItemPicture(String username, Long itemId, byte[] pictureBytes) {
+        MenuItem existingItem = menuItemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Menu item not found"));
+
+        if (!existingItem.getRestaurant().getOwnerUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized: You can only update your own menu items");
+        }
+
+        if (pictureBytes != null) {
+            existingItem.setPicture(pictureBytes);
+        }
+
+        existingItem.setCreatedAt(LocalDateTime.now());
+        return menuItemRepository.save(existingItem);
+    }
+
     //Menüdeki öğeyi sil
     public void deleteMenuItem(String username, Long itemId) {
         MenuItem existingItem = menuItemRepository.findById(itemId)
@@ -112,5 +129,10 @@ public class MenuService {
 
         return menuItemRepository.findByRestaurant(restaurant).stream().filter(item -> !item.getHidden()).toList();
     }
+
+    public MenuItem getMenuItemById(Long id) {
+        return menuItemRepository.findById(id).orElse(null);
+    }
+
 
 }

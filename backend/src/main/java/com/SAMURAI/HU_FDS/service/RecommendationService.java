@@ -38,6 +38,7 @@ public class RecommendationService {
         return menuItemRepository.findAll()
                 .stream()
                 .filter(item -> item.getPopularity() != null)
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
@@ -56,6 +57,7 @@ public class RecommendationService {
         return menuItemRepository.findByRestaurantId(restaurantId)
                 .stream()
                 .filter(item -> item.getPopularity() != null)
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
@@ -72,18 +74,9 @@ public class RecommendationService {
             return recommendFoodGeneral(); // fallback
         }
 
-        Set<String> preferredCategories = favorites.stream()
-                .map(fav -> fav.getMenuItem().getCategory())
-                .collect(Collectors.toSet());
-
-        Set<String> preferredCuisines = favorites.stream()
-                .map(fav -> fav.getMenuItem().getCuisine())
-                .collect(Collectors.toSet());
-
         return menuItemRepository.findAll().stream()
                 .filter(item -> item.getPopularity() != null)
-                .filter(item -> preferredCategories.contains(item.getCategory())
-                        || preferredCuisines.contains(item.getCuisine()))
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
@@ -99,19 +92,10 @@ public class RecommendationService {
             return recommendFoodFromRestaurant(restaurantId); // fallback
         }
 
-        Set<String> preferredCategories = favorites.stream()
-                .map(fav -> fav.getMenuItem().getCategory())
-                .collect(Collectors.toSet());
-
-        Set<String> preferredCuisines = favorites.stream()
-                .map(fav -> fav.getMenuItem().getCuisine())
-                .collect(Collectors.toSet());
-
         return menuItemRepository.findByRestaurantId(restaurantId)
                 .stream()
                 .filter(item -> item.getPopularity() != null)
-                .filter(item -> preferredCategories.contains(item.getCategory()) ||
-                        preferredCuisines.contains(item.getCuisine()))
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
@@ -126,22 +110,7 @@ public class RecommendationService {
             return recommendRestaurantGeneral();
         }
 
-        Set<String> preferredCategories = favorites.stream()
-                .map(fav -> fav.getMenuItem().getCategory())
-                .collect(Collectors.toSet());
-
-        Set<String> preferredCuisines = favorites.stream()
-                .map(fav -> fav.getMenuItem().getCuisine())
-                .collect(Collectors.toSet());
-
-
         return restaurantRepository.findAll().stream()
-                .filter(restaurant -> {
-                    List<MenuItem> items = menuItemRepository.findByRestaurantId(restaurant.getId());
-                    return items.stream().anyMatch(item ->
-                            preferredCategories.contains(item.getCategory()) ||
-                                    preferredCuisines.contains(item.getCuisine()));
-                })
                 .sorted(Comparator.comparingDouble(Restaurant::getRating).reversed())
                 .limit(10)
                 .collect(Collectors.toList());

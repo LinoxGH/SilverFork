@@ -58,21 +58,14 @@ public class MenuController {
     //Add Product
     @PostMapping("/restaurant/menu/add")
     public ResponseEntity<MenuItem> addMenuItem(@RequestHeader("Authorization") String authHeader,
-                                                @RequestBody MenuItem menuItem,
-                                                @RequestParam(required = false) MultipartFile image
+                                                @RequestBody MenuItem menuItem
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             try {
-                if (image == null) {
-                    menuItem.setPicture(null);
-                } else {
-                    byte[] imageBytes = image.getBytes();
-                    menuItem.setPicture(imageBytes);
-                }
-
+                menuItem.setPicture(null);
                 String username = userDetails.getUsername();
                 return ResponseEntity.ok(menuService.addMenuItem(username, menuItem));
             } catch (Exception e) {
@@ -88,23 +81,38 @@ public class MenuController {
     @PutMapping("/restaurant/menu/update/{id}")
     public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
                                                    @PathVariable Long id,
-                                                   @RequestBody MenuItem updatedItem,
-                                                   @RequestParam(required = false) MultipartFile image
+                                                   @RequestBody MenuItem updatedItem
     ) {
         String token = authHeader.replace("Bearer ", "");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (jwtService.validateToken(token, userDetails)) {
             try {
-                if (image == null) {
-                    updatedItem.setPicture(null);
-                } else {
-                    byte[] imageBytes = image.getBytes();
-                    updatedItem.setPicture(imageBytes);
-                }
-
+                updatedItem.setPicture(null);
                 String username = userDetails.getUsername();
                 return ResponseEntity.ok(menuService.updateMenuItem(username, id, updatedItem));
+            }catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
+
+    //Product update
+    @PutMapping("/restaurant/menu/picture/{id}")
+    public ResponseEntity<MenuItem> updateMenuItem(@RequestHeader("Authorization") String authHeader,
+                                                   @PathVariable Long id,
+                                                   @RequestPart MultipartFile newPicture
+    ) {
+        String token = authHeader.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (jwtService.validateToken(token, userDetails)) {
+            try {
+                byte[] pictureBytes = newPicture.getBytes();
+                String username = userDetails.getUsername();
+                return ResponseEntity.ok(menuService.updateMenuItemPicture(username, id, pictureBytes));
             }catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
@@ -185,15 +193,38 @@ public class MenuController {
         }
     }
 
-    @GetMapping("/restaurant/menu/info/{restaurantName}")
-    public ResponseEntity<Restaurant> getRestaurantInfo(@PathVariable String restaurantName) {
-        return ResponseEntity.ok(menuService.getRestaurantByName(restaurantName));
+    @GetMapping("/restaurant/menu/info/{id}")
+    public ResponseEntity<Restaurant> getRestaurantInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(menuService.getRestaurantById(id));
     }
 
-    @GetMapping("/restaurant/menu/items/{restaurantName}")
-    public ResponseEntity<List<MenuItem>> getMenuByRestaurantName(@PathVariable String restaurantName) {
-        List<MenuItem> menuItems = menuService.getRestaurantMenuByName(restaurantName);
+    @GetMapping("/restaurant/menu/items/{restaurantId}")
+    public ResponseEntity<List<MenuItem>> getMenuByRestaurantId(@PathVariable Long restaurantId) {
+        List<MenuItem> menuItems = menuService.getRestaurantMenuById(restaurantId);
         menuItems.forEach(MenuItem::getBase64Image);
         return ResponseEntity.ok(menuItems);
     }
+
+    @GetMapping("/restaurant/menu/address/{restaurantId}")
+    public ResponseEntity<Address> getRestaurantAddress(@PathVariable Long restaurantId) {
+        Restaurant restaurant = menuService.getRestaurantById(restaurantId);
+        if (restaurant == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+        List<Address> address = addressRepository.findByUsername(restaurant.getOwnerUsername());
+        if (address.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        return ResponseEntity.ok(address.get(0));
+    }
+
+    @GetMapping("/menu/{id}")
+    public ResponseEntity<MenuItem> getMenuItemById(@PathVariable Long id) {
+        MenuItem item = menuService.getMenuItemById(id);
+        if (item != null) {
+            item.getBase64Image(); // to populate image
+            return ResponseEntity.ok(item);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
 }

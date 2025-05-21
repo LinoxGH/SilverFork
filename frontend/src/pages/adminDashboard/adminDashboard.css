@@ -108,7 +108,7 @@
 
 .chart-placeholder {
   height: 100px;
-  background-color: #222;
+  background-color: var(--module-bg);
   border-radius: 10px;
   margin-top: 10px;
 }

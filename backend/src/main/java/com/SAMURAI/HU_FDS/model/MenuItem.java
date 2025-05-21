@@ -42,8 +42,7 @@ public class MenuItem {
     private Integer popularity;
 
     @Column(nullable = true)
-    @JsonIgnore
-    private Double rating = 0.0; // Average user rating
+    private Double rating = 5.0; // Average user rating
 
     @Column(nullable = true)
     @JsonIgnore

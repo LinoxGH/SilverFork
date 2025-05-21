@@ -2,13 +2,50 @@ import axios from "axios";
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
-import Button from "./Button.jsx";
+import Button from "../general/Button.jsx";
 
 const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrderable, onRefresh }) => {
   const [favorite, setFavorite] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const navigate = useNavigate();
 
+  const imagePreview = product.base64Image ? `data:image/jpeg;base64,${product.base64Image}` : null;
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      setTheme(localStorage.getItem("theme"));
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  useEffect(() => {
+    const elementsHE = document.getElementsByClassName("heart-empty-img");
+    for (let i = 0; i < elementsHE.length; i++) {
+      const element = elementsHE.item(i);
+      element.src = theme === "dark" ? "/heart-empty.png" : "/heart-empty-black.png";
+    }
+
+    const elementsH = document.getElementsByClassName("heart-img");
+    for (let i = 0; i < elementsH.length; i++) {
+      const element = elementsH.item(i);
+      element.src = theme === "dark" ? "/heart.png" : "/heart-black.png";
+    }
+
+    const elementsPen = document.getElementsByClassName("pen-img");
+    for (let i = 0; i < elementsPen.length; i++) {
+      const element = elementsPen.item(i);
+      element.src = theme === "dark" ? "/pen.png" : "/pen-black.png";
+    }
+
+    const elementsPlus = document.getElementsByClassName("plus-img");
+    for (let i = 0; i < elementsPlus.length; i++) {
+      const element = elementsPlus.item(i);
+      element.src = theme === "dark" ? "/plus.png" : "/plus-black.png";
+    }
+  }, [theme]);
 
   const goToProductPage = () => {
     navigate(`/product?id=${product.id}`);
@@ -74,20 +111,25 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
   return (
     <div className="product-card">
       <div className="product-img" onClick={goToProductPage} style={{ cursor: "pointer" }}>
-        Food Img
+        {imagePreview ? (
+          <img src={imagePreview} alt="Food Image"/>
+        ) : (
+          <p>Food Image</p>
+        )}
       </div>
 
       <div className="product-info">
         <p className="product-name">{product.name}</p>
         <p className="product-place">{restaurantName}</p>
         <p className="product-rating">{product.description}</p>
+        <p className="product-rating">{product.rating} ⭐</p>
         <p className="product-price">
           {product.price}$
           {isOrderable ? (
             <>
               <Button
                 classname="push-btn"
-                label={(<img src="/plus.png" alt={"+"} width={"60%"}/>)}
+                label={(<img className="plus-img" src="/plus.png" alt={"+"} width={"60%"}/>)}
                 onClick={addToCart}
                 width={"25%"}
                 borderRadius={"20px"}
@@ -98,7 +140,7 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
             <>
               <Button
                 classname="push-btn"
-                label={(<img src="/pen.png" alt={"+"} width={"60%"}/>)}
+                label={(<img className="pen-img" src="/pen.png" alt={"+"} width={"60%"}/>)}
                 onClick={() => handleEdit(product)}
                 width={"25%"}
                 borderRadius={"20px"}
@@ -110,9 +152,9 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
             <Button
               classname="heart-btn"
               label={favorite ? (
-                <img src="/heart.png" alt="❤️" width={"70%"}/>
+                <img className="heart-img" src="/heart.png" alt="❤️" width={"70%"}/>
               ) : (
-                <img src="/heart-empty.png" alt="🤍" width={"70%"}/>
+                <img className="heart-empty-img" src="/heart-empty.png" alt="🤍" width={"70%"}/>
               )}
               onClick={toggleHeart}
               width={"25%"}
