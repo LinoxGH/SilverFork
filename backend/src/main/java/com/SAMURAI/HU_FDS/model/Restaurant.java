@@ -27,7 +27,7 @@ public class Restaurant {
     private byte[] picture;
 
     @Column(nullable = true)
-    private Double rating;
+    private Double rating = 0.0;
 
     @Column(nullable = false)
     private Double minimumCart = 20.0;

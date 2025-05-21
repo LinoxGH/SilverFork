@@ -38,6 +38,7 @@ public class RecommendationService {
         return menuItemRepository.findAll()
                 .stream()
                 .filter(item -> item.getPopularity() != null)
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
@@ -56,6 +57,7 @@ public class RecommendationService {
         return menuItemRepository.findByRestaurantId(restaurantId)
                 .stream()
                 .filter(item -> item.getPopularity() != null)
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
@@ -74,6 +76,7 @@ public class RecommendationService {
 
         return menuItemRepository.findAll().stream()
                 .filter(item -> item.getPopularity() != null)
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(10)
                 .collect(Collectors.toList());
@@ -92,6 +95,7 @@ public class RecommendationService {
         return menuItemRepository.findByRestaurantId(restaurantId)
                 .stream()
                 .filter(item -> item.getPopularity() != null)
+                .filter(item -> Boolean.FALSE.equals(item.getHidden()))
                 .sorted(Comparator.comparingInt(MenuItem::getPopularity).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
