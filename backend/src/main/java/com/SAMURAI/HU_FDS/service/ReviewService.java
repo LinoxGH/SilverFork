@@ -98,7 +98,7 @@ public class ReviewService {
                 .toList();
 
         if (reviews.isEmpty()) {
-            item.setRating(5.0);
+            item.setRating(0.0);
         } else {
             double sum = 0;
             for (Review r : reviews) {
@@ -121,14 +121,18 @@ public class ReviewService {
                 .toList();
 
         if (visibleItems.isEmpty()){
-            restaurant.setRating(5.0);
+            restaurant.setRating(0.0);
         }
 
         double sum = 0.0;
+        int count = 0;
         for (MenuItem item : visibleItems) {
+            if (item.getRating() < 0.001) continue;
             sum += item.getRating();
+            count++;
         }
-        double average = sum / visibleItems.size();
+        if (count == 0) count = 1;
+        double average = sum / count;
         restaurant.setRating(average);
         restaurantRepository.save(restaurant);
     }

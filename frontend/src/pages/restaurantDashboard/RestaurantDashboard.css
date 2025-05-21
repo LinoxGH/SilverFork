@@ -27,36 +27,18 @@
 
 .dashboard-buttons {
   display: flex;
-  justify-content: right;
-  align-items: center;
   flex-direction: column;
   width: 50%;
-  margin-right: 3rem;
+  margin: auto 6% 1% auto;
+  gap: 10px;
 }
 
-.dashboard-buttons button {
-  height: 3rem;
-  width: 6rem;
-  margin-left: 2rem;
-  margin-top: 2rem;
-  border-radius: 20%;
-  border: none;
-  background-color: var(--module-bg);
-  color: var(--text-color);
-}
-
-.first-buttons {
+.buttons {
+  margin-left: auto;
   display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 50%;
-}
-
-.second-buttons {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 50%;
+  flex-direction: column;
+  gap: 10px;
+  width: 30%;
 }
 
 .restaurant-logo {
@@ -155,7 +137,7 @@
 
 .modal-image-container {
   width: 80%;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem auto;
 
   display: flex;
   flex-direction: column;
@@ -199,4 +181,11 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
+}
+
+#product-name-field,
+#product-price-field,
+#product-desc-field,
+#modal-file-input-id{
+  background: var(--additional-color);
 }

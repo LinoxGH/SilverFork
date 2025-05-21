@@ -17,6 +17,7 @@
 
   --bg-color: #ffffff;
   --module-bg: #e0e0e0;
+  --darker-module-bg: #d0d0d0;
   --text-color: #000000;
   --detail-color: #444444;
   --additional-color: #bbbbbb;
@@ -27,6 +28,7 @@
 :root.dark {
   --bg-color: #1f1f1f;
   --module-bg: #505050;
+  --darker-module-bg: #424242;
   --text-color: #ffffff;
   --detail-color: #878787;
   --additional-color: #727272;

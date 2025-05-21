@@ -38,6 +38,11 @@ function ProductSection({ productId }) {
       return;
     }
 
+    if (content.length > 100) {
+      alert("Reviews can be at maximum 100 characters!")
+      return;
+    }
+
     if (existingReview) {
       // Edit existing review
       axios.put(`http://localhost:8080/reviews/edit/${existingReview.id}`, null, {
@@ -202,6 +207,10 @@ function ReviewCard({ review }) {
   const handleRespond = () => {
     const response = prompt("Enter your response to the review:");
     if (!response) return;
+    if (response.length > 100) {
+      alert("Review responses can be at maximum 100 characters!")
+      return;
+    }
 
     axios.put(`http://localhost:8080/reviews/respond/${review.id}`, null, {
       params: { response },

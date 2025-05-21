@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./RestaurantDashboard.css";
 import ProductCard from "../../modules/product/ProductCard.jsx";
 import ProductFilters from "../../modules/product/ProductFilter.jsx";
+import Button from "../../modules/general/Button.jsx";
 
 const RestaurantDashboard = () => {
   const [restaurantInfo, setRestaurantInfo] = useState({
@@ -75,11 +76,13 @@ const RestaurantDashboard = () => {
       setProductPrice(editingProduct.price);
       setProductDescription(editingProduct.description || "");
       setProductImage(editingProduct.picture || null);
+      setImagePreview(editingProduct.picture || null)
     } else {
       setProductName("");
       setProductPrice("");
       setProductDescription("");
       setProductImage(null);
+      setImagePreview(null)
     }
 
     const nameField = document.getElementById("product-name-field");
@@ -88,6 +91,8 @@ const RestaurantDashboard = () => {
     if (priceField) priceField.value = productPrice;
     const descField = document.getElementById("product-desc-field");
     if (descField) descField.value = productDescription;
+    const imgField = document.getElementById("modal-image");
+    if (imgField) imgField.src = imagePreview;
   }, [editingProduct]);
 
   const handleEditProduct = (product) => {
@@ -125,8 +130,8 @@ const RestaurantDashboard = () => {
       price: Number(productPrice),
       description: productDescription,
       picture: null,
-      category: productCategory,
-      cuisine: productCuisine
+      category: null,
+      cuisine: null
     };
 
     const formData = new FormData();
@@ -225,18 +230,22 @@ const RestaurantDashboard = () => {
           </div>
         </div>
         <div className="dashboard-buttons">
-          <div className="first-buttons">
-            <button>Past Orders</button>
-            <button onClick={() => {
-              setEditingProduct(null);
-              setShowAddProductModal(true);
-            }}>Add Product ➕</button>
-          </div>
-          <div className="second-buttons">
-          <button onClick={() => navigate("/current-orders")}>
-            Current Orders
-          </button>
-            <button>Employed Couriers</button>
+          <div className="buttons">
+            <Button
+              label={"Add Product +"}
+              onClick={() => {
+                setEditingProduct(null);
+                setShowAddProductModal(true);
+              }}
+              borderRadius={"10px"}
+              width={"100%"}
+            />
+            <Button
+              label={"Current Orders"}
+              onClick={() => navigate("/current-orders")}
+              borderRadius={"10px"}
+              width={"100%"}
+            />
           </div>
         </div>
       </div>
@@ -298,6 +307,7 @@ const RestaurantDashboard = () => {
               )}
               <div className="modal-file-input">
                 <input
+                  id="modal-file-input-id"
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}

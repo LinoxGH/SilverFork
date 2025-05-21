@@ -36,18 +36,14 @@ const Restaurant = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/restaurant/menu/items/${restaurantId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axios.get(`http://localhost:8080/restaurant/menu/items/${restaurantId}`, null)
       .then(res => {
         setRawProducts(res.data);
         setProducts(res.data);
       })
       .catch(err => console.error("Failed to fetch products:", err));
 
-    axios.get(`http://localhost:8080/restaurant/menu/info/${restaurantId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axios.get(`http://localhost:8080/restaurant/menu/info/${restaurantId}`, null)
       .then(res => {
         restaurantInfo.name = res.data.name;
         restaurantInfo.minCartPrice = res.data.minimumCart;
@@ -58,9 +54,7 @@ const Restaurant = () => {
       })
       .catch(err => console.error("Failed to fetch restaurant info:", err));
 
-    axios.get(`http://localhost:8080/restaurant/menu/address/${restaurantId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axios.get(`http://localhost:8080/restaurant/menu/address/${restaurantId}`, null)
       .then(res => {
         restaurantInfo.location = res.data.details;
       })

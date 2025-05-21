@@ -8,8 +8,7 @@ const RestaurantCard = ({ restaurant }) => {
   const imagePreview = restaurant.picture ? `data:image/jpeg;base64,${restaurant.picture}` : null;
 
   const goToRestaurantPage = () => {
-    //navigate(`/product?id=${product.id}`);
-    // TODO
+    navigate(`/restaurant/${restaurant.id}`);
   };
 
   return (
@@ -24,7 +23,7 @@ const RestaurantCard = ({ restaurant }) => {
 
       <div className={styles.restaurantInfo}>
         <p className={styles.restaurantName}>{restaurant.name}</p>
-        <p className={styles.restaurantRating}>1 MORBILLION</p> // TODO
+        <p className={styles.restaurantRating}>{restaurant.rating} ⭐</p>
       </div>
     </div>
   );
