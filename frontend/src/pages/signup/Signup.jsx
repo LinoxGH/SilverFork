@@ -19,7 +19,8 @@ function SignupForm() {
     password: '',
     confirmPassword: ''
   });
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -71,24 +72,44 @@ function SignupForm() {
         className={styles.input}
         required
       />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
-        className={styles.input}
-        required
-      />
-      <input
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm Password"
-        value={formData.confirmPassword}
-        onChange={handleChange}
-        className={styles.input}
-        required
-      />
+      <div className={styles.signupPasswordWrapper}>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className={styles.input}
+            required
+          />
+          <img
+             src={showPassword
+             ? ("/whiteHidePassword.png")
+             : ("/whiteShowPassword.png")}
+             alt="Toggle visibility"
+             className={styles.signupEyeIcon}
+             onClick={() => setShowPassword(!showPassword)}
+          />
+      </div>
+      <div className={styles.signupConfirmPasswordWrapper}>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={styles.input}
+            required
+          />
+          <img
+            src={showConfirmPassword
+            ? ("/whiteHidePassword.png")
+            : ("/whiteShowPassword.png")}
+            alt="Toggle visibility"
+            className={styles.signupConfirmEyeIcon}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          />
+      </div>
       <button type="submit" className={styles.createButton}>Create</button>
     </form>
   );

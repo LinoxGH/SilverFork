@@ -55,6 +55,64 @@
 .fileInputButton {
   width: 200px;
 }
+  .userPasswordWrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .userPasswordWrapper input {
+      width: 100%;
+      padding-right: 2.5rem;
+    }
+
+    .userEyeIcon {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+  .userConfirmPasswordWrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .userConfirmPasswordWrapper input {
+      width: 100%;
+      padding-right: 2.5rem;
+    }
+
+    .userConfirmEyeIcon {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  .userOldPasswordWrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .userOldPasswordWrapper input {
+      width: 100%;
+      padding-right: 2.5rem;
+    }
+
+    .userOldEyeIcon {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
 
 .placeholderContainer {
   padding: 40%;

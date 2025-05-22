@@ -56,7 +56,26 @@
     border: none;
     font-size: 1rem;
   }
-  
+  .passwordWrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .passwordWrapper input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+
+  .eyeIcon {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
   .bottomSection {
     display: flex;
     justify-content: space-between;

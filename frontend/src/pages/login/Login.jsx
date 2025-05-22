@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './Login.module.css';
+import { useEffect } from "react";
+
 
 function LoginTitle() {
   return (
@@ -14,6 +16,7 @@ function LoginTitle() {
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -58,14 +61,26 @@ function LoginForm() {
         className={styles.input}
         required
       />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className={styles.input}
-        required
-      />
+      <div className={styles.passwordWrapper}>
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={styles.input}
+          required
+        />
+        <img
+            src={showPassword
+                  ? ("/whiteHidePassword.png")
+                  : ("/whiteShowPassword.png")}
+            alt="Toggle visibility"
+            className={styles.eyeIcon}
+            onClick={() => setShowPassword(!showPassword)}
+
+          />
+      </div>
+
       <BottomSection />
     </form>
   );
