@@ -36,6 +36,9 @@ function NavBar() {
 
     const shoppingCart = document.getElementById("shopping-cart-img");
     if (shoppingCart != null) shoppingCart.src = theme === "dark" ? "/shopping-cart.png" : "/shopping-cart-black.png";
+
+    const alert = document.getElementById("alert-img");
+    if (alert != null) alert.src = theme === "dark" ? "/alert.png" : "/alert-black.png";
   }, [theme]);
 
   const fetchNotifications = () => {
@@ -231,7 +234,9 @@ function NavBar() {
             <div className={styles.notificationContainer}>
               <div style={{ position: "relative" }}>
                 <Button
-                  label={"🔔"}
+                  label={(
+                    <img id="alert-img" src={theme === "dark" ? "/alert.png" : "/alert-black.png"} alt={"🔔"} width="20.8px"/>
+                  )}
                   onClick={toggleDropdown}
                   borderRadius={"10px"}
                 />

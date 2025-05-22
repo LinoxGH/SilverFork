@@ -28,7 +28,10 @@ const CourierDashboard = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
     })
-      .then(res => setAssignments(res.data))
+      .then(res => {
+        console.log(res.data);
+        setAssignments(res.data.filter((item) => item.status === "On the Road"));
+      })
       .catch(err => console.error("Failed to fetch assignments:", err));
 
     // Fetch Registered Restaurants

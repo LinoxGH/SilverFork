@@ -147,7 +147,7 @@ const Restaurant = () => {
             <p>{restaurantInfo.name}</p>
             <p>{restaurantInfo.location}</p>
             <p>Product Count: {products.length}</p>
-            <p>Average Rating: {restaurantInfo.averageRating}⭐️</p>
+            <p>Average Rating: {restaurantInfo.averageRating} <img className="star-img" src="/star-full.png" alt={"⭐"} width={"4%"}/></p>
             <p>Minimum Cart Price: {restaurantInfo.minCartPrice}$</p>
           </div>
         </div>

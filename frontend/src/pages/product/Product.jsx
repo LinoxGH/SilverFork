@@ -1,6 +1,6 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import styles from "./Product.module.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../../modules/general/Button.jsx";
 
@@ -11,6 +11,7 @@ function ProductSection({ productId }) {
   const [product, setProduct] = useState(null);
   const [favorite, setFavorite] = useState(false);
   const [existingReview, setExistingReview] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const currentUsername = localStorage.getItem("username");
   const currentRank = localStorage.getItem("rank");
@@ -42,6 +43,23 @@ function ProductSection({ productId }) {
         .catch(err => console.error("Failed to fetch favorite status:", err));
     }
   }, [productId]);
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      setTheme(localStorage.getItem("theme"));
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  useEffect(() => {
+    const elementsStar = document.getElementsByClassName("star-img");
+    for (let i = 0; i < elementsStar.length; i++) {
+      const element = elementsStar.item(i);
+      element.src = theme === "dark" ? "/star-full.png" : "/star-full-black.png";
+    }
+  }, [theme]);
 
 
   const handleReviewSubmit = () => {
@@ -164,7 +182,7 @@ function ProductSection({ productId }) {
       <div className={styles.productDetails}>
         <div className={styles.productName}>{product?.name}</div>
         <div className={styles.productRestaurantName}>{product?.restaurantName}</div>
-        <div className={styles.productRating}>{product?.rating} ⭐</div>
+        <div className={styles.productRating}>{product?.rating} <img className="star-img" src="/star-full.png" alt={"⭐"} width={"2.5%"}/></div>
         <div className={styles.productDescription}>{product?.description}</div>
         <div className={styles.productPrice}>{product?.price}₺</div>
 
@@ -294,7 +312,7 @@ function ReviewCard({ review }) {
             width={"20%"}
           />
         )}
-        <p className={styles.reviewerName}>{review.rating} ⭐</p>
+        <p className={styles.reviewerName}>{review.rating} <img className="star-img" src="/star-full.png" alt={"⭐"} width={"35%"}/></p>
       </div>
       <div className={styles.reviewContent}>
         {review.content}

@@ -6,11 +6,6 @@ import "./AdminDashboard.css";
 const AdminDashboard = () => {
   const [accounts, setAccounts] = useState([]);
   const [search, setSearch] = useState("");
-  const [stats, setStats] = useState({
-    pending: 0,
-    solved: 0,
-    ongoing: 0,
-  });
   const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState("delivery");
   const [orderDisputes, setOrderDisputes] = useState([]);
@@ -27,13 +22,6 @@ const AdminDashboard = () => {
     })
       .then(res => setAccounts(res.data))
       .catch(err => console.error("Failed to fetch accounts:", err));
-
-
-    /*
-    axios.get("http://localhost:8080/admin/report-stats")
-      .then(res => setStats(res.data))
-      .catch(err => console.error("Failed to fetch stats:", err));
-    */
 
   }, []);
 
@@ -60,6 +48,8 @@ const AdminDashboard = () => {
     acc.username.toLowerCase().includes(search.toLowerCase()) ||
     acc.email.toLowerCase().includes(search.toLowerCase())
   );
+
+  console.log(filteredAccounts);
 
   const handleDeleteDispute = (id, type) => {
     const token = localStorage.getItem("token");
@@ -97,13 +87,16 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="dashboard-body">
         <div className="left-panel">
-          <input
-            className="account-search"
-            type="text"
-            placeholder="Search for Account"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="left-panel-top">
+            <input
+              className="account-search"
+              type="text"
+              placeholder="Search for Account"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button className="view-reports" onClick={() => setShowModal(true)}>View Reports</button>
+          </div>
           <div className="account-grid">
             {filteredAccounts.map((acc) => (
               <div
@@ -111,7 +104,13 @@ const AdminDashboard = () => {
                 className="account-card"
                 onClick={() => navigate(`/admin-dashboard/${encodeURIComponent(acc.username)}`)}
               >
-                <div className="account-image">Account Image</div>
+                <div className="account-image">
+                  {acc.base64Image ? (
+                    <img src={`data:image/jpeg;base64,${acc.base64Image}`} alt={"Account Image"} className="account-image-img" />
+                  ) : (
+                    <>Account Image</>
+                  )}
+                </div>
                 <div className="account-info">
                   <p><strong>{acc.username}</strong></p>
                   <p>{acc.email}</p>
@@ -121,15 +120,6 @@ const AdminDashboard = () => {
               </div>
             ))}
           </div>
-        </div>
-        <div className="right-panel">
-          <div className="stats">
-            <p>Pending Reports Count: {stats.pending}</p>
-            <p>Solved Reports Count: {stats.solved}</p>
-            <p>Ongoing Orders: {stats.ongoing}</p>
-          </div>
-          <hr/>
-          <button className="view-reports" onClick={() => setShowModal(true)}>View Reports</button>
         </div>
       </div>
       {showModal && (

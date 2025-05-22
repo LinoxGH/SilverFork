@@ -124,9 +124,7 @@ const AdminManageUser = () => {
             <button onClick={deleteUser}>Delete Account</button>
             <button onClick={viewOrders}>View Order History</button>
             <button onClick={() => updateStatus("BANNED")}>Ban Account</button>
-            <button>View Reviews</button>
             <button onClick={() => updateStatus("RESTRICTED")}>Restrict Account</button>
-            <button>View Reports</button>
             <button onClick={changeRank}>Change Rank</button>
           </div>
 
@@ -134,7 +132,11 @@ const AdminManageUser = () => {
         </div>
 
         <div className="user-image-placeholder">
-          {/* Placeholder for profile image */}
+          {user.base64Image ? (
+            <img src={`data:image/jpeg;base64,${user.base64Image}`} alt={"Account Image"} className="user-image-img" />
+          ) : (
+            <div className="user-image-placeholder-text">Account Image</div>
+          )}
         </div>
       </div>
 

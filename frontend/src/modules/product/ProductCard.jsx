@@ -45,6 +45,12 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
       const element = elementsPlus.item(i);
       element.src = theme === "dark" ? "/plus.png" : "/plus-black.png";
     }
+
+    const elementsStar = document.getElementsByClassName("star-img");
+    for (let i = 0; i < elementsStar.length; i++) {
+      const element = elementsStar.item(i);
+      element.src = theme === "dark" ? "/star-full.png" : "/star-full-black.png";
+    }
   }, [theme]);
 
   const goToProductPage = () => {
@@ -140,7 +146,7 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
         <p className="product-name">{product.name}</p>
         <p className="product-place">{restaurantName}</p>
         <p className="product-rating">{product.description}</p>
-        <p className="product-rating">{product.rating} ⭐</p>
+        <p className="product-rating">{product.rating} <img className="star-img" src="/star-full.png" alt={"⭐"} width={"15%"}/></p>
         <p className="product-price">
           {product.price}$
           {isOrderable ? (
