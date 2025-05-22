@@ -58,7 +58,44 @@
     border: none;
     font-size: 1rem;
   }
-  
+  .signupPasswordWrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .signupPasswordWrapper input {
+      width: 100%;
+      padding-right: 2.5rem;
+    }
+
+    .signupEyeIcon {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+.signupConfirmPasswordWrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .signupConfirmPasswordWrapper input {
+      width: 100%;
+      padding-right: 2.5rem;
+    }
+
+    .signupConfirmEyeIcon {
+      position: absolute;
+      top: 50%;
+      right: 0.75rem;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
   .createButton {
     padding: 0.5rem 2rem;
     background-color: var(--additional-color);

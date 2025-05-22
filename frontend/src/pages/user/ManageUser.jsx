@@ -14,8 +14,9 @@ function ManageUser() {
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
-  // Kullanıcının profil resmini almak için useEffect
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
   useEffect(() => {
     const fetchImage = async () => {
       try {
@@ -155,27 +156,57 @@ function ManageUser() {
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
             />
+            <div className={styles.userPasswordWrapper}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className={styles.input}
+                />
+                <img
+                  src={showPassword
+                  ? ("/whiteHidePassword.png")
+                  : ("/whiteShowPassword.png")}
+                  alt="Toggle visibility"
+                  className={styles.userEyeIcon}
+                  onClick={() => setShowPassword(!showPassword)}
+                />
+            </div>
+            <div className={styles.userConfirmPasswordWrapper}>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm New Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className={styles.input}
+                />
+                <img
+                 src={showConfirmPassword
+                 ? ("/whiteHidePassword.png")
+                 : ("/whiteShowPassword.png")}
+                 alt="Toggle visibility"
+                 className={styles.userConfirmEyeIcon}
+                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                 />
+            </div>
+            <div className={styles.userOldPasswordWrapper}>
             <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={styles.input}
-            />
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className={styles.input}
-            />
-            <input
-              type="password"
+              type={showOldPassword ? "text" : "password"}
               placeholder="Old Password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               className={styles.input}
             />
+            <img
+            src={showOldPassword
+            ? ("/whiteHidePassword.png")
+            : ("/whiteShowPassword.png")}
+            alt="Toggle visibility"
+            className={styles.userOldEyeIcon}
+            onClick={() => setShowOldPassword(!showOldPassword)}
+            />
+            </div>
           </div>
 
           <div className={styles.saveButton}>
