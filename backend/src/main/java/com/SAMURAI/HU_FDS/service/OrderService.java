@@ -130,6 +130,7 @@ public class OrderService {
             orderRepository.delete(order);
             return null;
         }
+
         order.setStatus(status);
         return orderRepository.save(order);
     }

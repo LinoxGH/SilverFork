@@ -33,13 +33,13 @@ public class ReviewDisputeController {
         return jwtService.validateToken(pureToken, userDetails);
     }
 
-    @PostMapping
+    @PostMapping("/create/{id}")
     @PreAuthorize("hasRole('RESTAURANT')")
-    public ResponseEntity<?> create(@RequestParam Long reviewId,
+    public ResponseEntity<?> create(@PathVariable Long id,
                                     @RequestParam String reason,
                                     @RequestHeader("Authorization") String authHeader) {
         if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
-        return ResponseEntity.ok(service.create(getUsername(), reviewId, reason));
+        return ResponseEntity.ok(service.create(getUsername(), id, reason));
     }
 
     @GetMapping

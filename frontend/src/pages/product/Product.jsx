@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import styles from "./Product.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -9,9 +9,13 @@ function ProductSection({ productId }) {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(5);
   const [product, setProduct] = useState(null);
+  const [favorite, setFavorite] = useState(false);
   const [existingReview, setExistingReview] = useState(null);
+
   const currentUsername = localStorage.getItem("username");
   const currentRank = localStorage.getItem("rank");
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -27,12 +31,20 @@ function ProductSection({ productId }) {
         if (found) setExistingReview(found);
       })
       .catch(err => console.error("Failed to fetch reviews:", err));
+
+    if (currentRank === "CUSTOMER") {
+      axios.get(`http://localhost:8080/favourites/get/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => {
+          if (res.data !== "") setFavorite(true);
+        })
+        .catch(err => console.error("Failed to fetch favorite status:", err));
+    }
   }, [productId]);
 
 
   const handleReviewSubmit = () => {
-    const token = localStorage.getItem("token");
-
     if (!token) {
       alert("Please log in first.");
       return;
@@ -85,8 +97,31 @@ function ProductSection({ productId }) {
     }
   };
 
+  const addToFavorite = () => {
+    axios.post(`http://localhost:8080/favourites/add/${productId}`, null, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        setFavorite(true);
+      })
+      .catch(err => console.error("Failed to add to favorites:", err));
+  }
+
+  const removeFromFavorite = () => {
+    axios.delete(`http://localhost:8080/favourites/remove/${productId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        setFavorite(false);
+      })
+      .catch(err => console.error("Failed to remove from favorites:", err));
+  }
+
+  const handleGoToRestaurant = () => {
+    navigate(`/restaurant/${product.restaurant.id}`);
+  }
+
   const addToCart = async () => {
-    const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in to add items to cart.");
       return;
@@ -136,6 +171,12 @@ function ProductSection({ productId }) {
         {currentRank === "CUSTOMER" ? (
           <div className={styles.productActionButtons}>
             <button className={styles.productButton} onClick={addToCart}>Add to Cart</button>
+            {favorite ? (
+              <button className={styles.productButton} onClick={removeFromFavorite}>Remove Favorite</button>
+            ) : (
+              <button className={styles.productButton} onClick={addToFavorite}>Add Favorites</button>
+            )}
+            <button className={styles.productButton} onClick={handleGoToRestaurant}>Go To Restaurant</button>
             {existingReview ? (
               <>
                 <button
@@ -222,10 +263,37 @@ function ReviewCard({ review }) {
     .catch(err => console.error("Failed to submit response:", err));
   };
 
+  const handleReport = () => {
+    const reason = prompt("Enter your reasoning for reporting the review:");
+    if (!reason) return;
+    if (reason.length > 100) {
+      alert("Report reasons can be at maximum 100 characters!")
+      return;
+    }
+
+    axios.post(`http://localhost:8080/review-disputes/create/${review.id}`, null, {
+      params: {reason: reason},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    })
+      .then(() => alert("Successfully reported this review. Our admins will handle this as soon as possible. Thank you for keeping our site a safe place."))
+      .catch(err => console.error("Failed to submit review report:", err));
+  };
+
   return (
     <div className={styles.productReviewCard}>
       <div className={styles.reviewHeader}>
         <p className={styles.reviewerName}>{review.user.username}</p>
+        {currentRank === "RESTAURANT" && (
+          <Button
+            label={"Report"}
+            onClick={handleReport}
+            borderRadius={"10px"}
+            margin={"2% auto 2% auto"}
+            width={"20%"}
+          />
+        )}
         <p className={styles.reviewerName}>{review.rating} ⭐</p>
       </div>
       <div className={styles.reviewContent}>
