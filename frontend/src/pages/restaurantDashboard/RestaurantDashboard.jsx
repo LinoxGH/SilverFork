@@ -246,6 +246,12 @@ const RestaurantDashboard = () => {
               borderRadius={"10px"}
               width={"100%"}
             />
+            <Button
+              label={"Order History"}
+              onClick={() => navigate("/order-history")}
+              borderRadius={"10px"}
+              width={"100%"}
+            />
           </div>
         </div>
       </div>

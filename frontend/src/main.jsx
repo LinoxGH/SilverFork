@@ -21,6 +21,8 @@ import NavBar from "./modules/navbar/NavBar.jsx";
 import CurrentOrders from "./pages/currentOrders/CurrentOrders.jsx";
 import CourierDashboard from "./pages/courierDashboard/courierDashboard.jsx";
 import Restaurant from "./pages/restaurant/Restaurant.jsx";
+import OrderHistory from "./pages/orderHistory/OrderHistory.jsx";
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -42,6 +44,11 @@ createRoot(document.getElementById('root')).render(
         <Route path="/restaurant-dashboard" element={
           <ProtectedRoute allowedRoles={['RESTAURANT']}>
             <RestaurantDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/order-history" element={
+          <ProtectedRoute allowedRoles={['RESTAURANT']}>
+            <OrderHistory />
           </ProtectedRoute>
         } />
         <Route path="/admin-dashboard" element={
