@@ -73,7 +73,9 @@ const CurrentOrders = () => {
     <>
       <p className={styles.title}>Current Orders</p>
       <div className={styles.container}>
-        {orders.map((order) => (
+        {orders
+          .filter(order => order.status !== "COMPLETED" && order.status !== "CANCELLED")
+          .map((order) => (
           <div className={styles.orderContainer} key={order.id}>
             <div className={styles.leftContainer}>
               <div className={styles.infoContainer}>

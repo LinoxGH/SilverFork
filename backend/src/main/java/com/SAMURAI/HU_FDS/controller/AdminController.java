@@ -59,6 +59,9 @@ public class AdminController {
     @Autowired
     private RestaurantEmployeeRepository restaurantEmployeeRepository;
 
+    @Autowired
+    private ReviewRepository reviewRepository;
+
 
 
 
@@ -89,6 +92,8 @@ public class AdminController {
     }
 
     // Change status
+
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/users/{username}/status")
     public ResponseEntity<?> changeStatus(@PathVariable String username,
@@ -99,6 +104,10 @@ public class AdminController {
         if (user.isPresent()) {
             user.get().setStatus(status);
             userRepository.save(user.get());
+
+            if ("RESTRICTED".equalsIgnoreCase(status) || "BANNED".equalsIgnoreCase(status)) {
+                reviewRepository.deleteAllByUser(user);
+            }
             return ResponseEntity.ok("Status updated");
         }
         return ResponseEntity.notFound().build();
@@ -158,7 +167,7 @@ public class AdminController {
             }
             courierRepository.delete(courier);
         });
-
+        reviewRepository.deleteAllByUser(user);
         cartRepository.deleteByUser(user);
         favoriteRepository.deleteAllByUser(user);
         orderRepository.deleteAllByUser(user);
