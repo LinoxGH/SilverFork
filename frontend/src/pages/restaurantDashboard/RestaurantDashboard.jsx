@@ -200,7 +200,7 @@ const RestaurantDashboard = () => {
     if (option === "lowest") sorted.sort((a, b) => a.price - b.price);
     if (option === "highest") sorted.sort((a, b) => b.price - a.price);
     if (option === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
-    if (option === "new") sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (option === "new") sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     if (option === "rated") sorted.sort((a, b) => b.rating - a.rating);
     setProducts(sorted);
   };
