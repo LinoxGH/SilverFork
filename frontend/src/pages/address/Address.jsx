@@ -44,6 +44,14 @@ const Addresses = () => {
       return alert("Please fill all fields");
     }
 
+    if (newAddress.name.length > 20) {
+      return alert("Address names should be less than 20 characters!");
+    }
+
+    if (newAddress.details.length > 100) {
+      return alert("Address details should be less than 100 characters!");
+    }
+
     if (editing) {
       axios.put(`http://localhost:8080/address/update/${editing.id}`, newAddress, { headers })
         .then(() => {
