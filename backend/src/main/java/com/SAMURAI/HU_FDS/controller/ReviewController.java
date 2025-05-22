@@ -32,11 +32,19 @@ public class ReviewController {
                 .getAuthorities().iterator().next().getAuthority().replace("ROLE_", "");
     }
 
+    private boolean isTokenValid(String token) {
+        String pureToken = token.replace("Bearer ", "");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return jwtService.validateToken(pureToken, userDetails);
+    }
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<Review> createReview(@RequestParam Long menuItemId,
-                                               @RequestParam String content,
-                                               @RequestParam int rating) {
+    public ResponseEntity<?> createReview(@RequestHeader("Authorization") String authHeader,
+                                          @RequestParam Long menuItemId,
+                                          @RequestParam String content,
+                                          @RequestParam int rating) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         String username = getUsername();
         Review created = reviewService.createReview(username, menuItemId, content, rating);
         return ResponseEntity.ok(created);
@@ -44,9 +52,11 @@ public class ReviewController {
 
     @PutMapping("/edit/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
-    public ResponseEntity<Review> editReview(@PathVariable Long id,
-                                             @RequestParam String content,
-                                             @RequestParam int rating) {
+    public ResponseEntity<?> editReview(@RequestHeader("Authorization") String authHeader,
+                                        @PathVariable Long id,
+                                        @RequestParam String content,
+                                        @RequestParam int rating) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         String username = getUsername();
         String rank = getRank();
         Review updated = reviewService.updateReview(id, username, content, rating, rank);
@@ -55,7 +65,9 @@ public class ReviewController {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
-    public ResponseEntity<String> deleteReview(@PathVariable Long id) {
+    public ResponseEntity<?> deleteReview(@RequestHeader("Authorization") String authHeader,
+                                          @PathVariable Long id) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         String username = getUsername();
         String rank = getRank();
         reviewService.deleteReview(id, username, rank);
@@ -69,8 +81,10 @@ public class ReviewController {
 
     @PutMapping("/respond/{id}")
     @PreAuthorize("hasRole('RESTAURANT')")
-    public ResponseEntity<Review> respondToReview(@PathVariable Long id,
-                                                  @RequestParam String response) {
+    public ResponseEntity<?> respondToReview(@RequestHeader("Authorization") String authHeader,
+                                             @PathVariable Long id,
+                                             @RequestParam String response) {
+        if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
         String restaurantUsername = getUsername();
         Review updated = reviewService.respondToReview(id, response, restaurantUsername);
         return ResponseEntity.ok(updated);
