@@ -29,6 +29,11 @@ public class ReviewService {
     public Review createReview(String username, Long menuItemId, String content, int rating) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String status = user.getStatus();
+        if ("RESTRICTED".equalsIgnoreCase(status) || "BANNED".equalsIgnoreCase(status)) {
+            throw new RuntimeException("User is not allowed to create a review");
+        }
         MenuItem item = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new RuntimeException("Menu item not found"));
 

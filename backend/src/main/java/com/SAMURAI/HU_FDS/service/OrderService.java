@@ -125,6 +125,11 @@ public class OrderService {
         if (!order.getRestaurant().getOwnerUsername().equals(username)) {
             throw new AccessDeniedException("Not authorized to update this order");
         }
+
+        if ("CANCELLED".equalsIgnoreCase(status)) {
+            orderRepository.delete(order);
+            return null;
+        }
         order.setStatus(status);
         return orderRepository.save(order);
     }
