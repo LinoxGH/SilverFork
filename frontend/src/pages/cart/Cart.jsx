@@ -21,7 +21,7 @@ const CartItem = ({ product, onQuantityChange }) => {
             <button onClick={() => onQuantityChange(product.id, product.quantity + 1)}>+</button>
           </div>
         </div>
-        <div className="product-price">{product.menuItem.price}$</div>
+        <div className="product-price">{product.menuItem.price.toFixed(2)}$</div>
       </div>
 
     </div>
@@ -65,10 +65,11 @@ const CartPage = () => {
     }
   };
 
-  var totalAmount = 0;
-  for (let i = 0; i < products.length; i++) {
-    totalAmount += products[i].menuItem.price * products[i].quantity;
-  }
+  let totalAmount = products.reduce((sum, item) => {
+    const roundedPrice = parseFloat(item.menuItem.price.toFixed(2));
+    return sum + roundedPrice * item.quantity;
+  }, 0);
+  totalAmount = totalAmount.toFixed(2);
 
   const navigate = useNavigate();
 
