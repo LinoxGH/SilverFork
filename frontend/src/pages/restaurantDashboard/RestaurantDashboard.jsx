@@ -134,9 +134,6 @@ const RestaurantDashboard = () => {
       cuisine: null
     };
 
-    const formData = new FormData();
-    formData.append("newPicture", productImage);
-
     try {
       let productId;
       if (editingProduct) {
@@ -151,12 +148,17 @@ const RestaurantDashboard = () => {
         productId = res.data.id;
       }
 
-      await axios.put(`http://localhost:8080/restaurant/menu/picture/${productId}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data"
-        }
-      });
+      if (productImage !== null) {
+        const formData = new FormData();
+        formData.append("newPicture", productImage);
+
+        await axios.put(`http://localhost:8080/restaurant/menu/picture/${productId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          }
+        });
+      }
 
       const res = await axios.get("http://localhost:8080/restaurant/menu", {
         headers: { Authorization: `Bearer ${token}` }
