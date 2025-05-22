@@ -4,11 +4,14 @@ import {useNavigate} from "react-router-dom";
 import  "./Cart.css";
 
 const CartItem = ({ product, onQuantityChange }) => {
+  const imagePreview = product.menuItem.base64Image ? `data:image/jpeg;base64,${product.menuItem.base64Image}` : null;
+
   return (
     <div className="cart-item-box">
-      
       <div className="cart-item">
-        <div className="cart-image"></div>
+        <div className="cart-image">
+          {imagePreview !== null && (<img src={imagePreview} alt={"Product Image"} className="cart-image-img"></img>)}
+        </div>
         <div className="cart-item-details">
           <p className="product-name">{product.menuItem.name}</p>
           <p className="product-description">{product.menuItem.description}</p>

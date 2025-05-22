@@ -46,6 +46,11 @@ body {
   flex-shrink: 0;
 }
 
+.cart-image-img {
+  width: 100px;
+  height: 100px;
+}
+
 .cart-item-details {
   display: flex;
   flex-direction: column;
