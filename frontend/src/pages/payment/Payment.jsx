@@ -64,7 +64,7 @@ function PaymentPage() {
               <option value="">Select Address</option>
               {addresses.map((addr) => (
                 <option key={addr.id} value={addr.id}>
-                  {addr.name} – {addr.details}
+                  {addr.name} – {addr.details.substring(0, Math.min(60, addr.details.length))}
                 </option>
               ))}
             </select>

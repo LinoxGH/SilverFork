@@ -77,13 +77,15 @@ const CurrentOrders = () => {
           <div className={styles.orderContainer} key={order.id}>
             <div className={styles.leftContainer}>
               <div className={styles.infoContainer}>
-                <div className={styles.imageContainer}>Food Img</div>
+                <div className={styles.imageContainer}>
+                  <img src={`data:image/jpeg;base64,${order.items[0].picture}`} alt={"Food Image"} className={styles.orderImage}/>
+                </div>
                 <div className={styles.detailsContainer}>
                   <p><strong>Order No:</strong> {order.id}</p>
                   <p><strong>Date:</strong> {order.orderDate}</p>
                   <p><strong>Price:</strong> ${order.totalPrice}</p>
                   <p><strong>Status:</strong> {order.status}</p>
-                  <p><strong>Courier:</strong> {order.courier ? order.courier.username : "UNASSIGNED"}</p>
+                  <p><strong>Courier:</strong> {order.courier ? order.courier.user.username : "UNASSIGNED"}</p>
                 </div>
               </div>
               {rank === "RESTAURANT" && (
