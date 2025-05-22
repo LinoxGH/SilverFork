@@ -42,7 +42,7 @@ function App() {
       <div className="recommendations-page">
         <div className="recommendations-container">
           <div className="recommendations-title">Food Recommendations</div>
-          <div className="products-grid">
+          <div className="products-grid-recommendation">
             {products.map((product) => (
               <ProductCard
                 key={product.id}

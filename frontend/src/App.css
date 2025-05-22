@@ -28,11 +28,12 @@
   margin-left: 2rem;
 }
 
-.products-grid {
+.products-grid-recommendation {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   padding: 0 2rem;
+  justify-items: center;
 }
 
 .restaurants-grid {
