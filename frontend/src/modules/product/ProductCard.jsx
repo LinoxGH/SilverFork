@@ -89,19 +89,37 @@ const ProductCard = ({ product, restaurantName, handleEdit, isFavoritable, isOrd
 
   const addToCart = async () => {
     try {
+      //1. Fetch current cart
+      const cartRes = await axios.get("http://localhost:8080/customer/cart", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const cartItems = cartRes.data.items;
+
+      //2. Check if cart is not empty
+      if (cartItems.length > 0) {
+        const currentRestaurant = cartItems[0].menuItem.restaurant.name;
+
+        //3. Compare restaurant name
+        if (currentRestaurant !== restaurantName) {
+          alert("You cannot add products from different restaurants to the cart.");
+          return;
+        }
+      }
+
+      //4. Proceed to add item
       const response = await axios.post(
         "http://localhost:8080/customer/cart/add",
         null,
         {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
+          headers: { Authorization: `Bearer ${token}` },
           params: {
             menuItemId: product.id,
             quantity: 1
           }
         }
       );
+
       console.log("Added product to cart:", response.data);
     } catch (error) {
       console.error("Could not add product to cart:", error);

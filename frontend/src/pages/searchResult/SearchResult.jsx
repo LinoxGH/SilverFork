@@ -38,7 +38,7 @@ const ShowSearchResult = () => {
     if (sortOption === "lowest") sorted.sort((a, b) => a.price - b.price);
     if (sortOption === "highest") sorted.sort((a, b) => b.price - a.price);
     if (sortOption === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
-    if (sortOption === "new") sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (option === "new") sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     if (sortOption === "rated") sorted.sort((a, b) => b.rating - a.rating);
     setDisplay(sorted);
   };

@@ -45,7 +45,7 @@ public class MenuItem {
     private Double rating = 0.0; // Average user rating
 
     @Column(nullable = true)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 
     @Column(nullable = true)

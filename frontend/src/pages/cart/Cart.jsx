@@ -91,7 +91,19 @@ const CartPage = () => {
         <div className="cart-actions">
           <button className="cart-button">Total Amount: {totalAmount}$</button>
           <button className="cart-button" onClick={() => navigate("/")}>Keep Shopping</button>
-          <button className="cart-button" onClick={() => navigate("/payment")}>Place Order</button>
+          <button
+            className="cart-button"
+            onClick={() => {
+              const minCart = products[0]?.menuItem?.restaurant?.minimumCart ?? 0;
+              if (parseFloat(totalAmount) < minCart) {
+                alert(`You cannot place an order below the minimum cart price of ${minCart}$.`);
+                return;
+              }
+              navigate("/payment");
+            }}
+          >
+            Place Order
+          </button>
         </div>
       </div>
     </div>
