@@ -102,8 +102,9 @@ public class OrderService {
 
         String restaurantOwner = restaurant.getOwnerUsername(); // Owner tanımı varsa
         notificationService.sendNotificationToUser(
-                restaurantOwner, "Yeni bir sipariş aldınız. Sipariş ID: " + order.getId()
-        );
+                restaurantOwner, "Yeni bir sipariş aldınız. Sipariş ID: " + order.getId());
+        notificationService.sendNotificationToUser(
+                username, "Siparişiniz oluşturuldu. Sipariş ID: " + order.getId());
 
         return order;
     }
@@ -127,6 +128,8 @@ public class OrderService {
         }
 
         if ("CANCELLED".equalsIgnoreCase(status)) {
+            notificationService.sendNotificationToUser(
+                    order.getUser().getUsername(), "Siparişiniz iptal edildi: " + order.getId());
             orderRepository.delete(order);
             return null;
         }

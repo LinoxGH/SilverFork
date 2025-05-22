@@ -3,10 +3,8 @@ package com.SAMURAI.HU_FDS.controller;
 import com.SAMURAI.HU_FDS.model.Order;
 import com.SAMURAI.HU_FDS.model.Restaurant;
 import com.SAMURAI.HU_FDS.model.User;
-import com.SAMURAI.HU_FDS.service.JwtService;
-import com.SAMURAI.HU_FDS.service.OrderService;
-import com.SAMURAI.HU_FDS.service.RestaurantEmployeeService;
-import com.SAMURAI.HU_FDS.service.UserService;
+import com.SAMURAI.HU_FDS.repo.NotificationRepository;
+import com.SAMURAI.HU_FDS.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +30,9 @@ public class CourierController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/orders")
     @PreAuthorize("hasRole('COURIER')")
@@ -61,6 +62,9 @@ public class CourierController {
             boolean success = orderService.deliverOrder(orderId, username);
 
             if (success) {
+                Order order = orderService.getOrderById(orderId);
+                notificationService.sendNotificationToUser(
+                        order.getUser().getUsername(), "Siparişiniz teslim edildi. Sipariş ID: " + order.getId());
                 return ResponseEntity.ok("Order marked as delivered");
             } else {
                 return ResponseEntity.status(403).body("Unauthorized or invalid order");
