@@ -203,7 +203,7 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     
         if (order.getCourier() != null && order.getCourier().getUser().getUsername().equals(courierUsername)) {
-            order.setStatus("DELIVERED");
+            order.setStatus("COMPLETED");
             orderRepository.save(order);
             return true;
         }

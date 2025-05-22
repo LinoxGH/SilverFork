@@ -33,13 +33,13 @@ public class OrderDisputeController {
         return jwtService.validateToken(pureToken, userDetails);
     }
 
-    @PostMapping
+    @PostMapping("/create/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> create(@RequestParam Long orderId,
+    public ResponseEntity<?> create(@PathVariable Long id,
                                     @RequestParam String reason,
                                     @RequestHeader("Authorization") String authHeader) {
         if (!isTokenValid(authHeader)) return ResponseEntity.status(403).body("Invalid token");
-        return ResponseEntity.ok(service.create(getUsername(), orderId, reason));
+        return ResponseEntity.ok(service.create(getUsername(), id, reason));
     }
 
     @GetMapping

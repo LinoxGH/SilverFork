@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -21,5 +22,7 @@ public class OrderDispute {
     private User raisedBy;
 
     @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Order order;
 }

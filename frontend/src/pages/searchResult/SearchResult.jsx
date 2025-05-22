@@ -3,6 +3,7 @@ import "./SearchResult.css";
 import axios from "axios";
 import ProductCard from "../../modules/product/ProductCard.jsx";
 import { useParams } from "react-router-dom";
+import ProductFilters from "../../modules/product/ProductFilter.jsx";
 
 const ShowSearchResult = () => {
   const { keyword } = useParams();
@@ -35,11 +36,11 @@ const ShowSearchResult = () => {
   const sortProducts = (option) => {
     setSortOption(option);
     let sorted = [...results];
-    if (sortOption === "lowest") sorted.sort((a, b) => a.price - b.price);
-    if (sortOption === "highest") sorted.sort((a, b) => b.price - a.price);
-    if (sortOption === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
+    if (option === "lowest") sorted.sort((a, b) => a.price - b.price);
+    if (option === "highest") sorted.sort((a, b) => b.price - a.price);
+    if (option === "popular") sorted.sort((a, b) => b.popularity - a.popularity);
     if (option === "new") sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    if (sortOption === "rated") sorted.sort((a, b) => b.rating - a.rating);
+    if (option === "rated") sorted.sort((a, b) => b.rating - a.rating);
     setDisplay(sorted);
   };
 
@@ -62,37 +63,15 @@ const ShowSearchResult = () => {
         <p className="result-text"> {display.length} Result Found </p>
       </div>
       <div className="dashboard-body">
-        <div className="filters">
-          <div className="filter-section">
-            <p className="sort-label">Sort By</p>
-            <p onClick={() => sortProducts("lowest")} className="sort-option">Lowest Price</p>
-            <p onClick={() => sortProducts("highest")} className="sort-option">Highest Price</p>
-            <p onClick={() => sortProducts("popular")} className="sort-option">Most Popular</p>
-            <p onClick={() => sortProducts("new")} className="sort-option">Newly Added</p>
-            <p onClick={() => sortProducts("rated")} className="sort-option">Highest Rated</p>
-          </div>
-          <div className="filter-section">
-            <p className="sort-label">Cuisine</p>
-            {['Italian', 'American', 'Turkish', 'Mexican', 'Vegan'].map(cuisine => (
-              <p className="sort-option"
-                key={cuisine}
-                onClick={() => {
-                  setSelectedCuisine(cuisine);
-                  filterProducts();
-                }}
-              >{cuisine}</p>
-            ))}
-          </div>
-          <div className="filter-section">
-            <p className="sort-label">Price</p>
-            <div className="price-range">
-              <input type="number" placeholder="Min" value={minFilter} onChange={(e) => setMinFilter(e.target.value)} />
-              <input type="number" placeholder="Max" value={maxFilter} onChange={(e) => setMaxFilter(e.target.value)} />
-              <button onClick={() => filterProducts()}>🔍</button>
-            </div>
-          </div>
-        </div>
-
+        <ProductFilters
+          sortProducts={sortProducts}
+          setSelectedCuisine={setSelectedCuisine}
+          filterProducts={filterProducts}
+          minFilter={minFilter}
+          maxFilter={maxFilter}
+          setMinFilter={setMinFilter}
+          setMaxFilter={setMaxFilter}
+        />
         <div className="product-location">
           <h3 className="product-label">Products</h3>
           <div className="products">

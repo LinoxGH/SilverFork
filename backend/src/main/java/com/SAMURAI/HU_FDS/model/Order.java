@@ -1,5 +1,6 @@
 package com.SAMURAI.HU_FDS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,4 +39,8 @@ public class Order {
 
     @ManyToOne
     private Courier courier;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<OrderDispute> disputes;
 }

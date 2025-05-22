@@ -69,6 +69,24 @@ const CurrentOrders = () => {
     }
   };
 
+  const handleReportOrder = (orderId) => {
+    const reason = prompt("Enter your reasoning for reporting the order:");
+    if (!reason) return;
+    if (reason.length > 100) {
+      alert("Report reasons can be at maximum 100 characters!")
+      return;
+    }
+
+    axios.post(`http://localhost:8080/order-disputes/create/${orderId}`, null, {
+      params: {reason: reason},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    })
+      .then(() => alert("Successfully reported this order. Our admins will handle this as soon as possible. Thank you for your patience."))
+      .catch(err => console.error("Failed to submit order report:", err));
+  };
+
   return (
     <>
       <p className={styles.title}>Current Orders</p>
@@ -85,7 +103,7 @@ const CurrentOrders = () => {
                 <div className={styles.detailsContainer}>
                   <p><strong>Order No:</strong> {order.id}</p>
                   <p><strong>Date:</strong> {order.orderDate}</p>
-                  <p><strong>Price:</strong> ${order.totalPrice}</p>
+                  <p><strong>Price:</strong> ${order.totalPrice.toFixed(2)}</p>
                   <p><strong>Status:</strong> {order.status}</p>
                   <p><strong>Courier:</strong> {order.courier ? order.courier.user.username : "UNASSIGNED"}</p>
                 </div>
@@ -140,6 +158,17 @@ const CurrentOrders = () => {
                       ))}
                     </select>
                   )}
+                </div>
+              )}
+              {rank === "CUSTOMER" && (
+                <div className={styles.buttonsContainer}>
+                  <Button
+                    label={"Report Order"}
+                    onClick={() => handleReportOrder(order.id)}
+                    width={"90%"}
+                    margin={"2% 1% 2% 1%"}
+                    borderRadius={"15px"}
+                    background={"#000000"}/>
                 </div>
               )}
             </div>
