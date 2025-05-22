@@ -45,17 +45,58 @@ function PaymentPage() {
         <div className={styles.left}>
   
           <div className={styles.row}>
-            <input className={`${styles.input} ${styles.shortInput}`} placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-            <input className={`${styles.input} ${styles.shortInput}`} placeholder="Surname" value={surname} onChange={e => setSurname(e.target.value)} />
+            <input
+              className={`${styles.input} ${styles.shortInput}`}
+              placeholder="Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
+            <input
+              className={`${styles.input} ${styles.shortInput}`}
+              placeholder="Surname"
+              value={surname}
+              onChange={e => setSurname(e.target.value)}
+              required
+            />
           </div>
   
           <div className={styles.row}>
-            <input className={`${styles.input} ${styles.cardNumber}`} placeholder="Card Number" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
+            <input
+              className={`${styles.input} ${styles.cardNumber}`}
+              type={"text"}
+              inputMode={"numeric"}
+              placeholder="XXXX XXXX XXXX XXXX"
+              value={cardNumber}
+              onChange={e => setCardNumber(e.target.value)}
+              pattern={"[0-9\s]{13,19}"}
+              maxLength={19}
+              required
+            />
           </div>
   
           <div className={styles.row}>
-            <input className={`${styles.input} ${styles.shortInput}`} placeholder="CVV" value={cvv} onChange={e => setCvv(e.target.value)} />
-            <input className={`${styles.input} ${styles.shortInput}`} placeholder="MM / YY" value={expiryDate} onChange={e => setExpiryDate(e.target.value)} />
+            <input
+              className={`${styles.input} ${styles.shortInput}`}
+              type={"text"}
+              inputMode={"numeric"}
+              placeholder="CVV"
+              value={cvv}
+              onChange={e => setCvv(e.target.value)}
+              maxLength={3}
+              required
+            />
+            <input
+              className={`${styles.input} ${styles.shortInput}`}
+              type={"text"}
+              inputMode={"numeric"}
+              placeholder="MM / YY"
+              value={expiryDate}
+              onChange={e => setExpiryDate(e.target.value)}
+              pattern={"[0-9]{2}/[0-9]{2}"}
+              maxLength={4}
+              required
+            />
           </div>
   
           <div className={styles.column}>
@@ -64,7 +105,7 @@ function PaymentPage() {
               <option value="">Select Address</option>
               {addresses.map((addr) => (
                 <option key={addr.id} value={addr.id}>
-                  {addr.name} – {addr.details}
+                  {addr.name} – {addr.details.substring(0, Math.min(60, addr.details.length))}
                 </option>
               ))}
             </select>

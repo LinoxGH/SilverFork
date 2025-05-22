@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./courierDashboard.module.css";
 import RestaurantCard from "../../modules/restaurant/RestaurantCard.jsx";
+import AssignmentCard from "../../modules/courier/AssignmentCard.jsx";
 
 const CourierDashboard = () => {
   const [assignments, setAssignments] = useState([]);
   const [status, setStatus] = useState("");
-  const [registered, setRegistered] = useState([]); // TODO
+  const [registered, setRegistered] = useState([]);
 
   const navigate = useNavigate();
 
@@ -64,14 +65,13 @@ const CourierDashboard = () => {
     <div className={styles.courierDashboard}>
       <div className={styles.dashboardBody}>
         <div className={styles.leftPanel}>
-          <h3>Taken Assignments</h3>
+          <h1 className={styles.assignmentsListTitle}>Given Delivery Assignments</h1>
           <div className={styles.assignmentsList}>
             {assignments.map((item) => (
-              <div
+              <AssignmentCard
                 key={item.id}
-                className={styles.assignmentCard}
-              >
-              </div>
+                assignment={item}
+              />
             ))}
           </div>
         </div>
@@ -86,6 +86,7 @@ const CourierDashboard = () => {
             <label className={styles.availabilityLabel} id="availability-label">{status + " to make deliveries."}</label>
           </div>
           <div className={styles.restaurantsList}>
+            <h1 className={styles.restaurantsListTitle}>Registered Restaurants</h1>
             {registered.map((restaurant) => (
               <RestaurantCard
                 key={restaurant.id}

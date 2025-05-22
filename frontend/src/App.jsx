@@ -49,8 +49,8 @@ function App() {
                 product={product}
                 restaurantName={product.restaurant?.name || "Unknown"}
                 handleEdit={null}
-                isFavoritable={token !== null}
-                isOrderable={token !== null}
+                isFavoritable={rank === "CUSTOMER"}
+                isOrderable={rank === "CUSTOMER"}
               />
             ))}
           </div>

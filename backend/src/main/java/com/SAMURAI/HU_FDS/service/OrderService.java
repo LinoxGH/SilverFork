@@ -138,12 +138,18 @@ public class OrderService {
         return orderRepository.findByRestaurantOwnerUsername(ownerUsername);
     }
 
-    public Order assignCourierToOrder(Long orderId, Long courierId, String username) {
+    public Order assignCourierToOrder(Long orderId, Long courierUserId, String username) {
         Restaurant restaurant = restaurantRepository.findByOwnerUsername(username)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
+        User user = userRepository.findById(courierUserId)
+                .orElseThrow(() -> new RuntimeException("Courier User not found"));
+
+        if (!user.getRank().equalsIgnoreCase("COURIER"))
+            throw new RuntimeException("Courier user is not in COURIER rank");
+
         RestaurantEmployee restaurantEmployee = restaurantEmployeeRepository
-                .findByRestaurantIdAndCourierId(restaurant.getId(), courierId)
+                .findByRestaurantIdAndCourierId(restaurant.getId(), user.getCourier().getId())
                 .orElseThrow(() -> new RuntimeException("Courier is not an employee of this restaurant"));
 
         Courier courier = restaurantEmployee.getCourier();
