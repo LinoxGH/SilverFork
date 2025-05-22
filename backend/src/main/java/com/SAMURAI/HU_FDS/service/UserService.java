@@ -42,6 +42,11 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        String status= user.getStatus();
+        if ("BANNED".equalsIgnoreCase(status)){
+            throw new RuntimeException("User is banned!");
+        }
+
         if (!encoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Password is incorrect");
         } else {
