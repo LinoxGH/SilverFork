@@ -22,6 +22,7 @@ import CurrentOrders from "./pages/currentOrders/CurrentOrders.jsx";
 import CourierDashboard from "./pages/courierDashboard/courierDashboard.jsx";
 import Restaurant from "./pages/restaurant/Restaurant.jsx";
 import OrderHistory from "./pages/orderHistory/OrderHistory.jsx";
+import Footer from "./modules/footer/Footer.jsx";
 
 
 createRoot(document.getElementById('root')).render(
@@ -67,6 +68,7 @@ createRoot(document.getElementById('root')).render(
           </ProtectedRoute>
         } />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   </StrictMode>
 );
